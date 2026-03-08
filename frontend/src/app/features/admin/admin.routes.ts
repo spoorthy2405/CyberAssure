@@ -16,24 +16,38 @@ export const ADMIN_ROUTES: Routes = [
             },
 
             {
-                path: 'users',
+                path: 'staff',
                 loadComponent: () =>
-                    import('./users/users')
-                        .then(m => m.Users)
+                    import('./staff/staff')
+                        .then(m => m.Staff)
             },
 
             {
-                path: 'policy-plans',
+                path: 'underwriters',
                 loadComponent: () =>
-                    import('./policy-plans/policy-plans')
-                        .then(m => m.PolicyPlans)
+                    import('./underwriters/underwriters')
+                        .then(m => m.Underwriters)
             },
 
             {
-                path: 'assessments',
+                path: 'claims-officers',
                 loadComponent: () =>
-                    import('./assessments/assessments')
-                        .then(m => m.Assessments)
+                    import('./claims-officers/claims-officers')
+                        .then(m => m.ClaimsOfficers)
+            },
+
+            {
+                path: 'customers',
+                loadComponent: () =>
+                    import('./customers/customers')
+                        .then(m => m.Customers)
+            },
+
+            {
+                path: 'policies',
+                loadComponent: () =>
+                    import('./policies/policies')
+                        .then(m => m.Policies)
             },
 
             {
@@ -44,10 +58,41 @@ export const ADMIN_ROUTES: Routes = [
             },
 
             {
+                path: 'risk-monitoring',
+                loadComponent: () =>
+                    import('./risk-monitoring/risk-monitoring')
+                        .then(m => m.RiskMonitoring)
+            },
+
+            {
                 path: 'analytics',
                 loadComponent: () =>
                     import('./analytics/analytics')
                         .then(m => m.Analytics)
+            },
+
+            {
+                path: 'settings',
+                loadComponent: () =>
+                    import('./settings/settings')
+                        .then(m => m.Settings)
+            },
+
+            // Legacy routes mapping to their new equivalents if any
+            {
+                path: 'users',
+                redirectTo: 'customers',
+                pathMatch: 'full'
+            },
+            {
+                path: 'policy-plans',
+                redirectTo: 'policies',
+                pathMatch: 'full'
+            },
+            {
+                path: 'assessments',
+                redirectTo: 'risk-monitoring',
+                pathMatch: 'full'
             },
 
             {

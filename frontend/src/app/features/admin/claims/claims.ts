@@ -1,34 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminApiService } from '../../../core/services/admin-api-service';
+import { AdminApiService } from '../services/admin.service';
 
 @Component({
-  selector: 'admin-claims',
+  selector: 'app-claims',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './claims.html',
-  styleUrl: './claims.css'
+  templateUrl: './claims.html'
 })
 export class Claims implements OnInit {
 
-  claims: any[] = [];
+  claimsList: any[] = [];
 
-  constructor(private api: AdminApiService) { }
+  constructor(private adminApi: AdminApiService) { }
 
   ngOnInit() {
-    this.loadClaims();
-  }
-
-  loadClaims() {
-    this.api.getClaims().subscribe({
-      next: (res) => {
-        console.log("CLAIMS:", res);
-        this.claims = res;
+    this.adminApi.getClaims().subscribe({
+      next: (data) => {
+        this.claimsList = data;
       },
-      error: (err) => {
-        console.error("Claims API Error:", err);
-      }
-    })
+      error: (err) => console.error('Error loading claims', err)
+    });
   }
 
 }

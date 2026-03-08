@@ -1,6 +1,6 @@
 #FileLock
-#Sun Mar 08 13:57:38 IST 2026
+#Sun Mar 08 22:24:09 IST 2026
 hostName=Spoorthy
-id=19ccc8f22958a86cc02dc8a5a629a5d22ffd0b5ce2e
+id=19cce5ed9750aeacd5a1b60dbd57ff317ba2573e424
 method=file
-server=10.45.59.179\:50887
+server=172.20.10.2\:59862

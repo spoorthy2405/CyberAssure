@@ -1,0 +1,51 @@
+<div class="space-y-6">
+
+    <h1 class="text-3xl font-bold text-white">Underwriters</h1>
+
+    <div class="bg-slate-800/60 p-6 rounded-xl">
+
+        <table class="w-full text-sm text-left">
+
+            <thead class="text-slate-400 border-b border-slate-700">
+                <tr>
+                    <th class="p-3">ID</th>
+                    <th class="p-3">Name</th>
+                    <th class="p-3">Email</th>
+                    <th class="p-3">Role</th>
+                    <th class="p-3">Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let und of underwritersList">
+
+                    <td class="p-3">{{und.id}}</td>
+
+                    <td class="p-3 flex items-center gap-2">
+
+                        <div class="w-8 h-8 rounded bg-blue-600 flex items-center justify-center text-white font-bold">
+
+                            {{ und.fullName ? und.fullName.charAt(0) : '?' }}
+
+                        </div>
+
+                        {{und.fullName}}
+
+                    </td>
+
+                    <td class="p-3">{{und.email}}</td>
+
+                    <td class="p-3">{{und.role?.roleName}}</td>
+
+                    <td class="p-3">{{und.accountStatus}}</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

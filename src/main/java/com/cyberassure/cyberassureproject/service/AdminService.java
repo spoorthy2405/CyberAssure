@@ -55,4 +55,25 @@ public class AdminService {
 
     }
 
+    public List<User> getStaff() {
+        return userRepository.findAll()
+                .stream()
+                .filter(u -> !u.getRole().getRoleName().equals("ROLE_CUSTOMER"))
+                .toList();
+    }
+
+    public List<User> getUnderwriters() {
+        return userRepository.findAll()
+                .stream()
+                .filter(u -> u.getRole().getRoleName().equals("ROLE_UNDERWRITER"))
+                .toList();
+    }
+
+    public List<User> getClaimsOfficers() {
+        return userRepository.findAll()
+                .stream()
+                .filter(u -> u.getRole().getRoleName().equals("ROLE_CLAIMS_OFFICER"))
+                .toList();
+    }
+
 }

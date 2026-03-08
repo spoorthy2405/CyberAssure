@@ -1,6 +1,6 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Chart } from 'chart.js/auto';
+import { AdminApiService } from '../services/admin.service';
 
 @Component({
   selector: 'app-analytics',
@@ -8,35 +8,17 @@ import { Chart } from 'chart.js/auto';
   imports: [CommonModule],
   templateUrl: './analytics.html'
 })
-export class Analytics implements AfterViewInit {
+export class Analytics implements OnInit {
 
-  ngAfterViewInit(): void {
+  analyticsData: any = {};
 
-    new Chart("policiesChart", {
-      type: 'bar',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [{
-          label: 'Policies Sold',
-          data: [120, 190, 300, 250, 220, 310],
-          backgroundColor: '#3b82f6'
-        }]
-      }
+  constructor(private adminApi: AdminApiService) { }
+
+  ngOnInit() {
+    this.adminApi.getAnalytics().subscribe({
+      next: (data) => this.analyticsData = data,
+      error: (err) => console.error("Error fetching analytics data", err)
     });
-
-    new Chart("claimsChart", {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [{
-          label: 'Claims Filed',
-          data: [30, 50, 45, 60, 70, 90],
-          borderColor: '#22c55e',
-          fill: false
-        }]
-      }
-    });
-
   }
 
 }

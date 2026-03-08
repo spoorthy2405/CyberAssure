@@ -1,30 +1,201 @@
-<div class="grid grid-cols-3 gap-6">
+<div class="space-y-6">
 
-    <div class="bg-slate-800 p-6 rounded-xl">
-        <p class="text-3xl text-blue-400 font-bold">
-            {{stats.totalCompanies}}
-        </p>
-        <p class="text-slate-400">
-            Total Registered Companies
-        </p>
+    <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">Admin
+            Dashboard</h1>
+        <div
+            class="text-sm text-slate-400 bg-slate-800/50 px-4 py-2 rounded-full border border-slate-700/50 backdrop-blur-sm">
+            Last updated: Just now
+        </div>
     </div>
 
-    <div class="bg-slate-800 p-6 rounded-xl">
-        <p class="text-3xl text-blue-400 font-bold">
-            {{stats.activePolicies}}
-        </p>
-        <p class="text-slate-400">
-            Active Policies
-        </p>
+    <!-- STATS GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Stat Card -->
+        <div
+            class="bg-gradient-to-br from-slate-800/80 to-slate-900/80 p-6 rounded-2xl border border-slate-700/50 shadow-lg shadow-black/20 backdrop-blur-md relative overflow-hidden group hover:border-blue-500/50 transition-all">
+            <div
+                class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all">
+            </div>
+            <p class="text-sm font-medium text-slate-400 mb-1">Total Customers</p>
+            <div class="flex items-end justify-between">
+                <h3 class="text-3xl font-bold text-white">{{stats.totalCustomers}}</h3>
+                <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">↑ 12%</span>
+            </div>
+        </div>
+
+        <!-- Stat Card -->
+        <div
+            class="bg-gradient-to-br from-slate-800/80 to-slate-900/80 p-6 rounded-2xl border border-slate-700/50 shadow-lg shadow-black/20 backdrop-blur-md relative overflow-hidden group hover:border-indigo-500/50 transition-all">
+            <div
+                class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all">
+            </div>
+            <p class="text-sm font-medium text-slate-400 mb-1">Total Policies</p>
+            <div class="flex items-end justify-between">
+                <h3 class="text-3xl font-bold text-white">{{stats.totalPolicies}}</h3>
+                <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">↑ 8%</span>
+            </div>
+        </div>
+
+        <!-- Stat Card -->
+        <div
+            class="bg-gradient-to-br from-slate-800/80 to-slate-900/80 p-6 rounded-2xl border border-slate-700/50 shadow-lg shadow-black/20 backdrop-blur-md relative overflow-hidden group hover:border-amber-500/50 transition-all">
+            <div
+                class="absolute -right-4 -top-4 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all">
+            </div>
+            <p class="text-sm font-medium text-slate-400 mb-1">Active Claims</p>
+            <div class="flex items-end justify-between">
+                <h3 class="text-3xl font-bold text-white">{{stats.activeClaims}}</h3>
+                <span class="text-amber-400 text-sm font-medium">Pending Review</span>
+            </div>
+        </div>
+
+        <!-- Stat Card -->
+        <div
+            class="bg-gradient-to-br from-slate-800/80 to-slate-900/80 p-6 rounded-2xl border border-slate-700/50 shadow-lg shadow-black/20 backdrop-blur-md relative overflow-hidden group hover:border-emerald-500/50 transition-all">
+            <div
+                class="absolute -right-4 -top-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all">
+            </div>
+            <p class="text-sm font-medium text-slate-400 mb-1">Approved Claims</p>
+            <div class="flex items-end justify-between">
+                <h3 class="text-3xl font-bold text-white">{{stats.approvedClaims}}</h3>
+                <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">Resolved</span>
+            </div>
+        </div>
+
     </div>
 
-    <div class="bg-slate-800 p-6 rounded-xl">
-        <p class="text-3xl text-blue-400 font-bold">
-            {{stats.pendingAssessments}}
-        </p>
-        <p class="text-slate-400">
-            Pending Risk Assessments
-        </p>
+    <!-- SMALL STATS ROW -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div
+            class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/30 flex justify-between items-center text-sm">
+            <span class="text-slate-400">Total Claims</span>
+            <span class="font-bold text-white">{{stats.totalClaims}}</span>
+        </div>
+        <div
+            class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/30 flex justify-between items-center text-sm">
+            <span class="text-slate-400">Rejected Claims</span>
+            <span class="font-bold text-rose-400">{{stats.rejectedClaims}}</span>
+        </div>
+        <div
+            class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/30 flex justify-between items-center text-sm">
+            <span class="text-slate-400">Underwriters</span>
+            <span class="font-bold text-blue-400">{{stats.totalUnderwriters}}</span>
+        </div>
+        <div
+            class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/30 flex justify-between items-center text-sm">
+            <span class="text-slate-400">Claims Officers</span>
+            <span class="font-bold text-purple-400">{{stats.totalClaimsOfficers}}</span>
+        </div>
+    </div>
+
+    <!-- CHARTS PLACEHOLDERS AND TABLES -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- CHARTS SECTION -->
+        <div class="space-y-6">
+            <div class="bg-slate-800/60 p-6 rounded-2xl border border-slate-700/50 shadow-lg backdrop-blur-md">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-white">Risk Distribution</h3>
+                    <button class="text-slate-400 hover:text-white transition-colors">•••</button>
+                </div>
+                <div
+                    class="h-48 w-full flex items-center justify-center border border-dashed border-slate-600 rounded-xl bg-slate-800/30">
+                    <span class="text-slate-500 text-sm">Risk Distribution Chart View</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/60 p-6 rounded-2xl border border-slate-700/50 shadow-lg backdrop-blur-md">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-white">Monthly Claims</h3>
+                    <button class="text-slate-400 hover:text-white transition-colors">•••</button>
+                </div>
+                <div
+                    class="h-48 w-full flex items-center justify-center border border-dashed border-slate-600 rounded-xl bg-slate-800/30">
+                    <span class="text-slate-500 text-sm">Monthly Claims Bar Chart View</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLES SECTION -->
+        <div class="space-y-6">
+
+            <!-- Recent Claims -->
+            <div class="bg-slate-800/60 p-6 rounded-2xl border border-slate-700/50 shadow-lg backdrop-blur-md">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-white">Recent Claims Activity</h3>
+                    <a routerLink="/admin/claims"
+                        class="text-sm text-blue-400 hover:text-blue-300 transition-colors">View All</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead>
+                            <tr class="text-slate-400 border-b border-slate-700">
+                                <th class="pb-3 font-medium">Claim ID</th>
+                                <th class="pb-3 font-medium">Customer</th>
+                                <th class="pb-3 font-medium">Amount</th>
+                                <th class="pb-3 font-medium">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700/50">
+                            <tr *ngFor="let claim of recentClaims" class="hover:bg-slate-700/20 transition-colors">
+                                <td class="py-3 font-medium text-slate-300">{{claim.id}}</td>
+                                <td class="py-3 text-slate-300">{{claim.customer}}</td>
+                                <td class="py-3 text-slate-300">{{claim.amount}}</td>
+                                <td class="py-3">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium border" [ngClass]="{
+                                            'bg-amber-500/10 text-amber-400 border-amber-500/20': claim.status === 'Under Review' || claim.status === 'Pending',
+                                            'bg-emerald-500/10 text-emerald-400 border-emerald-500/20': claim.status === 'Approved',
+                                            'bg-rose-500/10 text-rose-400 border-rose-500/20': claim.status === 'Rejected'
+                                        }">
+                                        {{claim.status}}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recent Policies -->
+            <div class="bg-slate-800/60 p-6 rounded-2xl border border-slate-700/50 shadow-lg backdrop-blur-md">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold text-white">New Policy Subscriptions</h3>
+                    <a routerLink="/admin/policies"
+                        class="text-sm text-blue-400 hover:text-blue-300 transition-colors">View All</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead>
+                            <tr class="text-slate-400 border-b border-slate-700">
+                                <th class="pb-3 font-medium">Customer</th>
+                                <th class="pb-3 font-medium">Policy Type</th>
+                                <th class="pb-3 font-medium">Premium</th>
+                                <th class="pb-3 font-medium">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700/50">
+                            <tr *ngFor="let policy of recentPolicies" class="hover:bg-slate-700/20 transition-colors">
+                                <td class="py-3 font-medium text-slate-300">{{policy.customer}}</td>
+                                <td class="py-3 text-slate-300">{{policy.type}}</td>
+                                <td class="py-3 text-slate-300">{{policy.premium}}</td>
+                                <td class="py-3">
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-medium border" [ngClass]="{
+                                            'bg-emerald-500/10 text-emerald-400 border-emerald-500/20': policy.status === 'Active',
+                                            'bg-amber-500/10 text-amber-400 border-amber-500/20': policy.status === 'Pending'
+                                        }">
+                                        {{policy.status}}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
 </div>
