@@ -1,0 +1,62 @@
+<h2 class="text-2xl font-bold mb-6">
+    Underwriter Decisions
+</h2>
+
+<div *ngIf="loading" class="text-gray-400 mb-4">
+    Loading decisions...
+</div>
+
+<table class="w-full bg-slate-800 rounded overflow-hidden">
+
+    <thead class="bg-slate-700">
+
+        <tr class="text-left text-sm uppercase text-gray-300">
+
+            <th class="p-3">Customer</th>
+            <th class="p-3">Policy</th>
+            <th class="p-3">Risk Level</th>
+            <th class="p-3">Premium</th>
+            <th class="p-3">Status</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        <tr *ngFor="let d of decisions" class="border-t border-slate-700">
+
+            <td class="p-3">
+                {{ d.customer?.fullName }}
+            </td>
+
+            <td class="p-3">
+                {{ d.policy?.policyName }}
+            </td>
+
+            <td class="p-3">
+                {{ d.riskAssessment?.riskLevel }}
+            </td>
+
+            <td class="p-3">
+                ₹ {{ d.calculatedPremium }}
+            </td>
+
+            <td class="p-3">
+
+                <span class="font-bold" [ngClass]="{
+'text-green-400': d.status === 'APPROVED',
+'text-red-400': d.status === 'REJECTED'
+}">
+
+                    {{ d.status }}
+
+                </span>
+
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>

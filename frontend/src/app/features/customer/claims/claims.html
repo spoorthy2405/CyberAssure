@@ -1,0 +1,56 @@
+<h2 class="text-2xl font-bold mb-6 text-white">
+    Your Claims
+</h2>
+
+<table class="w-full bg-slate-800 text-white rounded">
+
+    <thead class="bg-slate-700">
+
+        <tr>
+
+            <th class="p-3">Amount</th>
+            <th class="p-3">Status</th>
+            <th class="p-3">Filed At</th>
+            <th class="p-3">Reason</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        <tr *ngFor="let c of claims">
+
+            <td class="p-3">
+                ₹ {{c.claimAmount}}
+            </td>
+
+            <td class="p-3">
+
+                <span [ngClass]="{
+
+'bg-yellow-600':c.status==='PENDING',
+'bg-green-600':c.status==='APPROVED',
+'bg-red-600':c.status==='REJECTED'
+
+}" class="px-3 py-1 rounded">
+
+                    {{c.status}}
+
+                </span>
+
+            </td>
+
+            <td class="p-3">
+                {{c.filedAt}}
+            </td>
+
+            <td class="p-3">
+                {{c.rejectionReason || "—"}}
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>

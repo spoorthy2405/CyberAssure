@@ -1,0 +1,60 @@
+<div class="p-6">
+
+    <h1 class="text-2xl font-bold mb-6">Claims</h1>
+
+    <div class="bg-slate-800 rounded-xl p-6">
+
+        <table class="w-full text-left text-sm">
+
+            <thead class="text-slate-400 border-b border-slate-700">
+                <tr>
+                    <th class="py-3">Claim ID</th>
+                    <th class="py-3">Company</th>
+                    <th class="py-3">Incident</th>
+                    <th class="py-3">Amount</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3">Filed At</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let c of claims" class="border-b border-slate-700">
+
+                    <td>#{{c.id}}</td>
+
+                    <td>{{c.customer?.companyName}}</td>
+
+                    <td>{{c.incident?.incidentType}}</td>
+
+                    <td class="text-blue-400 font-bold">
+                        ₹{{c.claimAmount}}
+                    </td>
+
+                    <td>
+
+                        <span *ngIf="c.status=='PENDING'" class="px-3 py-1 text-xs rounded-full bg-yellow-600">
+                            Pending
+                        </span>
+
+                        <span *ngIf="c.status=='APPROVED'" class="px-3 py-1 text-xs rounded-full bg-green-700">
+                            Approved
+                        </span>
+
+                        <span *ngIf="c.status=='REJECTED'" class="px-3 py-1 text-xs rounded-full bg-red-700">
+                            Rejected
+                        </span>
+
+                    </td>
+
+                    <td>{{c.filedAt | date}}</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

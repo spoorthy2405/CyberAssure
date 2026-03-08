@@ -1,0 +1,67 @@
+<div class="p-10 bg-slate-950 min-h-screen text-white">
+
+    <h1 class="text-3xl font-bold text-blue-400 mb-8">
+        Customer Dashboard
+    </h1>
+
+    <div class="flex gap-8 mb-10">
+
+        <a routerLink="/customer/risk" class="hover:text-blue-400">
+            Risk Assessment
+        </a>
+
+        <a routerLink="/customer/policies" class="hover:text-blue-400">
+            Browse Policies
+        </a>
+
+        <a routerLink="/customer/subscriptions" class="hover:text-blue-400">
+            My Policies
+        </a>
+
+        <a routerLink="/customer/incidents" class="hover:text-blue-400">
+            Report Incident
+        </a>
+
+        <a routerLink="/customer/claims" class="hover:text-blue-400">
+            Claims
+        </a>
+
+    </div>
+
+    <div class="grid grid-cols-3 gap-6 mb-10">
+
+        <div class="bg-slate-800 p-6 rounded">
+
+            <p class="text-gray-400">Risk Level</p>
+
+            <p class="text-2xl font-bold">
+                {{risk?.riskLevel || "Not Assessed"}}
+            </p>
+
+        </div>
+
+        <div class="bg-slate-800 p-6 rounded">
+
+            <p class="text-gray-400">Policies</p>
+
+            <p class="text-2xl font-bold">
+                {{subscriptions.length}}
+            </p>
+
+        </div>
+
+        <div class="bg-slate-800 p-6 rounded">
+
+            <p class="text-gray-400">Claims</p>
+
+            <p class="text-2xl font-bold">
+                {{claims.length}}
+            </p>
+
+        </div>
+
+    </div>
+
+    <router-outlet></router-outlet>
+
+</div>

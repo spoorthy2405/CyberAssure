@@ -1,0 +1,46 @@
+<h2 class="text-2xl font-bold mb-6 text-white">
+    Report Cyber Incident
+</h2>
+
+<form (ngSubmit)="submit()" class="bg-slate-800 p-6 rounded space-y-4">
+
+    <label>
+
+        Incident Type
+
+        <input type="text" [(ngModel)]="data.incidentType" name="type" class="w-full text-black p-2">
+
+    </label>
+
+    <label>
+
+        Description
+
+        <textarea [(ngModel)]="data.description" name="desc" class="w-full text-black p-2">
+</textarea>
+
+    </label>
+
+    <label>
+
+        Estimated Loss
+
+        <input type="number" [(ngModel)]="data.estimatedLossAmount" name="loss" class="w-full text-black p-2">
+
+    </label>
+
+    <label>
+
+        Subscription ID
+
+        <input type="number" [(ngModel)]="data.subscriptionId" name="sub" class="w-full text-black p-2">
+
+    </label>
+
+    <button class="bg-red-600 px-6 py-2 rounded">
+
+        Report Incident
+
+    </button>
+
+</form>

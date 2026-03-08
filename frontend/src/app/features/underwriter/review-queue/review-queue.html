@@ -1,0 +1,106 @@
+<h2 class="text-2xl font-bold mb-6">
+    Risk Assessment Queue
+</h2>
+
+<div *ngIf="loading" class="text-gray-400 mb-4">
+    Loading subscriptions...
+</div>
+
+<table class="w-full bg-slate-800 rounded overflow-hidden">
+
+    <thead class="bg-slate-700">
+
+        <tr class="text-left text-sm uppercase text-gray-300">
+
+            <th class="p-3">Customer</th>
+            <th class="p-3">Policy</th>
+            <th class="p-3">Risk Level</th>
+            <th class="p-3">Premium</th>
+            <th class="p-3">Status</th>
+            <th class="p-3">Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        <tr *ngFor="let s of assessments" class="border-t border-slate-700">
+
+            <td class="p-3">
+                {{ s.customer?.fullName }}
+            </td>
+
+            <td class="p-3">
+                {{ s.policy?.policyName }}
+            </td>
+
+            <td class="p-3">
+                {{ s.riskAssessment?.riskLevel }}
+            </td>
+
+            <td class="p-3">
+                ₹ {{ s.calculatedPremium }}
+            </td>
+
+            <td class="p-3">
+
+                <span class="font-bold" [ngClass]="{
+'text-yellow-400': s.status === 'PENDING',
+'text-green-400': s.status === 'APPROVED',
+'text-red-400': s.status === 'REJECTED'
+}">
+
+                    {{ s.status }}
+
+                </span>
+
+            </td>
+
+            <td class="p-3">
+
+                <button *ngIf="s.status === 'PENDING'" (click)="review(s)"
+                    class="bg-blue-600 px-3 py-1 rounded text-sm">
+
+                    Review
+
+                </button>
+
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>
+
+<!-- REVIEW PANEL -->
+
+<div *ngIf="selected" class="bg-slate-900 p-6 mt-8 rounded">
+
+    <h3 class="text-xl mb-4">
+        Underwriter Review
+    </h3>
+
+    <p><b>Customer:</b> {{selected.customer?.fullName}}</p>
+    <p><b>Policy:</b> {{selected.policy?.policyName}}</p>
+    <p><b>Risk Level:</b> {{selected.riskAssessment?.riskLevel}}</p>
+    <p><b>Premium:</b> ₹ {{selected.calculatedPremium}}</p>
+
+    <div class="flex gap-4 mt-6">
+
+        <button (click)="approve()" class="bg-green-600 px-5 py-2 rounded">
+
+            Approve Policy
+
+        </button>
+
+        <button (click)="decline()" class="bg-red-600 px-5 py-2 rounded">
+
+            Reject Policy
+
+        </button>
+
+    </div>
+
+</div>

@@ -1,0 +1,118 @@
+<div class="auth-page">
+
+    <!-- LEFT PANEL -->
+    <div class="auth-left">
+        <div class="auth-left-inner">
+            <div class="brand">
+                <span class="brand-shield">⬡</span>
+                <span class="brand-name">CyberAssure</span>
+            </div>
+
+            <div class="left-visual">
+                <div class="shield-wrap">
+                    <div class="shield-icon">🛡️</div>
+                    <div class="shield-ring r1"></div>
+                    <div class="shield-ring r2"></div>
+                    <div class="shield-ring r3"></div>
+                </div>
+            </div>
+
+            <div class="left-copy">
+                <h2>Secure Your Business Against Cyber Threats</h2>
+                <p>Join 500+ Indian companies that trust CyberAssure
+                    for comprehensive cybersecurity insurance.</p>
+            </div>
+
+            <div class="left-trust">
+                <div class="trust-item">
+                    <span class="trust-icon">🏛️</span>
+                    <span>IRDAI Compliant</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">🔒</span>
+                    <span>256-bit Encrypted</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">🔐</span>
+                    <span>CERT-In Aligned</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="auth-right">
+        <div class="auth-card">
+
+            <div class="auth-card-header">
+                <h1>Welcome back</h1>
+                <p>Sign in to your CyberAssure account</p>
+            </div>
+
+            <!-- ERROR MESSAGE -->
+            <div class="alert-error" *ngIf="errorMsg">
+                <span>⚠️</span> {{ errorMsg }}
+            </div>
+
+            <div class="auth-form">
+
+                <!-- EMAIL -->
+                <div class="field-group">
+                    <label>Email Address</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" placeholder="you@company.com" [(ngModel)]="email"
+                            [class.input-error]="errorMsg" (keyup.enter)="onLogin()" />
+                    </div>
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="field-group">
+                    <div class="label-row">
+                        <label>Password</label>
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+                    <div class="input-wrap">
+                        <span class="input-icon">🔒</span>
+                        <input [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password"
+                            [(ngModel)]="password" [class.input-error]="errorMsg" (keyup.enter)="onLogin()" />
+                        <button type="button" class="eye-btn" (click)="togglePassword()">
+                            {{ showPassword ? '🙈' : '👁️' }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- REMEMBER ME -->
+                <div class="remember-row">
+                    <label class="checkbox-wrap">
+                        <input type="checkbox" [(ngModel)]="rememberMe" />
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">Remember me</span>
+                    </label>
+                </div>
+
+                <!-- SUBMIT -->
+                <button class="btn-submit" (click)="onLogin()" [disabled]="loading">
+                    <span *ngIf="!loading">Sign In →</span>
+                    <span *ngIf="loading" class="spinner"></span>
+                </button>
+
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+
+                <p class="auth-switch">
+                    Don't have an account?
+                    <a routerLink="/register">Create Account</a>
+                </p>
+
+            </div>
+
+            <p class="auth-secure">
+                🔒 Protected by 256-bit SSL encryption
+            </p>
+
+        </div>
+    </div>
+
+</div>

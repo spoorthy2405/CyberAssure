@@ -1,0 +1,57 @@
+<div class="p-10 bg-slate-950 min-h-screen text-white">
+
+    <h1 class="text-3xl font-bold text-blue-400 mb-8">
+        Claims Officer Dashboard
+    </h1>
+
+    <!-- NAVIGATION -->
+
+    <div class="flex gap-8 mb-10 text-lg">
+
+        <a routerLink="/claims/queue" routerLinkActive="text-blue-400 border-b-2 border-blue-400 pb-1"
+            class="hover:text-blue-300">
+            Claims Queue
+        </a>
+
+        <a routerLink="/claims/decisions" routerLinkActive="text-blue-400 border-b-2 border-blue-400 pb-1"
+            class="hover:text-blue-300">
+            Decisions
+        </a>
+
+    </div>
+
+    <!-- DASHBOARD CARDS -->
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+
+        <div class="bg-slate-800 p-6 rounded-xl shadow">
+            <p class="text-gray-400 text-sm">Total Claims</p>
+            <p class="text-3xl font-bold mt-2">{{total}}</p>
+        </div>
+
+        <div class="bg-yellow-900 p-6 rounded-xl shadow">
+            <p class="text-gray-300 text-sm">Pending Claims</p>
+            <p class="text-3xl font-bold mt-2">{{pending}}</p>
+        </div>
+
+        <div class="bg-green-900 p-6 rounded-xl shadow">
+            <p class="text-gray-300 text-sm">Approved Claims</p>
+            <p class="text-3xl font-bold mt-2">{{approved}}</p>
+        </div>
+
+        <div class="bg-red-900 p-6 rounded-xl shadow">
+            <p class="text-gray-300 text-sm">Rejected Claims</p>
+            <p class="text-3xl font-bold mt-2">{{rejected}}</p>
+        </div>
+
+    </div>
+
+    <!-- CHILD ROUTES RENDER HERE -->
+
+    <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+
+        <router-outlet></router-outlet>
+
+    </div>
+
+</div>

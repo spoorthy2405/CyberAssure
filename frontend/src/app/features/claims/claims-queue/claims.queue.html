@@ -1,0 +1,79 @@
+<h2 class="text-2xl font-bold mb-6 text-white">
+    Pending Claims
+</h2>
+
+<div *ngIf="claims.length === 0" class="bg-slate-800 p-6 rounded text-gray-400">
+
+    No pending claims for review.
+
+</div>
+
+<table *ngIf="claims.length > 0" class="w-full bg-slate-800 rounded-xl overflow-hidden text-white">
+
+    <thead class="bg-slate-700 text-left">
+        <tr>
+            <th class="p-4">Claim ID</th>
+            <th class="p-4">Amount</th>
+            <th class="p-4">Status</th>
+            <th class="p-4">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <tr *ngFor="let c of claims" class="border-b border-slate-700 hover:bg-slate-700 transition">
+
+            <td class="p-4">
+                #{{c.id}}
+            </td>
+
+            <td class="p-4 font-semibold">
+                ₹ {{c.claimAmount}}
+            </td>
+
+            <td class="p-4">
+
+                <span class="px-3 py-1 rounded bg-yellow-700 text-yellow-200 text-sm">
+                    {{c.status}}
+                </span>
+
+            </td>
+
+            <td class="p-4">
+
+                <button (click)="review(c)" class="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded">
+                    Review
+                </button>
+
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>
+
+<!-- REVIEW PANEL -->
+
+<div *ngIf="selected" class="mt-8 bg-slate-900 p-6 rounded-xl border border-slate-700">
+
+    <h3 class="text-xl font-bold mb-4">
+        Claim Review
+    </h3>
+
+    <p><b>Claim ID:</b> {{selected.id}}</p>
+    <p><b>Amount:</b> ₹ {{selected.claimAmount}}</p>
+
+    <div class="flex gap-4 mt-6">
+
+        <button (click)="approve()" class="bg-green-600 hover:bg-green-700 px-5 py-2 rounded">
+            Approve Claim
+        </button>
+
+        <button (click)="reject()" class="bg-red-600 hover:bg-red-700 px-5 py-2 rounded">
+            Reject Claim
+        </button>
+
+    </div>
+
+</div>

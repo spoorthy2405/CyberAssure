@@ -1,0 +1,90 @@
+<div class="p-6">
+
+    <h1 class="text-2xl font-bold mb-6">Policy Plans</h1>
+
+    <div class="bg-slate-800 rounded-xl p-6">
+
+        ```
+        <!-- Filters -->
+        <div class="flex gap-4 mb-6">
+
+            <input type="text" placeholder="Search policy..."
+                class="bg-slate-900 border border-slate-700 rounded px-4 py-2 text-sm w-60" />
+
+            <select class="bg-slate-900 border border-slate-700 rounded px-4 py-2 text-sm">
+                <option>All Coverage</option>
+                <option>1M</option>
+                <option>5M</option>
+                <option>10M+</option>
+            </select>
+
+        </div>
+
+        <!-- Table -->
+        <table class="w-full text-sm text-left">
+
+            <thead class="text-slate-400 border-b border-slate-700">
+                <tr>
+                    <th class="py-3">Policy Name</th>
+                    <th class="py-3">Coverage Limit</th>
+                    <th class="py-3">Base Premium</th>
+                    <th class="py-3">Duration</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr *ngFor="let p of policies" class="border-b border-slate-700 hover:bg-slate-700/40 transition">
+
+                    <td class="py-3 font-semibold">
+                        {{p.policyName}}
+                    </td>
+
+                    <td class="py-3 text-blue-400 font-bold">
+                        ₹{{p.coverageLimit | number}}
+                    </td>
+
+                    <td class="py-3">
+                        ₹{{p.basePremium | number}}
+                    </td>
+
+                    <td class="py-3">
+                        {{p.durationMonths}} months
+                    </td>
+
+                    <td class="py-3">
+
+                        <span *ngIf="p.isActive" class="px-3 py-1 rounded-full text-xs bg-green-700">
+                            Active
+                        </span>
+
+                        <span *ngIf="!p.isActive" class="px-3 py-1 rounded-full text-xs bg-red-700">
+                            Inactive
+                        </span>
+
+                    </td>
+
+                    <td class="flex gap-2 py-3">
+
+                        <button class="px-3 py-1 bg-blue-600 rounded text-xs hover:bg-blue-500">
+                            View
+                        </button>
+
+                        <button class="px-3 py-1 border border-slate-500 rounded text-xs">
+                            Edit
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+        ```
+
+    </div>
+
+</div>

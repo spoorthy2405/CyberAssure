@@ -1,0 +1,524 @@
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <a class="nav-logo" routerLink="/">
+            <span class="logo-shield">⬡</span>
+            CyberAssure
+        </a>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#industries">Industries</a>
+            <a href="#plans">Plans</a>
+            <a href="#faq">FAQ</a>
+        </div>
+        <div class="nav-actions">
+            <a routerLink="/login" class="btn-outline-sm">Login</a>
+            <a routerLink="/register" class="btn-primary-sm">Get Started</a>
+        </div>
+        <input type="checkbox" id="mob-toggle" class="mob-input" />
+        <label for="mob-toggle" class="mob-btn">
+            <span></span><span></span><span></span>
+        </label>
+        <div class="mob-menu">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#industries">Industries</a>
+            <a href="#plans">Plans</a>
+            <a href="#faq">FAQ</a>
+            <div class="mob-actions">
+                <a routerLink="/login" class="btn-outline-sm">Login</a>
+                <a routerLink="/register" class="btn-primary-sm">Get Started</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-section">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Trusted Cyber Insurance Platform for Indian Businesses
+        </div>
+        <h1 class="hero-headline">
+            Your Business <em>Will</em> Face<br />
+            <span class="headline-red">a Cyberattack.</span>
+        </h1>
+        <p class="hero-sub">Be Ready When It Happens.</p>
+        <p class="hero-desc">
+            CyberAssure helps Indian companies assess cyber risk,
+            get insured, and recover fast when incidents strike.
+        </p>
+        <div class="hero-ctas">
+            <a routerLink="/register" class="btn-hero-primary">
+                Assess My Risk — It's Free <span class="arrow">→</span>
+            </a>
+            <a href="#how-it-works" class="btn-hero-secondary">
+                See How It Works
+            </a>
+        </div>
+        <div class="hero-trust">
+            <span><span class="check">✓</span> No credit card required</span>
+            <span><span class="check">✓</span> 10-minute assessment</span>
+            <span><span class="check">✓</span> Trusted by 500+ companies</span>
+        </div>
+    </div>
+    <div class="cyber-nodes">
+        <div class="node n1"></div>
+        <div class="node n2"></div>
+        <div class="node n3"></div>
+        <div class="node n4"></div>
+        <div class="node n5"></div>
+    </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section-dark" id="problem">
+    <div class="container">
+        <div class="section-header reveal">
+            <p class="eyebrow">The Threat Landscape</p>
+            <h2>The Threat is Real.
+                <span class="text-red">And It's Growing.</span>
+            </h2>
+            <p class="subtitle">
+                Most companies think cyberattacks only happen to large
+                enterprises. The data tells a very different story.
+            </p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card reveal">
+                <div class="stat-num text-blue">43%</div>
+                <p>of cyberattacks target small and medium businesses</p>
+                <div class="stat-bar">
+                    <div class="bar-fill" style="width:43%;background:var(--blue)"></div>
+                </div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-num text-orange">₹17.9 Cr</div>
+                <p>average cost of a data breach in India in 2024</p>
+                <div class="stat-bar">
+                    <div class="bar-fill" style="width:72%;background:var(--orange)"></div>
+                </div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-num text-red">60%</div>
+                <p>of small companies shut down within 6 months of a breach</p>
+                <div class="stat-bar">
+                    <div class="bar-fill" style="width:60%;background:var(--red)"></div>
+                </div>
+            </div>
+        </div>
+        <div class="threat-grid">
+            <div class="threat-card reveal">
+                <div class="threat-icon">🔒</div>
+                <h3>Ransomware</h3>
+                <p>Attackers encrypt your entire system and demand
+                    cryptocurrency payment to restore access.</p>
+                <span class="threat-tag">₹2.1 Cr avg demand</span>
+            </div>
+            <div class="threat-card reveal">
+                <div class="threat-icon">📂</div>
+                <h3>Data Breach</h3>
+                <p>Sensitive customer and business data stolen and
+                    sold on dark web marketplaces.</p>
+                <span class="threat-tag">72hr CERT-In deadline</span>
+            </div>
+            <div class="threat-card reveal">
+                <div class="threat-icon">🌐</div>
+                <h3>DDoS Attack</h3>
+                <p>Your website and services taken completely offline.
+                    Business operations halt immediately.</p>
+                <span class="threat-tag">₹80L avg hourly loss</span>
+            </div>
+        </div>
+        <div class="closer reveal">
+            <div class="closer-line"></div>
+            <p>"It's not <em>if</em> it happens. It's <em>when.</em>"</p>
+            <div class="closer-line"></div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section-deep" id="how-it-works">
+    <div class="container">
+        <div class="section-header reveal">
+            <p class="eyebrow">The Process</p>
+            <h2>How CyberAssure Works</h2>
+            <p class="subtitle">Get protected in 4 simple steps.
+                No jargon. No friction.</p>
+        </div>
+        <div class="steps-flow">
+            <div class="steps-line"></div>
+            <div class="step-card reveal" *ngFor="let s of steps">
+                <div class="step-num">{{ s.num }}</div>
+                <div class="step-icon">{{ s.icon }}</div>
+                <span class="step-tag">{{ s.tag }}</span>
+                <h3>{{ s.title }}</h3>
+                <p>{{ s.desc }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section-dark" id="features">
+    <div class="container">
+        <div class="section-header reveal">
+            <p class="eyebrow">Why CyberAssure</p>
+            <h2>Built Different.
+                <span class="text-blue">For India.</span>
+            </h2>
+            <p class="subtitle">Purpose-built for Indian businesses,
+                regulations, and threat landscape.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal" *ngFor="let f of features">
+                <div class="feat-icon">{{ f.icon }}</div>
+                <h3>{{ f.title }}</h3>
+                <p>{{ f.desc }}</p>
+                <div class="feat-glow"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="section-deep" id="industries">
+    <div class="container">
+        <div class="section-header reveal">
+            <p class="eyebrow">Industry Coverage</p>
+            <h2>Built for
+                <span class="text-blue">Your Industry</span>
+            </h2>
+            <p class="subtitle">Every sector faces unique cyber threats.
+                See exactly what your business faces.</p>
+        </div>
+        <div class="ind-tabs reveal">
+            <button *ngFor="let ind of industries" class="ind-tab" [class.active]="activeIndustry === ind.id"
+                (click)="setIndustry(ind.id)">
+                {{ ind.label }}
+            </button>
+        </div>
+        <div class="ind-card reveal">
+            <div class="ind-left">
+                <div class="ind-big-emoji">{{ currentIndustry.icon }}</div>
+                <h3>{{ currentIndustry.title }}</h3>
+                <div class="ind-block">
+                    <p class="ind-label">⚠️ Top Cyber Risks</p>
+                    <ul class="ind-list">
+                        <li *ngFor="let r of currentIndustry.risks">{{ r }}</li>
+                    </ul>
+                </div>
+                <div class="ind-block">
+                    <p class="ind-label">📋 Compliance Covered</p>
+                    <div class="comp-tags">
+                        <span class="comp-tag" *ngFor="let c of currentIndustry.compliance">
+                            {{ c }}
+                        </span>
+                    </div>
+                </div>
+                <div class="ind-block">
+                    <p class="ind-label">✅ Recommended Plan</p>
+                    <span class="rec-plan" [ngClass]="'plan-' + currentIndustry.planColor">
+                        {{ currentIndustry.plan }}
+                    </span>
+                </div>
+            </div>
+            <div class="ind-right">
+                <div class="ind-visual">
+                    <div class="ind-icon-big">{{ currentIndustry.icon }}</div>
+                    <div class="ring r1"></div>
+                    <div class="ring r2"></div>
+                    <div class="ring r3"></div>
+                </div>
+                <a routerLink="/register" class="btn-primary-md">
+                    Assess {{ currentIndustry.title }} Risk →
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- THREAT PULSE -->
+<section class="pulse-section">
+    <div class="pulse-glow"></div>
+    <div class="container">
+        <div class="pulse-header reveal">
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                LIVE THREAT INTELLIGENCE
+            </div>
+            <div class="counter-wrap">
+                <span class="counter-num">{{ attackCount | number }}</span>
+            </div>
+            <p class="pulse-sub">Cyberattacks detected across
+                India in the last 24 hours</p>
+        </div>
+        <div class="threat-feed reveal">
+            <div class="threat-row" *ngFor="let t of threats">
+                <span class="t-dot"></span>
+                <div class="t-text">
+                    <span class="t-desc">{{ t.text }}</span>
+                    <span class="t-meta">{{ t.city }} · {{ t.time }}</span>
+                </div>
+                <span class="t-badge">HIGH</span>
+            </div>
+        </div>
+        <div class="pulse-cta reveal">
+            <p class="pulse-q">Is your business next?</p>
+            <a routerLink="/register" class="btn-danger">
+                Start Free Risk Assessment →
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- PLANS -->
+<section class="section-dark" id="plans">
+    <div class="container">
+        <div class="section-header reveal">
+            <p class="eyebrow">Coverage Options</p>
+            <h2>Protection Plans</h2>
+            <p class="subtitle">
+                Choose the right coverage for your business size and
+                risk profile.<br />Exact premium determined after your
+                risk assessment.
+            </p>
+        </div>
+        <div class="plans-grid">
+            <div class="plan-card reveal" *ngFor="let plan of plans" [class.plan-featured]="plan.highlight">
+                <div class="plan-pop-badge" *ngIf="plan.highlight">Most Popular</div>
+                <div class="plan-head">
+                    <p class="plan-tag">{{ plan.tag }}</p>
+                    <h3>{{ plan.name }}</h3>
+                    <div class="plan-amount">{{ plan.coverage }}</div>
+                    <p class="plan-amount-label">Maximum Coverage</p>
+                </div>
+                <div class="plan-divider"></div>
+                <ul class="plan-feats">
+                    <li class="inc" *ngFor="let i of plan.included">
+                        <span class="feat-check">✓</span>{{ i }}
+                    </li>
+                    <li class="exc" *ngFor="let e of plan.excluded">
+                        <span class="feat-cross">✗</span>{{ e }}
+                    </li>
+                </ul>
+                <a [routerLink]="plan.ctaRoute" class="plan-btn" [class.plan-btn-primary]="plan.highlight">
+                    {{ plan.cta }} →
+                </a>
+            </div>
+        </div>
+        <p class="plans-note reveal">
+            🔒 All plans subject to risk assessment approval by our
+            certified underwriting team · IRDAI Guidelines Apply
+        </p>
+    </div>
+</section>
+
+<!-- TRUST -->
+<section class="section-deep">
+    <div class="container">
+        <div class="section-header reveal">
+            <p class="eyebrow">Compliance & Security</p>
+            <h2>Trusted, Compliant
+                <span class="text-blue">& Secure</span>
+            </h2>
+            <p class="subtitle">Operating under India's leading
+                regulatory and cybersecurity frameworks.</p>
+        </div>
+        <div class="trust-grid reveal">
+            <div class="trust-left">
+                <h3>Regulatory Compliance</h3>
+                <div class="comp-badges">
+                    <div class="comp-badge">🏛️ IRDAI Guidelines Compliant</div>
+                    <div class="comp-badge">🔐 CERT-In Framework Aligned</div>
+                    <div class="comp-badge">📋 DPDP Act 2023 Ready</div>
+                    <div class="comp-badge">🏦 RBI Cyber Security Framework</div>
+                    <div class="comp-badge">🌐 ISO 27001 Aligned</div>
+                    <div class="comp-badge">⚖️ SEBI Cybersecurity Guidelines</div>
+                </div>
+            </div>
+            <div class="trust-right">
+                <h3>Security Guarantees</h3>
+                <ul class="trust-pts">
+                    <li>
+                        <span>🔒</span>
+                        <div>
+                            <strong>AES-256 Encrypted Storage</strong>
+                            <p>All data encrypted at rest and in transit.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span>👁️</span>
+                        <div>
+                            <strong>Zero Data Sharing</strong>
+                            <p>Your data is never sold or shared. Ever.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span>📜</span>
+                        <div>
+                            <strong>IRDAI-Governed Claims</strong>
+                            <p>All decisions under IRDAI regulations.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span>✅</span>
+                        <div>
+                            <strong>Annual Security Audits</strong>
+                            <p>Third-party audits conducted annually.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section-dark">
+    <div class="container">
+        <div class="section-header reveal">
+            <p class="eyebrow">Social Proof</p>
+            <h2>Trusted Across India</h2>
+        </div>
+        <div class="testi-grid">
+            <div class="testi-card reveal" *ngFor="let t of testimonials">
+                <div class="quote-mark">"</div>
+                <p class="testi-quote">{{ t.quote }}</p>
+                <div class="testi-stars">
+                    <span *ngFor="let s of getStars(t.stars)">⭐</span>
+                </div>
+                <div class="testi-author">
+                    <div class="author-av">{{ t.name[0] }}</div>
+                    <div>
+                        <strong>{{ t.name }}</strong>
+                        <p>{{ t.title }} · {{ t.city }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stats-bar reveal">
+            <div class="sb-item">
+                <span class="sb-num">500+</span>
+                <span class="sb-label">Companies Protected</span>
+            </div>
+            <div class="sb-div"></div>
+            <div class="sb-item">
+                <span class="sb-num">₹50 Cr+</span>
+                <span class="sb-label">Coverage Issued</span>
+            </div>
+            <div class="sb-div"></div>
+            <div class="sb-item">
+                <span class="sb-num">98%</span>
+                <span class="sb-label">Claim Satisfaction</span>
+            </div>
+            <div class="sb-div"></div>
+            <div class="sb-item">
+                <span class="sb-num">48hr</span>
+                <span class="sb-label">Avg Policy Approval</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-deep" id="faq">
+    <div class="container">
+        <div class="section-header reveal">
+            <p class="eyebrow">FAQ</p>
+            <h2>Frequently Asked Questions</h2>
+            <p class="subtitle">Everything you need to know
+                before getting started.</p>
+        </div>
+        <div class="faq-list reveal">
+            <div class="faq-item" *ngFor="let faq of faqs; let i = index" [class.open]="faq.open"
+                (click)="toggleFaq(i)">
+                <div class="faq-q">
+                    <span>{{ faq.q }}</span>
+                    <span class="faq-arrow">{{ faq.open ? '−' : '+' }}</span>
+                </div>
+                <div class="faq-a" [style.maxHeight]="faq.open ? '300px' : '0'">
+                    <p>{{ faq.a }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section">
+    <div class="cta-glow"></div>
+    <div class="container">
+        <div class="cta-content reveal">
+            <div class="cta-shield">🛡️</div>
+            <h2>Don't Wait for a Breach<br />to Get Protected</h2>
+            <p>Start your free risk assessment today.
+                No commitment. No payment required.</p>
+            <a routerLink="/register" class="btn-cta">
+                Assess My Risk — It's Free →
+            </a>
+            <p class="cta-note">
+                Takes 10 minutes · Instant risk score · No credit card
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <span class="logo-shield">⬡</span>CyberAssure
+                </div>
+                <p>Cyber Risk Intelligence for Modern Indian Businesses</p>
+                <div class="socials">
+                    <a href="#" class="social">in</a>
+                    <a href="#" class="social">𝕏</a>
+                    <a href="#" class="social">f</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <a href="#">Risk Assessment</a>
+                <a href="#">Policy Plans</a>
+                <a href="#">Claims Portal</a>
+                <a routerLink="/login">Login</a>
+                <a routerLink="/register">Register</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Blog</a>
+                <a href="#">Press</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal & Support</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+                <a href="mailto:support@cyberassure.in">
+                    support&#64;cyberassure.in
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 CyberAssure Insurance Technologies Pvt. Ltd.
+                All rights reserved.</p>
+            <div class="footer-badges">
+                <span>IRDAI Registered</span>
+                <span>CERT-In Aligned</span>
+                <span>DPDP Compliant</span>
+            </div>
+        </div>
+    </div>
+</footer>

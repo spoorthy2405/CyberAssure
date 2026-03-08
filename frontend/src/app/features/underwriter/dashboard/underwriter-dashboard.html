@@ -1,0 +1,63 @@
+<div class="p-10 bg-slate-950 min-h-screen text-white">
+
+    <h1 class="text-3xl font-bold text-blue-400 mb-6">
+        Underwriter Dashboard
+    </h1>
+
+    <div class="flex gap-6 mb-8">
+
+        <a routerLink="/underwriter/queue">Review Queue</a>
+        <a routerLink="/underwriter/decisions">Decisions</a>
+
+    </div>
+
+    <!-- ANALYTICS CARDS -->
+
+    <div class="grid grid-cols-5 gap-6 mb-10">
+
+        <div class="bg-slate-800 p-5 rounded">
+            <p>Total Applications</p>
+            <h2 class="text-2xl">{{total}}</h2>
+        </div>
+
+        <div class="bg-yellow-800 p-5 rounded">
+            <p>Pending</p>
+            <h2 class="text-2xl">{{pending}}</h2>
+        </div>
+
+        <div class="bg-green-800 p-5 rounded">
+            <p>Approved</p>
+            <h2 class="text-2xl">{{approved}}</h2>
+        </div>
+
+        <div class="bg-red-800 p-5 rounded">
+            <p>Rejected</p>
+            <h2 class="text-2xl">{{rejected}}</h2>
+        </div>
+
+        <div class="bg-blue-800 p-5 rounded">
+            <p>Premium Approved</p>
+            <h2 class="text-2xl">₹ {{premiumTotal}}</h2>
+        </div>
+
+    </div>
+
+    <!-- CHARTS -->
+
+    <div class="grid grid-cols-2 gap-10 mb-10">
+
+        <div class="bg-slate-800 p-6 rounded">
+            <h3 class="mb-4">Decisions Distribution</h3>
+            <canvas id="decisionChart"></canvas>
+        </div>
+
+        <div class="bg-slate-800 p-6 rounded">
+            <h3 class="mb-4">Risk Level Distribution</h3>
+            <canvas id="riskChart"></canvas>
+        </div>
+
+    </div>
+
+    <router-outlet></router-outlet>
+
+</div>

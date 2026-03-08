@@ -1,0 +1,53 @@
+<h2 class="text-2xl font-bold mb-6 text-white">
+    Available Policies
+</h2>
+
+<table class="w-full bg-slate-800 text-white rounded">
+
+    <thead class="bg-slate-700">
+
+        <tr>
+
+            <th class="p-3">Policy</th>
+            <th class="p-3">Coverage</th>
+            <th class="p-3">Premium</th>
+            <th class="p-3">Duration</th>
+            <th class="p-3">Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        <tr *ngFor="let p of policies">
+
+            <td class="p-3">{{p.policyName}}</td>
+
+            <td class="p-3">
+                ₹ {{p.coverageLimit}}
+            </td>
+
+            <td class="p-3">
+                ₹ {{p.basePremium}}
+            </td>
+
+            <td class="p-3">
+                {{p.durationMonths}} months
+            </td>
+
+            <td class="p-3">
+
+                <button (click)="subscribe(p)" class="bg-blue-600 px-4 py-1 rounded">
+
+                    Subscribe
+
+                </button>
+
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>
