@@ -2,6 +2,7 @@ package com.cyberassure.cyberassureproject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,8 +31,15 @@ public class IncidentReport {
     private LocalDateTime reportedAt;
 
     @ManyToOne
+    @JsonIgnoreProperties({ "passwordHash", "role", "createdAt", "updatedAt", "accountStatus" })
     private User customer;
 
     @ManyToOne
+    @JsonIgnoreProperties({ "customer", "riskAssessment", "policy", "approvedBy" })
     private PolicySubscription subscription;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "incident_documents", joinColumns = @JoinColumn(name = "incident_id"))
+    @Column(name = "document_path")
+    private java.util.List<String> documentPaths;
 }

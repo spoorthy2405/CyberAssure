@@ -1,56 +1,113 @@
-<h2 class="text-2xl font-bold mb-6 text-white">
-    Your Claims
-</h2>
+<div class="p-6 min-h-screen bg-slate-900 text-white">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-white">My Claims</h1>
+            <p class="text-sm text-slate-400">Track all claims under your policies</p>
+        </div>
+        <button (click)="openModal()"
+            class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition">+
+            File a Claim</button>
+    </div>
 
-<table class="w-full bg-slate-800 text-white rounded">
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex justify-center py-16">
+        <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
 
-    <thead class="bg-slate-700">
+    <!-- Empty -->
+    <div *ngIf="!loading && claims.length === 0"
+        class="text-center py-16 bg-slate-800/50 rounded-2xl border border-slate-700">
+        <p class="text-4xl mb-3">📄</p>
+        <h3 class="text-lg font-semibold text-white mb-2">No claims yet</h3>
+        <p class="text-slate-400 mb-5">Report an incident first, then file a claim here.</p>
+        <button (click)="openModal()"
+            class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-lg transition">+ File a
+            Claim</button>
+    </div>
 
-        <tr>
+    <!-- Table -->
+    <div *ngIf="!loading && claims.length > 0"
+        class="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-5 overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="text-xs text-slate-500 uppercase border-b border-slate-700">
+                    <th class="text-left pb-3 pr-4">Claim #</th>
+                    <th class="text-left pb-3 pr-4">Incident Type</th>
+                    <th class="text-left pb-3 pr-4">Amount</th>
+                    <th class="text-left pb-3 pr-4">Status</th>
+                    <th class="text-left pb-3 pr-4">Filed</th>
+                    <th class="text-left pb-3 pr-4">Reviewed By</th>
+                    <th class="text-left pb-3">Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of claims" class="border-b border-slate-700/50 hover:bg-slate-700/20">
+                    <td class="py-3 pr-4 font-mono text-blue-400">#{{ c.id }}</td>
+                    <td class="py-3 pr-4 text-white">{{ c.incident?.incidentType || '—' }}</td>
+                    <td class="py-3 pr-4 text-emerald-400 font-semibold">₹{{ c.claimAmount | number }}</td>
+                    <td class="py-3 pr-4">
+                        <span [ngClass]="getStatusClass(c.status)"
+                            class="border text-xs font-semibold px-2 py-1 rounded-full">{{ c.status }}</span>
+                    </td>
+                    <td class="py-3 pr-4 text-slate-400">{{ c.filedAt | date:'mediumDate' }}</td>
+                    <td class="py-3 pr-4 text-slate-400">{{ c.reviewedBy?.fullName || '—' }}</td>
+                    <td class="py-3">
+                        <span *ngIf="c.status === 'APPROVED'" class="text-emerald-400">✅ ₹{{ c.claimAmount | number
+                            }}</span>
+                        <span *ngIf="c.status === 'REJECTED'" class="text-red-400 text-xs">❌ {{ c.rejectionReason ||
+                            'Rejected' }}</span>
+                        <span *ngIf="c.status === 'PENDING'" class="text-amber-400">Under Review</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-            <th class="p-3">Amount</th>
-            <th class="p-3">Status</th>
-            <th class="p-3">Filed At</th>
-            <th class="p-3">Reason</th>
+    <!-- File a Claim Modal -->
+    <div *ngIf="showModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md">
+            <div class="flex items-center justify-between p-5 border-b border-slate-700">
+                <h3 class="font-bold text-lg text-white">File a New Claim</h3>
+                <button (click)="closeModal()" class="text-slate-400 hover:text-white text-xl">✕</button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div *ngIf="errorMsg"
+                    class="bg-red-900/30 border border-red-500/30 text-red-400 text-sm p-3 rounded-lg">⚠️ {{ errorMsg }}
+                </div>
 
-        </tr>
+                <div>
+                    <label class="block text-sm text-slate-300 mb-1.5">Linked Incident <span
+                            class="text-red-400">*</span></label>
+                    <div *ngIf="incidentsLoading" class="text-slate-400 text-sm">Loading incidents…</div>
+                    <select *ngIf="!incidentsLoading" [(ngModel)]="claimData.incidentId"
+                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                        <option [ngValue]="null" disabled>Select a reported incident…</option>
+                        <option *ngFor="let inc of myIncidents" [value]="inc.id">
+                            {{ inc.incidentType }} — ₹{{ inc.estimatedLossAmount | number }} ({{ inc.reportedAt |
+                            date:'shortDate' }})
+                        </option>
+                    </select>
+                    <p *ngIf="!incidentsLoading && myIncidents.length === 0" class="text-amber-400 text-xs mt-1">
+                        ⚠️ No incidents. <a routerLink="/customer/incidents" class="underline">Report one first</a>.
+                    </p>
+                </div>
 
-    </thead>
-
-    <tbody>
-
-        <tr *ngFor="let c of claims">
-
-            <td class="p-3">
-                ₹ {{c.claimAmount}}
-            </td>
-
-            <td class="p-3">
-
-                <span [ngClass]="{
-
-'bg-yellow-600':c.status==='PENDING',
-'bg-green-600':c.status==='APPROVED',
-'bg-red-600':c.status==='REJECTED'
-
-}" class="px-3 py-1 rounded">
-
-                    {{c.status}}
-
-                </span>
-
-            </td>
-
-            <td class="p-3">
-                {{c.filedAt}}
-            </td>
-
-            <td class="p-3">
-                {{c.rejectionReason || "—"}}
-            </td>
-
-        </tr>
-
-    </tbody>
-
-</table>
+                <div>
+                    <label class="block text-sm text-slate-300 mb-1.5">Claim Amount (₹) <span
+                            class="text-red-400">*</span></label>
+                    <input type="number" [(ngModel)]="claimData.claimAmount" placeholder="e.g. 500000" min="1"
+                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                    <p class="text-xs text-slate-500 mt-1">Cannot exceed your policy's coverage limit.</p>
+                </div>
+            </div>
+            <div class="flex gap-3 p-5 border-t border-slate-700">
+                <button (click)="closeModal()"
+                    class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 rounded-lg transition text-sm">Cancel</button>
+                <button (click)="submitClaim()" [disabled]="submitting || myIncidents.length === 0"
+                    class="flex-1 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-2.5 rounded-lg transition text-sm">
+                    {{ submitting ? 'Submitting…' : 'Submit Claim' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -27,6 +27,12 @@ public class ClaimController {
                 claimService.fileClaim(request));
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping("/my")
+    public ResponseEntity<List<Claim>> getMyClaims(java.security.Principal principal) {
+        return ResponseEntity.ok(claimService.getClaimsByCustomer(principal.getName()));
+    }
+
     // CLAIMS OFFICER REVIEW
     @PreAuthorize("hasRole('CLAIMS_OFFICER')")
     @PutMapping("/{id}/review")

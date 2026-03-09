@@ -27,6 +27,8 @@ public class RiskAssessment {
     private Boolean encryptionEnabled;
     private Boolean backupAvailable;
     private Boolean mfaEnabled;
+    private Boolean iso27001Certified;
+    private Boolean hasDataPrivacyOfficer;
 
     private Integer previousIncidentCount;
     private Integer employeeCount;
@@ -34,6 +36,9 @@ public class RiskAssessment {
 
     private Integer riskScore;
     private String riskLevel;
+
+    @Column(length = 2000)
+    private String proofDocumentPaths;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 }

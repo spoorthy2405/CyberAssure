@@ -14,5 +14,9 @@ public class PolicyResponse {
     private BigDecimal coverageLimit;
     private BigDecimal basePremium;
     private Integer durationMonths;
+    private String sector;
+    private String description;
+    private java.util.List<String> benefits;
+    private java.util.List<String> applicableTo;
     private Boolean isActive;
 }

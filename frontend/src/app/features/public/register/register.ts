@@ -19,6 +19,13 @@ export class Register {
     companyName = '';
     industry = '';
     companySize = '';
+
+    // New Corporate Identity Fields
+    companyAddress = '';
+    companyWebsite = '';
+    registrationNumber = '';
+    annualRevenue = '';
+
     password = '';
     confirmPassword = '';
     agreeTerms = false;
@@ -31,12 +38,14 @@ export class Register {
     showConfirm = false;
 
     industries = [
-        'IT & SaaS',
-        'Finance & BFSI',
+        'Banking',
         'Healthcare',
         'E-commerce',
+        'IT / SaaS',
         'Manufacturing',
         'Education',
+        'Government',
+        'Media',
         'Other'
     ];
 
@@ -46,6 +55,15 @@ export class Register {
         '51–200 employees',
         '201–1000 employees',
         '1000+ employees'
+    ];
+
+    annualRevenues = [
+        'Pre-revenue',
+        'Under ₹1 Crore',
+        '₹1 Crore - ₹10 Crore',
+        '₹10 Crore - ₹50 Crore',
+        '₹50 Crore - ₹250 Crore',
+        'Over ₹250 Crore'
     ];
 
     constructor(private http: HttpClient, private router: Router) { }
@@ -108,7 +126,13 @@ export class Register {
             email: this.email,
             password: this.password,
             companyName: this.companyName,
-            phoneNumber: this.phoneNumber
+            phoneNumber: this.phoneNumber,
+            industry: this.industry,
+            companySize: this.companySize,
+            companyAddress: this.companyAddress,
+            companyWebsite: this.companyWebsite,
+            registrationNumber: this.registrationNumber,
+            annualRevenue: this.annualRevenue
         };
 
         this.http.post<any>(

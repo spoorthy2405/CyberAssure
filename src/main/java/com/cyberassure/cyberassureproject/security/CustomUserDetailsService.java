@@ -14,22 +14,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+        private final UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
+        @Override
+        public UserDetails loadUserByUsername(String email)
+                        throws UsernameNotFoundException {
 
-        // Step 1: Fetch user from DB
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
+                // Step 1: Fetch user from DB
+                User user = userRepository.findByEmail(email)
+                                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Step 2: Convert DB User into Spring Security User
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPasswordHash(),
-                List.of(new SimpleGrantedAuthority(user.getRole().getRoleName()))
-        );
-    }
+                // Step 2: Convert DB User into Spring Security User
+                return new org.springframework.security.core.userdetails.User(
+                                user.getEmail(),
+                                user.getPasswordHash(),
+                                List.of(new SimpleGrantedAuthority(user.getRole().getRoleName())));
+        }
 }

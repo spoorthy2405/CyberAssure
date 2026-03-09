@@ -44,7 +44,8 @@ public class PolicySubscriptionService {
 
         BigDecimal finalPremium = calculatePremium(
                 policy.getBasePremium(),
-                latestRisk.getRiskLevel());
+                latestRisk.getRiskLevel(),
+                policy.getDurationMonths());
 
         PolicySubscription subscription = PolicySubscription.builder()
                 .policy(policy)
@@ -54,25 +55,49 @@ public class PolicySubscriptionService {
                 .status(SubscriptionStatus.PENDING)
                 .startDate(LocalDate.now())
                 .endDate(LocalDate.now().plusMonths(policy.getDurationMonths()))
+                .tenureMonths(policy.getDurationMonths())
                 .build();
 
         return subscriptionRepository.save(subscription);
     }
 
     // ==============================
-    // PREMIUM CALCULATION
+    // PREMIUM FORMULA
+    //
+    // Premium = basePremium × riskMultiplier × (tenure / 12)
+    // LOW → multiplier = 1.0
+    // MEDIUM → multiplier = 1.3
+    // HIGH → multiplier = 1.7
     // ==============================
 
-    private BigDecimal calculatePremium(BigDecimal base, String riskLevel) {
-
-        double multiplier = switch (riskLevel) {
+    private BigDecimal calculatePremium(BigDecimal base, String riskLevel, int tenureMonths) {
+        double multiplier = switch (riskLevel != null ? riskLevel : "LOW") {
             case "LOW" -> 1.0;
             case "MEDIUM" -> 1.3;
             case "HIGH" -> 1.7;
             default -> 1.0;
         };
+        double tenureFactor = tenureMonths / 12.0;
+        return base.multiply(BigDecimal.valueOf(multiplier)).multiply(BigDecimal.valueOf(tenureFactor));
+    }
 
-        return base.multiply(BigDecimal.valueOf(multiplier));
+    // ==============================
+    // COVERAGE FORMULA
+    //
+    // Coverage = policyMaxCoverage × coverageRatio
+    // LOW → 100% of max coverage
+    // MEDIUM → 80% of max coverage
+    // HIGH → 60% of max coverage
+    // ==============================
+
+    private BigDecimal calculateCoverage(BigDecimal maxCoverage, String riskLevel) {
+        double ratio = switch (riskLevel != null ? riskLevel : "LOW") {
+            case "LOW" -> 1.0;
+            case "MEDIUM" -> 0.80;
+            case "HIGH" -> 0.60;
+            default -> 1.0;
+        };
+        return maxCoverage.multiply(BigDecimal.valueOf(ratio));
     }
 
     // ==============================
@@ -80,9 +105,13 @@ public class PolicySubscriptionService {
     // ==============================
 
     public List<PolicySubscription> getAllSubscriptions() {
-
         return subscriptionRepository.findAll();
+    }
 
+    public List<PolicySubscription> getAssignedToMe(String email) {
+        User underwriter = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return subscriptionRepository.findByAssignedUnderwriter(underwriter);
     }
 
     // ==============================
@@ -111,58 +140,54 @@ public class PolicySubscriptionService {
         RiskAssessment risk = subscription.getRiskAssessment();
         CyberPolicy policy = subscription.getPolicy();
 
-        // ===============================
-        // RULE ENGINE
-        // ===============================
+        // Step 1: Set Risk Score and derive Risk Level
+        if (request.getRiskScore() != null) {
+            risk.setRiskScore(request.getRiskScore());
+            String riskLevel = request.getRiskScore() <= 40 ? "LOW"
+                    : (request.getRiskScore() <= 70 ? "MEDIUM" : "HIGH");
+            risk.setRiskLevel(riskLevel);
+            riskRepository.save(risk);
+        }
 
-        // Rule 1: High risk + high coverage → auto reject
-        if (risk.getRiskLevel().equals("HIGH") &&
-                policy.getCoverageLimit().compareTo(new BigDecimal("5000000")) > 0) {
+        // Step 2: Set Tenure
+        int tenure = request.getTenureMonths() != null ? request.getTenureMonths() : policy.getDurationMonths();
+        subscription.setTenureMonths(tenure);
 
+        // Step 3: Calculate / accept Coverage Amount
+        BigDecimal coverage = request.getCoverageAmount() != null
+                ? request.getCoverageAmount()
+                : calculateCoverage(policy.getCoverageLimit(), risk.getRiskLevel());
+        subscription.setCoverageAmount(coverage);
+
+        // Step 4: Calculate Premium
+        BigDecimal premium = calculatePremium(policy.getBasePremium(), risk.getRiskLevel(), tenure);
+        subscription.setCalculatedPremium(premium);
+
+        // Step 5: Notes
+        subscription.setUnderwriterNotes(request.getUnderwriterNotes());
+
+        // Step 6: Apply decision
+        if (request.getDecision().equalsIgnoreCase("APPROVED")) {
+            subscription.setStatus(SubscriptionStatus.APPROVED);
+            subscription.setStartDate(LocalDate.now());
+            subscription.setEndDate(LocalDate.now().plusMonths(tenure));
+        } else if (request.getDecision().equalsIgnoreCase("REJECTED")) {
             subscription.setStatus(SubscriptionStatus.REJECTED);
-            subscription.setRejectionReason("High risk with excessive coverage");
-
+            subscription.setRejectionReason(request.getRejectionReason());
+        } else {
+            throw new RuntimeException("Invalid decision");
         }
 
-        // Rule 2: Premium too high → reject
-        else if (subscription.getCalculatedPremium()
-                .compareTo(new BigDecimal("200000")) > 0) {
-
-            subscription.setStatus(SubscriptionStatus.REJECTED);
-            subscription.setRejectionReason("Premium exceeds underwriting threshold");
-
-        }
-
-        // If no rule triggered → allow manual decision
-        else {
-
-            if (request.getDecision().equalsIgnoreCase("APPROVED")) {
-
-                subscription.setStatus(SubscriptionStatus.APPROVED);
-
-            }
-
-            else if (request.getDecision().equalsIgnoreCase("REJECTED")) {
-
-                subscription.setStatus(SubscriptionStatus.REJECTED);
-                subscription.setRejectionReason(request.getRejectionReason());
-
-            }
-
-            else {
-
-                throw new RuntimeException("Invalid decision");
-
-            }
-
-        }
-
-        // Audit info
+        // Audit
         subscription.setApprovedBy(underwriter);
         subscription.setApprovedAt(LocalDateTime.now());
 
         return subscriptionRepository.save(subscription);
-
     }
 
+    public List<PolicySubscription> getSubscriptionsByCustomer(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return subscriptionRepository.findByCustomer(user);
+    }
 }

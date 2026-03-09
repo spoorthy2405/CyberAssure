@@ -31,6 +31,26 @@ public class CyberPolicy {
     @Column(nullable = false)
     private Integer durationMonths;
 
+    @Column(nullable = false)
+    private String sector;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "policy_benefits", joinColumns = @JoinColumn(name = "policy_id"))
+    @Column(name = "benefit")
+    private java.util.List<String> benefits;
+
+    /**
+     * Which company industry types this policy applies to.
+     * Use "All" to make it visible to every customer regardless of sector.
+     */
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "policy_applicable_to", joinColumns = @JoinColumn(name = "policy_id"))
+    @Column(name = "industry_type")
+    private java.util.List<String> applicableTo;
+
     private Boolean isActive = true;
 
     private LocalDateTime createdAt = LocalDateTime.now();

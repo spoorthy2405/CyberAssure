@@ -28,7 +28,6 @@ public class PolicySubscription {
     @JoinColumn(name = "customer_id", nullable = false)
     private User customer;
 
-
     @ManyToOne
     @JoinColumn(name = "risk_assessment_id", nullable = false)
     private RiskAssessment riskAssessment;
@@ -41,6 +40,17 @@ public class PolicySubscription {
     @ManyToOne
     @JoinColumn(name = "approved_by")
     private User approvedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_underwriter_id")
+    private User assignedUnderwriter;
+
     private LocalDateTime approvedAt;
     private String rejectionReason;
+
+    // Underwriter calculated fields
+    private Integer riskScore;
+    private BigDecimal coverageAmount;
+    private Integer tenureMonths;
+    private String underwriterNotes;
 }

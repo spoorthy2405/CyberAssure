@@ -25,6 +25,12 @@ public class PolicySubscriptionController {
         return ResponseEntity.ok(service.subscribe(request));
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping("/my")
+    public ResponseEntity<List<PolicySubscription>> getMySubscriptions(java.security.Principal principal) {
+        return ResponseEntity.ok(service.getSubscriptionsByCustomer(principal.getName()));
+    }
+
     @PreAuthorize("hasRole('UNDERWRITER')")
     @PutMapping("/{id}/review")
     public ResponseEntity<PolicySubscription> review(
@@ -39,5 +45,11 @@ public class PolicySubscriptionController {
     @GetMapping
     public ResponseEntity<List<PolicySubscription>> getAllSubscriptions() {
         return ResponseEntity.ok(service.getAllSubscriptions());
+    }
+
+    @PreAuthorize("hasRole('UNDERWRITER')")
+    @GetMapping("/assigned-to-me")
+    public ResponseEntity<List<PolicySubscription>> getMyAssigned(java.security.Principal principal) {
+        return ResponseEntity.ok(service.getAssignedToMe(principal.getName()));
     }
 }

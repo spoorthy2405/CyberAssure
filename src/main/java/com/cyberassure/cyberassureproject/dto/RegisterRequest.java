@@ -1,4 +1,5 @@
 package com.cyberassure.cyberassureproject.dto;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -18,6 +19,16 @@ public class RegisterRequest {
     private String password;
 
     private String companyName;
+
+    private String industry;
+
+    private String companySize;
+
+    // New Corporate Identity Fields
+    private String companyAddress;
+    private String companyWebsite;
+    private String registrationNumber;
+    private String annualRevenue;
 
     private String phoneNumber;
 }

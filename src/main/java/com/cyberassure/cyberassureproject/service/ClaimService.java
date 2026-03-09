@@ -122,4 +122,10 @@ public class ClaimService {
     public List<Claim> getAllClaims() {
         return claimRepository.findAll();
     }
+
+    public List<Claim> getClaimsByCustomer(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return claimRepository.findByCustomerOrderByFiledAtDesc(user);
+    }
 }

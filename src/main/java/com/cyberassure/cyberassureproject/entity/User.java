@@ -1,6 +1,8 @@
 package com.cyberassure.cyberassureproject.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +25,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String passwordHash;
 
@@ -30,8 +33,20 @@ public class User {
 
     private String companyName;
 
+    private String industry;
+
+    private String companySize;
+
+    // New Corporate Identity Fields
+    private String companyAddress;
+    private String companyWebsite;
+    private String registrationNumber;
+    private String annualRevenue;
+
+    @Builder.Default
     private String accountStatus = "ACTIVE";
 
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt;

@@ -23,9 +23,9 @@ export class Decisions implements OnInit {
 
         this.loading = true;
 
-        this.service.getSubscriptions().subscribe({
+        this.service.getMyAssignedSubscriptions().subscribe({
 
-            next: (data) => {
+            next: (data: any[]) => {
 
                 console.log("Decisions:", data);
 
@@ -38,7 +38,7 @@ export class Decisions implements OnInit {
 
             },
 
-            error: (err) => {
+            error: (err: any) => {
 
                 console.error("Error loading decisions", err);
                 this.loading = false;

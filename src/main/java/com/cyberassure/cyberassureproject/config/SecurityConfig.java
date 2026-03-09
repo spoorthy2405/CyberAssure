@@ -36,14 +36,25 @@ public class SecurityConfig {
 
                                 .authorizeHttpRequests(auth -> auth
 
+                                                // Public endpoints — no token required
                                                 .requestMatchers(
                                                                 "/api/v1/auth/**",
+                                                                "/error", // needed so exception handlers work
                                                                 "/swagger-ui/**",
                                                                 "/v3/api-docs/**",
                                                                 "/h2-console/**")
                                                 .permitAll()
 
+                                                .requestMatchers(HttpMethod.GET, "/api/v1/policies/**")
+                                                .permitAll()
+
                                                 .requestMatchers(HttpMethod.POST, "/api/v1/policies/**")
+                                                .hasRole("ADMIN")
+
+                                                .requestMatchers(HttpMethod.PUT, "/api/v1/policies/**")
+                                                .hasRole("ADMIN")
+
+                                                .requestMatchers(HttpMethod.DELETE, "/api/v1/policies/**")
                                                 .hasRole("ADMIN")
 
                                                 .requestMatchers(HttpMethod.POST, "/api/v1/risk-assessments/**")
@@ -52,8 +63,7 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.POST, "/api/v1/subscriptions/**")
                                                 .hasRole("CUSTOMER")
 
-                                                .requestMatchers(HttpMethod.PUT,
-                                                                "/api/v1/subscriptions/*/review")
+                                                .requestMatchers(HttpMethod.PUT, "/api/v1/subscriptions/*/review")
                                                 .hasRole("UNDERWRITER")
 
                                                 .anyRequest().authenticated())
@@ -72,12 +82,11 @@ public class SecurityConfig {
                 CorsConfiguration configuration = new CorsConfiguration();
 
                 configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-                configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                 configuration.setAllowedHeaders(List.of("*"));
                 configuration.setAllowCredentials(true);
 
                 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
                 source.registerCorsConfiguration("/**", configuration);
 
                 return source;

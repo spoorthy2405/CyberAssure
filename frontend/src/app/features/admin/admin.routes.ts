@@ -58,6 +58,13 @@ export const ADMIN_ROUTES: Routes = [
             },
 
             {
+                path: 'subscriptions',
+                loadComponent: () =>
+                    import('./subscriptions/subscriptions')
+                        .then(m => m.AdminSubscriptions)
+            },
+
+            {
                 path: 'risk-monitoring',
                 loadComponent: () =>
                     import('./risk-monitoring/risk-monitoring')
@@ -71,6 +78,12 @@ export const ADMIN_ROUTES: Routes = [
                         .then(m => m.Analytics)
             },
 
+            {
+                path: 'profile',
+                loadComponent: () =>
+                    import('./profile/profile')
+                        .then(m => m.Profile)
+            },
             {
                 path: 'settings',
                 loadComponent: () =>

@@ -4,17 +4,43 @@
         Dashboard Overview
     </h1>
 
-    <div class="flex items-center gap-3">
+    <div class="relative">
+        <button (click)="toggleDropdown()"
+            class="flex items-center gap-3 hover:bg-slate-800/50 p-2 rounded-lg transition-colors border border-transparent hover:border-slate-700">
+            <div
+                class="w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center font-bold shadow-lg shadow-blue-500/20">
+                {{currentUser.initials}}
+            </div>
+            <div class="text-left">
+                <p class="text-sm font-medium">{{currentUser.name}}</p>
+                <p class="text-xs text-slate-400">{{currentUser.role}}</p>
+            </div>
+            <!-- Arrow icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 ml-1 transition-transform"
+                [class.rotate-180]="showDropdown" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd" />
+            </svg>
+        </button>
 
-        <div class="w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center">
-            JD
+        <!-- Dropdown Menu -->
+        <div *ngIf="showDropdown"
+            class="absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-xl border border-slate-700 py-1 z-50 animate-in fade-in slide-in-from-top-2">
+            <button routerLink="/admin/profile" (click)="showDropdown = false"
+                class="w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors flex items-center gap-2">
+                <span>👤</span> Profile
+            </button>
+            <button routerLink="/admin/settings" (click)="showDropdown = false"
+                class="w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors flex items-center gap-2">
+                <span>⚙️</span> Settings
+            </button>
+            <div class="border-t border-slate-700 my-1"></div>
+            <button (click)="logout()"
+                class="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors flex items-center gap-2">
+                <span>🚪</span> Sign Out
+            </button>
         </div>
-
-        <div>
-            <p class="text-sm">John Doe</p>
-            <p class="text-xs text-slate-400">Admin</p>
-        </div>
-
     </div>
 
 </header>

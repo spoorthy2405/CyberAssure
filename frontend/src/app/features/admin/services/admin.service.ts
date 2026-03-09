@@ -4,10 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface User {
-    id: number;
+    userId: number;
     fullName: string;
     email: string;
     phoneNumber: string;
+    companyName?: string;
+    industry?: string;
+    companySize?: string;
     role: {
         id: number;
         roleName: string;
@@ -64,5 +67,30 @@ export class AdminApiService {
         return this.http.post<any>(`${this.apiUrl}/create-staff`, staffData);
     }
 
-}
+    // CYBER POLICY CATALOG
+    getCyberPolicies(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/cyber-policies`);
+    }
 
+    createCyberPolicy(policyData: any): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/cyber-policies`, policyData);
+    }
+
+    updateCyberPolicy(id: number, policyData: any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/cyber-policies/${id}`, policyData);
+    }
+
+    deleteCyberPolicy(id: number): Observable<any> {
+        return this.http.delete<any>(`${this.apiUrl}/cyber-policies/${id}`);
+    }
+
+    // SUBSCRIPTIONS / PENDING APPLICATIONS
+    getSubscriptions(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/policies`);
+    }
+
+    assignUnderwriter(subscriptionId: number, underwriterId: number): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/subscriptions/${subscriptionId}/assign`, { underwriterId });
+    }
+
+}

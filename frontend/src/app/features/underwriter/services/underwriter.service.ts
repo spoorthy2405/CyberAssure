@@ -11,14 +11,13 @@ export class UnderwriterService {
 
     constructor(private http: HttpClient) { }
 
-    // GET pending subscriptions
-    getSubscriptions(): Observable<any[]> {
-        return this.http.get<any[]>(this.API);
+    // GET only subscriptions assigned to this underwriter
+    getMyAssignedSubscriptions(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.API}/assigned-to-me`);
     }
 
-    // REVIEW decision
-    reviewSubscription(id: number, data: any) {
+    // REVIEW decision — full plan data
+    reviewSubscription(id: number, data: any): Observable<any> {
         return this.http.put(`${this.API}/${id}/review`, data);
     }
-
 }

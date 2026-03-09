@@ -5,6 +5,9 @@ import com.cyberassure.cyberassureproject.entity.Role;
 import com.cyberassure.cyberassureproject.entity.User;
 import com.cyberassure.cyberassureproject.repository.RoleRepository;
 import com.cyberassure.cyberassureproject.repository.UserRepository;
+import com.cyberassure.cyberassureproject.repository.CyberPolicyRepository;
+import com.cyberassure.cyberassureproject.entity.CyberPolicy;
+import com.cyberassure.cyberassureproject.dto.CyberPolicyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,8 @@ import java.time.LocalDateTime;
 public class AdminService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final CyberPolicyRepository policyRepository;
+    private final com.cyberassure.cyberassureproject.repository.PolicySubscriptionRepository subscriptionRepository;
     private final PasswordEncoder passwordEncoder;
 
     public User createStaff(CreateStaffRequest request) {
@@ -76,4 +81,57 @@ public class AdminService {
                 .toList();
     }
 
+    public List<CyberPolicy> getAllCyberPolicies() {
+        return policyRepository.findAll();
+    }
+
+    public CyberPolicy createCyberPolicy(CyberPolicyRequest request) {
+        CyberPolicy policy = CyberPolicy.builder()
+                .policyName(request.getPolicyName())
+                .sector(request.getSector())
+                .description(request.getDescription())
+                .coverageLimit(request.getCoverageLimit())
+                .basePremium(request.getBasePremium())
+                .durationMonths(request.getDurationMonths())
+                .benefits(request.getBenefits())
+                .isActive(true)
+                .createdAt(LocalDateTime.now())
+                .build();
+        return policyRepository.save(policy);
+    }
+
+    public CyberPolicy updateCyberPolicy(Long id, CyberPolicyRequest request) {
+        CyberPolicy policy = policyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cyber Policy not found"));
+
+        policy.setPolicyName(request.getPolicyName());
+        policy.setSector(request.getSector());
+        policy.setDescription(request.getDescription());
+        policy.setCoverageLimit(request.getCoverageLimit());
+        policy.setBasePremium(request.getBasePremium());
+        policy.setDurationMonths(request.getDurationMonths());
+        policy.setBenefits(request.getBenefits());
+
+        return policyRepository.save(policy);
+    }
+
+    public void deleteCyberPolicy(Long id) {
+        policyRepository.deleteById(id);
+    }
+
+    public void assignUnderwriter(Long subscriptionId, Long underwriterId) {
+        com.cyberassure.cyberassureproject.entity.PolicySubscription subscription = subscriptionRepository
+                .findById(subscriptionId)
+                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+
+        User underwriter = userRepository.findById(underwriterId)
+                .orElseThrow(() -> new RuntimeException("Underwriter not found"));
+
+        if (!underwriter.getRole().getRoleName().equals("ROLE_UNDERWRITER")) {
+            throw new RuntimeException("Assigned user must be an underwriter");
+        }
+
+        subscription.setAssignedUnderwriter(underwriter);
+        subscriptionRepository.save(subscription);
+    }
 }

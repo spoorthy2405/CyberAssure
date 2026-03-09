@@ -128,6 +128,33 @@
                     </div>
                 </div>
 
+                <!-- REGISTRATION NUMBER -->
+                <div class="field-group">
+                    <label>Registration Number <span class="required">*</span></label>
+                    <div class="input-wrap">
+                        <span class="input-icon">📝</span>
+                        <input type="text" placeholder="CIN / GSTIN / Tax ID" [(ngModel)]="registrationNumber" />
+                    </div>
+                </div>
+
+                <!-- COMPANY ADDRESS -->
+                <div class="field-group">
+                    <label>Company Address</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">📍</span>
+                        <input type="text" placeholder="Headquarters Address" [(ngModel)]="companyAddress" />
+                    </div>
+                </div>
+
+                <!-- COMPANY WEBSITE -->
+                <div class="field-group">
+                    <label>Company Website</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🌐</span>
+                        <input type="url" placeholder="https://www.example.com" [(ngModel)]="companyWebsite" />
+                    </div>
+                </div>
+
                 <!-- TWO COLUMNS: Industry + Size -->
                 <div class="field-row">
                     <div class="field-group">
@@ -149,6 +176,18 @@
                             </select>
                             <span class="select-arrow">▾</span>
                         </div>
+                    </div>
+                </div>
+
+                <!-- ANNUAL REVENUE -->
+                <div class="field-group">
+                    <label>Annual Revenue</label>
+                    <div class="select-wrap">
+                        <select [(ngModel)]="annualRevenue">
+                            <option value="">Select revenue range</option>
+                            <option *ngFor="let r of annualRevenues" [value]="r">{{ r }}</option>
+                        </select>
+                        <span class="select-arrow">▾</span>
                     </div>
                 </div>
 

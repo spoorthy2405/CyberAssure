@@ -1,56 +1,109 @@
-<h2 class="text-2xl font-bold mb-6 text-white">
-    Your Policy Subscriptions
-</h2>
+<div class="p-6 min-h-screen bg-slate-900 text-white">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-white">My Policy Subscriptions</h1>
+            <p class="text-sm text-slate-400">Manage your cyber insurance policies</p>
+        </div>
+        <button routerLink="/customer/policies"
+            class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition">+
+            Apply for New Policy</button>
+    </div>
 
-<table class="w-full bg-slate-800 text-white rounded">
+    <!-- Loading -->
+    <div *ngIf="loading" class="flex justify-center py-16">
+        <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
 
-    <thead class="bg-slate-700">
+    <!-- Empty state -->
+    <div *ngIf="!loading && subscriptions.length === 0"
+        class="text-center py-16 bg-slate-800/50 rounded-2xl border border-slate-700">
+        <p class="text-4xl mb-3">📋</p>
+        <h3 class="text-lg font-semibold text-white mb-2">No subscriptions yet</h3>
+        <p class="text-slate-400 mb-5">Browse policies and apply for one that suits your business.</p>
+        <button routerLink="/customer/policies"
+            class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-lg transition">Browse
+            Policies →</button>
+    </div>
 
-        <tr>
+    <!-- Subscription Cards -->
+    <div *ngIf="!loading && subscriptions.length > 0" class="space-y-4">
+        <div *ngFor="let s of subscriptions" class="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-5">
 
-            <th class="p-3">Policy</th>
-            <th class="p-3">Premium</th>
-            <th class="p-3">Status</th>
-            <th class="p-3">Start Date</th>
+            <!-- Card Header -->
+            <div class="flex items-start justify-between mb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-white">{{ s.policy?.policyName }}</h3>
+                    <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">{{ s.policy?.sector
+                        }}</span>
+                </div>
+                <span [ngClass]="{
+          'bg-emerald-900/50 text-emerald-400 border-emerald-500/30': s.status === 'APPROVED',
+          'bg-amber-900/50 text-amber-400 border-amber-500/30': s.status === 'PENDING',
+          'bg-red-900/50 text-red-400 border-red-500/30': s.status === 'REJECTED'
+        }" class="border text-xs font-bold px-3 py-1 rounded-full">{{ s.status }}</span>
+            </div>
 
-        </tr>
+            <!-- Meta Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Coverage</p>
+                    <p class="font-semibold text-white">{{ coverageFmt(s.policy?.coverageLimit) }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Premium</p>
+                    <p class="font-semibold text-white">₹{{ s.calculatedPremium || s.policy?.basePremium | number }}/mo
+                    </p>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Duration</p>
+                    <p class="font-semibold text-white">{{ s.policy?.durationMonths }} months</p>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Risk Score</p>
+                    <p class="font-semibold text-white">
+                        <ng-container
+                            *ngIf="s.riskAssessment?.riskScore !== null && s.riskAssessment?.riskScore !== undefined">
+                            {{s.riskAssessment?.riskScore}}
+                        </ng-container>
+                        <ng-container
+                            *ngIf="s.riskAssessment?.riskScore === null || s.riskAssessment?.riskScore === undefined">
+                            <span class="text-slate-400 text-xs italic font-normal">Pending Eval.</span>
+                        </ng-container>
+                    </p>
+                </div>
+                <div *ngIf="s.startDate">
+                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Start Date</p>
+                    <p class="font-semibold text-white">{{ s.startDate | date:'mediumDate' }}</p>
+                </div>
+                <div *ngIf="s.endDate">
+                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">End Date</p>
+                    <p class="font-semibold text-white">{{ s.endDate | date:'mediumDate' }}</p>
+                </div>
+                <div *ngIf="s.approvedBy">
+                    <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Underwriter</p>
+                    <p class="font-semibold text-white">{{ s.approvedBy?.fullName }}</p>
+                </div>
+            </div>
 
-    </thead>
+            <!-- Info banners -->
+            <div *ngIf="s.status === 'PENDING'"
+                class="bg-amber-900/20 border border-amber-500/30 rounded-lg p-3 text-sm text-amber-300 mb-3">
+                ⏳ Under review by an underwriter. Usually takes 24–48 hours.
+            </div>
+            <div *ngIf="s.status === 'REJECTED'"
+                class="bg-red-900/20 border border-red-500/30 rounded-lg p-3 text-sm text-red-300 mb-3">
+                ❌ Rejected: {{ s.rejectionReason || 'No reason provided.' }}
+            </div>
 
-    <tbody>
-
-        <tr *ngFor="let s of subscriptions">
-
-            <td class="p-3">
-
-                {{s.policy.policyName}}
-
-            </td>
-
-            <td class="p-3">
-
-                ₹ {{s.calculatedPremium}}
-
-            </td>
-
-            <td class="p-3">
-
-                <span class="bg-blue-700 px-3 py-1 rounded">
-
-                    {{s.status}}
-
-                </span>
-
-            </td>
-
-            <td class="p-3">
-
-                {{s.startDate}}
-
-            </td>
-
-        </tr>
-
-    </tbody>
-
-</table>
+            <!-- Actions -->
+            <div *ngIf="s.status === 'APPROVED'" class="flex gap-3 mt-2">
+                <button routerLink="/customer/incidents"
+                    class="bg-slate-700 hover:bg-slate-600 text-white font-semibold text-sm px-4 py-2 rounded-lg transition">📋
+                    Report Incident</button>
+                <button routerLink="/customer/claims"
+                    class="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm px-4 py-2 rounded-lg transition">💬
+                    File Claim</button>
+            </div>
+        </div>
+    </div>
+</div>
