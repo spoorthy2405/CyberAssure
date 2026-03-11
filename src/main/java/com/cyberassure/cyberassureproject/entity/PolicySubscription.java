@@ -46,11 +46,19 @@ public class PolicySubscription {
     private User assignedUnderwriter;
 
     private LocalDateTime approvedAt;
+    @Column(length = 2000)
     private String rejectionReason;
 
     // Underwriter calculated fields
     private Integer riskScore;
     private BigDecimal coverageAmount;
     private Integer tenureMonths;
+    @Column(length = 2000)
     private String underwriterNotes;
+
+    // Advanced Policy Terms
+    private BigDecimal policyLimit;
+    private BigDecimal deductible;
+    @Column(length = 2000)
+    private String exclusions;
 }

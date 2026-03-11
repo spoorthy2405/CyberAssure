@@ -13,16 +13,16 @@
     <!-- SECTOR TABS -->
     <div class="flex flex-wrap gap-2 mb-6">
         <button *ngFor="let sector of sectors" (click)="filterBySector(sector)"
-            [class.bg-blue-600]="currentSector === sector" [class.text-white]="currentSector === sector"
-            [class.bg-slate-800]="currentSector !== sector" [class.text-slate-400]="currentSector !== sector"
+            [class.bg-blue-600]="currentSector() === sector" [class.text-white]="currentSector() === sector"
+            [class.bg-slate-800]="currentSector() !== sector" [class.text-slate-400]="currentSector() !== sector"
             class="px-4 py-2 rounded-full font-medium transition-all hover:bg-blue-500 hover:text-white border border-slate-700">
             {{sector}}
         </button>
     </div>
 
     <!-- POLICY CARDS LISTING -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="!showForm">
-        <div *ngFor="let pol of filteredPolicies"
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="!showForm()">
+        <div *ngFor="let pol of filteredPolicies()"
             class="bg-slate-800/80 p-6 rounded-2xl border border-slate-700 hover:border-blue-500/50 transition-all group flex flex-col h-full">
             <div class="flex justify-between items-start mb-4">
                 <span
@@ -79,7 +79,7 @@
             </div>
         </div>
 
-        <div *ngIf="filteredPolicies.length === 0"
+        <div *ngIf="filteredPolicies().length === 0"
             class="col-span-1 md:col-span-2 lg:col-span-3 text-center py-12 bg-slate-800/40 rounded-2xl border border-slate-700/50 border-dashed">
             <svg class="w-16 h-16 mx-auto text-slate-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -94,10 +94,10 @@
     </div>
 
     <!-- FORM OVERLAY -->
-    <div *ngIf="showForm"
+    <div *ngIf="showForm()"
         class="bg-slate-800/80 p-6 md:p-8 rounded-2xl border border-slate-700/50 shadow-lg backdrop-blur-md animate-in fade-in slide-in-from-bottom-4 duration-300">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-2xl font-bold text-white">{{isEditing ? 'Edit Policy' : 'Create New Policy'}}</h3>
+            <h3 class="text-2xl font-bold text-white">{{isEditing() ? 'Edit Policy' : 'Create New Policy'}}</h3>
             <button (click)="closeForm()"
                 class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-700 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,34 +111,34 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-slate-300">Policy Name</label>
-                    <input type="text" name="policyName" [(ngModel)]="policyData.policyName" required
+                    <input type="text" name="policyName" [ngModel]="policyData().policyName" (ngModelChange)="updatePolicyField('policyName', $event)" required
                         class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-slate-300">Sector</label>
-                    <select name="sector" [(ngModel)]="policyData.sector" required
+                    <select name="sector" [ngModel]="policyData().sector" (ngModelChange)="updatePolicyField('sector', $event)" required
                         class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all appearance-none">
                         <option *ngFor="let sec of sectors" [value]="sec">{{sec}}</option>
                     </select>
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-slate-300">Coverage Limit (₹)</label>
-                    <input type="number" name="coverageLimit" [(ngModel)]="policyData.coverageLimit" required
+                    <input type="number" name="coverageLimit" [ngModel]="policyData().coverageLimit" (ngModelChange)="updatePolicyField('coverageLimit', $event)" required
                         class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium text-slate-300">Annual Base Premium (₹)</label>
-                    <input type="number" name="basePremium" [(ngModel)]="policyData.basePremium" required
+                    <input type="number" name="basePremium" [ngModel]="policyData().basePremium" (ngModelChange)="updatePolicyField('basePremium', $event)" required
                         class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
                 </div>
                 <div class="space-y-2 md:col-span-2">
                     <label class="text-sm font-medium text-slate-300">Description</label>
-                    <textarea name="description" [(ngModel)]="policyData.description" rows="2"
+                    <textarea name="description" [ngModel]="policyData().description" (ngModelChange)="updatePolicyField('description', $event)" rows="2"
                         class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"></textarea>
                 </div>
                 <div class="space-y-2 md:col-span-2">
                     <label class="text-sm font-medium text-slate-300">Benefits (One per line)</label>
-                    <textarea name="benefitsText" [(ngModel)]="policyData.benefitsText" rows="4"
+                    <textarea name="benefitsText" [ngModel]="policyData().benefitsText" (ngModelChange)="updatePolicyField('benefitsText', $event)" rows="4"
                         placeholder="e.g. Data breach response&#10;Customer notification costs&#10;Legal defense coverage"
                         class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"></textarea>
                 </div>
@@ -148,7 +148,7 @@
                 <button type="button" (click)="closeForm()"
                     class="px-5 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors font-medium">Cancel</button>
                 <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-2.5 rounded-lg font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5">{{isEditing
+                    class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-2.5 rounded-lg font-medium shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-0.5">{{isEditing()
                     ? 'Update Policy' : 'Save New Policy'}}</button>
             </div>
         </form>

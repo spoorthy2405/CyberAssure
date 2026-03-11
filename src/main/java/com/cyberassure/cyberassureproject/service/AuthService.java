@@ -8,6 +8,7 @@ import com.cyberassure.cyberassureproject.entity.Role;
 import com.cyberassure.cyberassureproject.entity.User;
 import com.cyberassure.cyberassureproject.exception.EmailAlreadyExistsException;
 import com.cyberassure.cyberassureproject.exception.InvalidCredentialsException;
+import com.cyberassure.cyberassureproject.exception.ResourceNotFoundException;
 import com.cyberassure.cyberassureproject.repository.RoleRepository;
 import com.cyberassure.cyberassureproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AuthService {
         private final JwtService jwtService;
-
         private final UserRepository userRepository;
         private final RoleRepository roleRepository;
         private final PasswordEncoder passwordEncoder;
@@ -29,11 +29,14 @@ public class AuthService {
         public RegisterResponse register(RegisterRequest request) {
 
                 if (userRepository.existsByEmail(request.getEmail())) {
-                        throw new EmailAlreadyExistsException("Email already registered");
+                        throw new EmailAlreadyExistsException(
+                                        "An account with email '" + request.getEmail()
+                                                        + "' already exists. Please log in or use a different email.");
                 }
 
                 Role customerRole = roleRepository.findByRoleName("ROLE_CUSTOMER")
-                                .orElseThrow(() -> new RuntimeException("Role not found"));
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Customer role not configured in the system. Please contact support."));
 
                 User user = User.builder()
                                 .fullName(request.getFullName())
@@ -66,7 +69,7 @@ public class AuthService {
                                 .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
 
                 if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-                        throw new InvalidCredentialsException("Invalid email or password");
+                        throw new InvalidCredentialsException("Email or password is incorrect. Please try again.");
                 }
 
                 String token = jwtService.generateToken(

@@ -13,34 +13,53 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Claim {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    private BigDecimal claimAmount;
+        private BigDecimal claimAmount;
 
-    @Enumerated(EnumType.STRING)
-    private ClaimStatus status;
+        private BigDecimal settlementAmount;
 
-    private String rejectionReason;
+        @Enumerated(EnumType.STRING)
+        private ClaimStatus status;
 
-    private LocalDateTime filedAt;
+        private String rejectionReason;
 
-    private LocalDateTime reviewedAt;
+        @Column(length = 2000)
+        private String investigationNotes;
 
-    @ManyToOne
-    @JsonIgnoreProperties({ "passwordHash", "role", "createdAt", "updatedAt", "accountStatus", "companyWebsite",
-            "companyAddress", "registrationNumber", "annualRevenue", "companySize", "phoneNumber" })
-    private User customer;
+        // --- Additional Professional Claim Fields ---
+        private String bankAccountNumber;
+        private String bankIfscCode;
+        private Boolean policeReportFiled;
+        private String policeReportNumber;
+        @Column(length = 2000)
+        private String claimDescription;
+        // --------------------------------------------
 
-    @ManyToOne
-    @JsonIgnoreProperties({ "passwordHash", "role", "createdAt", "updatedAt", "accountStatus", "companyWebsite",
-            "companyAddress", "registrationNumber", "annualRevenue", "companySize", "phoneNumber" })
-    private User reviewedBy; // Claims Officer
+        private LocalDateTime filedAt;
 
-    @ManyToOne
-    @JsonIgnoreProperties({ "customer", "subscription", "documentPaths" })
-    private IncidentReport incident;
+        private LocalDateTime reviewedAt;
+
+        @ManyToOne
+        @JsonIgnoreProperties({ "passwordHash", "role", "createdAt", "updatedAt", "accountStatus", "companyWebsite",
+                        "companyAddress", "registrationNumber", "annualRevenue", "companySize", "phoneNumber" })
+        private User customer;
+
+        @ManyToOne
+        @JsonIgnoreProperties({ "passwordHash", "role", "createdAt", "updatedAt", "accountStatus", "companyWebsite",
+                        "companyAddress", "registrationNumber", "annualRevenue", "companySize", "phoneNumber" })
+        private User reviewedBy;
+
+        @ManyToOne
+        @JsonIgnoreProperties({ "passwordHash", "role", "createdAt", "updatedAt", "accountStatus", "companyWebsite",
+                        "companyAddress", "registrationNumber", "annualRevenue", "companySize", "phoneNumber" })
+        private User assignedOfficer;
+
+        @ManyToOne
+        private IncidentReport incident;
 }

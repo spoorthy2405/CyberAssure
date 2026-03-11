@@ -1,14 +1,11 @@
-
 package com.cyberassure.cyberassureproject.controller;
 
 import com.cyberassure.cyberassureproject.dto.CreateStaffRequest;
-import com.cyberassure.cyberassureproject.entity.User;
-import com.cyberassure.cyberassureproject.repository.UserRepository;
-import com.cyberassure.cyberassureproject.repository.PolicySubscriptionRepository;
-import com.cyberassure.cyberassureproject.repository.RiskAssessmentRepository;
-import com.cyberassure.cyberassureproject.repository.ClaimRepository;
+import com.cyberassure.cyberassureproject.dto.*;
+import com.cyberassure.cyberassureproject.entity.*;
+import com.cyberassure.cyberassureproject.entity.Claim;
+import com.cyberassure.cyberassureproject.repository.*;
 import com.cyberassure.cyberassureproject.service.AdminService;
-import com.cyberassure.cyberassureproject.entity.CyberPolicy;
 import com.cyberassure.cyberassureproject.entity.ClaimStatus;
 import com.cyberassure.cyberassureproject.dto.CyberPolicyRequest;
 import jakarta.validation.Valid;
@@ -94,6 +91,19 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getStaff());
     }
 
+    @PutMapping("/staff/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<User> updateStaff(@PathVariable Long id, @RequestBody UpdateStaffRequest request) {
+        return ResponseEntity.ok(adminService.updateStaff(id, request));
+    }
+
+    @PutMapping("/staff/{id}/deactivate")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deactivateStaff(@PathVariable Long id) {
+        adminService.deactivateStaff(id);
+        return ResponseEntity.noContent().build();
+    }
+
     // UNDERWRITERS
     @GetMapping("/underwriters")
     @PreAuthorize("hasRole('ADMIN')")
@@ -118,8 +128,10 @@ public class AdminController {
     // CLAIMS
     @GetMapping("/claims")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<?>> getClaims() {
-        return ResponseEntity.ok(claimRepository.findAll());
+    public ResponseEntity<List<Claim>> getClaims() {
+        return ResponseEntity.ok(claimRepository.findAll().stream()
+                .sorted(java.util.Comparator.comparing(Claim::getFiledAt, java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())))
+                .collect(java.util.stream.Collectors.toList()));
     }
 
     // ANALYTICS
@@ -184,12 +196,26 @@ public class AdminController {
     @PutMapping("/subscriptions/{id}/assign")
     public ResponseEntity<Map<String, String>> assignUnderwriter(@PathVariable Long id,
             @RequestBody Map<String, Object> payload) {
-        Number underwriterIdNum = (Number) payload.get("underwriterId");
-        if (underwriterIdNum == null) {
+        Object underwriterIdObj = payload.get("underwriterId");
+        if (underwriterIdObj == null) {
             throw new IllegalArgumentException("underwriterId is required");
         }
-        Long underwriterId = underwriterIdNum.longValue();
+        Long underwriterId = Long.valueOf(underwriterIdObj.toString());
         adminService.assignUnderwriter(id, underwriterId);
+        return ResponseEntity.ok(Map.of("message", "Success"));
+    }
+
+    // ASSIGN CLAIMS OFFICER
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/claims/{id}/assign")
+    public ResponseEntity<Map<String, String>> assignClaimsOfficer(@PathVariable Long id,
+            @RequestBody Map<String, Object> payload) {
+        Object officerIdObj = payload.get("officerId");
+        if (officerIdObj == null) {
+            throw new IllegalArgumentException("officerId is required");
+        }
+        Long officerId = Long.valueOf(officerIdObj.toString());
+        adminService.assignClaimsOfficer(id, officerId);
         return ResponseEntity.ok(Map.of("message", "Success"));
     }
 }

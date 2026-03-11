@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AdminLayout } from '../../shared/layouts/admin-layout/admin-layout';
+import { AdminDashboard } from './dashboard/admin-dashboard';
 
 export const ADMIN_ROUTES: Routes = [
 
@@ -10,9 +11,7 @@ export const ADMIN_ROUTES: Routes = [
 
             {
                 path: 'dashboard',
-                loadComponent: () =>
-                    import('./dashboard/admin-dashboard')
-                        .then(m => m.AdminDashboard)
+                component: AdminDashboard
             },
 
             {

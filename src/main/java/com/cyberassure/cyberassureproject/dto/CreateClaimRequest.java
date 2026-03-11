@@ -13,4 +13,10 @@ public class CreateClaimRequest {
 
     @NotNull
     private BigDecimal claimAmount;
+
+    private String bankAccountNumber;
+    private String bankIfscCode;
+    private Boolean policeReportFiled;
+    private String policeReportNumber;
+    private String claimDescription;
 }

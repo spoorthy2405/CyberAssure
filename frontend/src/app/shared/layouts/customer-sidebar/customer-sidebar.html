@@ -13,34 +13,29 @@
 
         <a routerLink="/customer/dashboard" routerLinkActive="bg-blue-600/10 text-blue-400 border-l-4 border-blue-500"
             [routerLinkActiveOptions]="{exact: true}"
-            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent">
-            <span class="text-lg">🏠</span> Dashboard
+            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent font-medium">
+            Dashboard
         </a>
 
         <a routerLink="/customer/policies" routerLinkActive="bg-blue-600/10 text-blue-400 border-l-4 border-blue-500"
-            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent">
-            <span class="text-lg">📋</span> Browse Policies
+            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent font-medium">
+            Browse Policies
         </a>
 
         <a routerLink="/customer/subscriptions"
             routerLinkActive="bg-blue-600/10 text-blue-400 border-l-4 border-blue-500"
-            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent">
-            <span class="text-lg">🔎</span> My Subscriptions
+            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent font-medium">
+            My Subscriptions
         </a>
 
         <a routerLink="/customer/incidents" routerLinkActive="bg-blue-600/10 text-blue-400 border-l-4 border-blue-500"
-            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent">
-            <span class="text-lg">🚨</span> Incidents
+            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent font-medium">
+            Incidents
         </a>
 
         <a routerLink="/customer/claims" routerLinkActive="bg-blue-600/10 text-blue-400 border-l-4 border-blue-500"
-            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent">
-            <span class="text-lg">💬</span> Claims
-        </a>
-
-        <a routerLink="/customer/risk" routerLinkActive="bg-blue-600/10 text-blue-400 border-l-4 border-blue-500"
-            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent">
-            <span class="text-lg">📊</span> Risk Assessment
+            class="flex items-center gap-3 px-4 py-3 rounded-r-lg text-slate-300 hover:bg-slate-800 transition-colors border-l-4 border-transparent font-medium">
+            Claims
         </a>
 
     </nav>
@@ -48,7 +43,7 @@
     <div class="p-4 border-t border-slate-800 bg-slate-900">
         <button (click)="logout()"
             class="w-full flex items-center justify-center gap-2 bg-slate-800/50 hover:bg-red-500/20 text-slate-300 hover:text-red-400 py-3 rounded-xl transition-all border border-slate-700 hover:border-red-500/50">
-            <span>🚪</span> Logout
+            Logout
         </button>
     </div>
 

@@ -15,6 +15,10 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
     List<Claim> findByStatus(ClaimStatus status);
 
+    List<Claim> findByStatusIn(java.util.Collection<ClaimStatus> statuses);
+
+    List<Claim> findByAssignedOfficerOrderByFiledAtDesc(User officer);
+
     List<Claim> findByCustomerOrderByFiledAtDesc(User customer);
 
     long countByCustomerAndStatus(User customer, ClaimStatus status);
@@ -23,4 +27,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
     BigDecimal sumClaimAmountByCustomerAndStatusSince(@Param("customer") User customer,
             @Param("status") ClaimStatus status,
             @Param("from") LocalDateTime from);
+
+    @Query("SELECT c FROM Claim c WHERE c.incident.subscription = :subscription AND c.status = :status")
+    List<Claim> findByIncidentSubscriptionAndStatus(@Param("subscription") com.cyberassure.cyberassureproject.entity.PolicySubscription subscription, @Param("status") ClaimStatus status);
 }

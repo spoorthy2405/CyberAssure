@@ -67,6 +67,14 @@ export class AdminApiService {
         return this.http.post<any>(`${this.apiUrl}/create-staff`, staffData);
     }
 
+    updateStaff(userId: number, staffData: any): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/staff/${userId}`, staffData);
+    }
+
+    deactivateStaff(userId: number): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/staff/${userId}/deactivate`, {});
+    }
+
     // CYBER POLICY CATALOG
     getCyberPolicies(): Observable<any[]> {
         return this.http.get<any[]>(`${this.apiUrl}/cyber-policies`);
@@ -91,6 +99,10 @@ export class AdminApiService {
 
     assignUnderwriter(subscriptionId: number, underwriterId: number): Observable<any> {
         return this.http.put<any>(`${this.apiUrl}/subscriptions/${subscriptionId}/assign`, { underwriterId });
+    }
+
+    assignClaimsOfficer(claimId: number, officerId: number): Observable<any> {
+        return this.http.put<any>(`${this.apiUrl}/claims/${claimId}/assign`, { officerId });
     }
 
 }

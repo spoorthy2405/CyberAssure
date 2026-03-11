@@ -1,0 +1,24 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< com.cyberassure:CyberAssureProject >-----------------
+[INFO] Building CyberAssureProject 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ CyberAssureProject ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ CyberAssureProject ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 71 source files with javac [debug parameters release 17] to target\classes
+[WARNING] /D:/CyberAssureProject/src/main/java/com/cyberassure/cyberassureproject/entity/PolicySubscription.java:[39,27] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/CyberAssureProject/src/main/java/com/cyberassure/cyberassureproject/entity/RiskAssessment.java:[45,27] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/CyberAssureProject/src/main/java/com/cyberassure/cyberassureproject/entity/CyberPolicy.java:[56,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/CyberAssureProject/src/main/java/com/cyberassure/cyberassureproject/entity/CyberPolicy.java:[58,27] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  9.260 s
+[INFO] Finished at: 2026-03-11T12:43:20+05:30
+[INFO] ------------------------------------------------------------------------

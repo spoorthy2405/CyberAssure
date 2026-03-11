@@ -2,17 +2,16 @@ package com.cyberassure.cyberassureproject.service;
 
 import com.cyberassure.cyberassureproject.dto.CreateIncidentRequest;
 import com.cyberassure.cyberassureproject.entity.*;
+import com.cyberassure.cyberassureproject.exception.PolicyNotActiveException;
+import com.cyberassure.cyberassureproject.exception.ResourceNotFoundException;
 import com.cyberassure.cyberassureproject.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,23 +30,38 @@ public class IncidentReportService {
         // =====================================================
         public IncidentReport reportIncident(CreateIncidentRequest request, List<MultipartFile> files) {
                 String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
                 User customer = userRepository.findByEmail(email)
-                                .orElseThrow(() -> new RuntimeException("User not found"));
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Authenticated user not found. Please log in again."));
 
                 PolicySubscription subscription = subscriptionRepository
                                 .findById(request.getSubscriptionId())
-                                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "No subscription found with ID: " + request.getSubscriptionId()
+                                                + ". Please ensure your policy is active before reporting an incident."));
 
-                if (subscription.getStatus() != SubscriptionStatus.APPROVED) {
-                        throw new RuntimeException("Policy is not active");
+                // Only ACTIVE subscriptions can raise incident reports
+                if (subscription.getStatus() != SubscriptionStatus.APPROVED
+                                && subscription.getStatus() != SubscriptionStatus.ACTIVE) {
+                        throw new PolicyNotActiveException(
+                                "Your policy subscription is currently '" + subscription.getStatus()
+                                + "'. Incident reports can only be filed under an ACTIVE policy.");
                 }
 
                 List<String> savedPaths = new ArrayList<>();
                 if (files != null && !files.isEmpty()) {
-                        String uploadDir = "uploads/incidents/" + customer.getUserId() + "/";
-                        File directory = new File(uploadDir);
-                        if (!directory.exists())
-                                directory.mkdirs();
+                        String projectRoot = System.getProperty("user.dir");
+                        String uploadDir = projectRoot + "/uploads/incidents/" + customer.getUserId();
+                        java.nio.file.Path dir = java.nio.file.Paths.get(uploadDir).toAbsolutePath().normalize();
+                        if (!java.nio.file.Files.exists(dir)) {
+                            try {
+                                java.nio.file.Files.createDirectories(dir);
+                            } catch (IOException e) {
+                                throw new ResourceNotFoundException(
+                                        "Failed to create upload directory for incident documents. Please try again.");
+                            }
+                        }
 
                         for (MultipartFile file : files) {
                                 if (!file.isEmpty()) {
@@ -55,15 +69,17 @@ public class IncidentReportService {
                                                 String originalFilename = file.getOriginalFilename();
                                                 String extension = "";
                                                 if (originalFilename != null && originalFilename.contains(".")) {
-                                                        extension = originalFilename
-                                                                        .substring(originalFilename.lastIndexOf("."));
+                                                        extension = originalFilename.substring(originalFilename.lastIndexOf("."));
                                                 }
                                                 String fileName = UUID.randomUUID().toString() + extension;
-                                                Path filePath = Paths.get(uploadDir + fileName);
-                                                Files.write(filePath, file.getBytes());
-                                                savedPaths.add(filePath.toString());
+                                                java.nio.file.Path target = dir.resolve(fileName);
+                                                java.nio.file.Files.copy(file.getInputStream(), target,
+                                                                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                                                savedPaths.add("uploads/incidents/" + customer.getUserId() + "/" + fileName);
                                         } catch (IOException e) {
-                                                throw new RuntimeException("Failed to store file", e);
+                                                throw new ResourceNotFoundException(
+                                                        "Failed to store document '" + file.getOriginalFilename()
+                                                        + "'. Please check file format and try again.");
                                         }
                                 }
                         }
@@ -88,7 +104,8 @@ public class IncidentReportService {
         // =====================================================
         public List<IncidentReport> getMyIncidents(String email) {
                 User customer = userRepository.findByEmail(email)
-                                .orElseThrow(() -> new RuntimeException("User not found"));
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "User not found with email: " + email));
                 return incidentRepository.findByCustomerOrderByReportedAtDesc(customer);
         }
 

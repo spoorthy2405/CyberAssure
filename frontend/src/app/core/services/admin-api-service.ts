@@ -1,6 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UserDto } from '../../shared/models/user.dto';
+import { CyberPolicyDto } from '../../shared/models/policy.dto';
+import { RiskAssessmentDto } from '../../shared/models/assessment.dto';
+import { ClaimDto } from '../../shared/models/claim.dto';
 
 @Injectable({
     providedIn: 'root'
@@ -8,29 +12,30 @@ import { Observable } from 'rxjs';
 export class AdminApiService {
 
     private API = 'http://localhost:8080/api/v1';
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) { }
-
-    getPolicies(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.API}/policies`);
+    getPolicies(): Observable<CyberPolicyDto[]> {
+        return this.http.get<CyberPolicyDto[]>(`${this.API}/policies`);
     }
 
-    getRiskAssessments(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.API}/risk`);
+    getRiskAssessments(): Observable<RiskAssessmentDto[]> {
+        return this.http.get<RiskAssessmentDto[]>(`${this.API}/risk`);
     }
 
-    getPendingClaims(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.API}/claims/pending`);
+    getPendingClaims(): Observable<ClaimDto[]> {
+        return this.http.get<ClaimDto[]>(`${this.API}/claims/pending`);
     }
 
-    getCustomers() {
-        return this.http.get<any[]>(`${this.API}/admin/customers`);
+    getCustomers(): Observable<UserDto[]> {
+        return this.http.get<UserDto[]>(`${this.API}/admin/customers`);
     }
-    getRisks() {
-        return this.http.get<any[]>(`${this.API}/risk`);
+    
+    getRisks(): Observable<RiskAssessmentDto[]> {
+        return this.http.get<RiskAssessmentDto[]>(`${this.API}/risk`);
     }
-    getClaims() {
-        return this.http.get<any[]>(`${this.API}/claims`);
+    
+    getClaims(): Observable<ClaimDto[]> {
+        return this.http.get<ClaimDto[]>(`${this.API}/claims`);
     }
 
 }

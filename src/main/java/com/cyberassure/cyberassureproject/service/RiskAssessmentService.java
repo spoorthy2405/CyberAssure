@@ -3,6 +3,7 @@ package com.cyberassure.cyberassureproject.service;
 import com.cyberassure.cyberassureproject.dto.CreateRiskAssessmentRequest;
 import com.cyberassure.cyberassureproject.entity.RiskAssessment;
 import com.cyberassure.cyberassureproject.entity.User;
+import com.cyberassure.cyberassureproject.exception.ResourceNotFoundException;
 import com.cyberassure.cyberassureproject.repository.RiskAssessmentRepository;
 import com.cyberassure.cyberassureproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,8 @@ public class RiskAssessmentService {
                 .getName();
 
         User customer = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Authenticated user not found. Please log in again."));
 
         int score = calculateRiskScore(request);
         String level = determineRiskLevel(score);

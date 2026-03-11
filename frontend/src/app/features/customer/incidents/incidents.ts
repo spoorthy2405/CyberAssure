@@ -1,98 +1,134 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { CustomerService } from '../services/customer.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, filter, startWith, switchMap, tap } from 'rxjs/operators';
+import { of, BehaviorSubject } from 'rxjs';
 
 @Component({
     standalone: true,
     imports: [CommonModule, FormsModule, RouterLink],
     templateUrl: './incidents.html'
 })
-export class Incidents implements OnInit {
+export class Incidents {
+    private service = inject(CustomerService);
+    private router = inject(Router);
 
-    activeTab: 'list' | 'report' = 'list';
+    private manualRefresh$ = new BehaviorSubject<void>(undefined);
+    private refresh$ = this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd),
+        startWith(null),
+        switchMap(() => this.manualRefresh$)
+    );
 
-    // Past incidents
-    incidents: any[] = [];
-    incidentsLoading = true;
+    activeTab = signal<'list' | 'report'>('list');
+
+    incidentsLoading = signal(true);
+    incidents = toSignal(
+        this.refresh$.pipe(
+            tap(() => this.incidentsLoading.set(true)),
+            switchMap(() => this.service.getMyIncidents().pipe(
+                catchError(() => of([]))
+            )),
+            tap(() => this.incidentsLoading.set(false))
+        ),
+        { initialValue: [] as any[] }
+    );
+
+    subsLoading = signal(true);
+    subscriptions = toSignal(
+        this.refresh$.pipe(
+            tap(() => this.subsLoading.set(true)),
+            switchMap(() => this.service.getSubscriptions().pipe(
+                catchError(() => of([]))
+            )),
+            tap((subs) => {
+                const activeSubs = subs.filter((s: any) => s.status === 'APPROVED' || s.status === 'ACTIVE');
+                if (activeSubs.length > 0 && !this.formData().subscriptionId) {
+                    this.updateFormData('subscriptionId', activeSubs[0].id);
+                }
+                
+                this.subsLoading.set(false);
+            })
+        ),
+        { initialValue: [] as any[] }
+    );
+
+    activeSubscriptions = computed(() => {
+        return this.subscriptions().filter((s: any) => s.status === 'APPROVED' || s.status === 'ACTIVE');
+    });
 
     // Report form
-    formData: any = { incidentType: '', description: '', estimatedLossAmount: null, subscriptionId: null };
-    selectedFiles: File[] = [];
-    subscriptions: any[] = [];
-    formLoading = false;
-    formError = '';
-    formSuccess = '';
+    formData = signal({ incidentType: '', description: '', estimatedLossAmount: null as number | null, subscriptionId: null as number | null });
+    selectedFiles = signal<File[]>([]);
+    formLoading = signal(false);
+    formError = signal('');
+    formSuccess = signal('');
 
-    constructor(private service: CustomerService) { }
-
-    ngOnInit() {
-        this.loadIncidents();
-        this.service.getSubscriptions().subscribe({
-            next: (subs) => {
-                this.subscriptions = subs.filter((s: any) => s.status === 'APPROVED');
-                if (this.subscriptions.length > 0 && !this.formData.subscriptionId) {
-                    this.formData.subscriptionId = this.subscriptions[0].id;
-                }
-                // If user has no incidents yet, show the report tab
-                if (this.incidents.length === 0 && this.subscriptions.length > 0) {
-                    this.activeTab = 'report';
-                }
-            }
-        });
-    }
-
-    loadIncidents() {
-        this.incidentsLoading = true;
-        this.service.getMyIncidents().subscribe({
-            next: (data) => { this.incidents = data; this.incidentsLoading = false; },
-            error: () => { this.incidentsLoading = false; }
-        });
+    updateFormData(field: string, value: any) {
+        this.formData.update(f => ({ ...f, [field]: value }));
     }
 
     onFileSelected(event: any) {
         if (event.target.files.length > 0) {
-            this.selectedFiles = Array.from(event.target.files);
+            this.selectedFiles.set(Array.from(event.target.files));
         }
     }
 
-    removeFile(index: number) { this.selectedFiles.splice(index, 1); }
+    removeFile(index: number) { 
+        this.selectedFiles.update(curr => {
+            const copy = [...curr];
+            copy.splice(index, 1);
+            return copy;
+        });
+    }
 
     submitReport() {
-        this.formError = '';
-        this.formSuccess = '';
-        if (!this.formData.subscriptionId) { this.formError = 'Please select an active policy.'; return; }
-        if (!this.formData.incidentType) { this.formError = 'Please select an incident type.'; return; }
-        if (!this.formData.description) { this.formError = 'Please describe the incident.'; return; }
-        if (!this.formData.estimatedLossAmount) { this.formError = 'Please enter an estimated loss amount.'; return; }
+        this.formError.set('');
+        this.formSuccess.set('');
+        const data = this.formData();
+        
+        if (!data.subscriptionId) { this.formError.set('Please select an active policy.'); return; }
+        if (!data.incidentType) { this.formError.set('Please select an incident type.'); return; }
+        if (!data.description) { this.formError.set('Please describe the incident.'); return; }
+        if (!data.estimatedLossAmount) { this.formError.set('Please enter an estimated loss amount.'); return; }
 
-        this.formLoading = true;
+        this.formLoading.set(true);
         const fd = new FormData();
-        fd.append('incidentType', this.formData.incidentType);
-        fd.append('description', this.formData.description);
-        fd.append('estimatedLossAmount', this.formData.estimatedLossAmount);
-        fd.append('subscriptionId', this.formData.subscriptionId);
-        this.selectedFiles.forEach(f => fd.append('files', f));
+        const payload = {
+            incidentType: data.incidentType,
+            description: data.description,
+            estimatedLossAmount: data.estimatedLossAmount,
+            subscriptionId: data.subscriptionId
+        };
+        fd.append('data', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+        
+        this.selectedFiles().forEach(f => fd.append('files', f));
 
         this.service.reportIncident(fd).subscribe({
             next: () => {
-                this.formLoading = false;
-                this.formSuccess = 'Incident reported successfully! Our claims team will review it shortly.';
-                this.formData = { incidentType: '', description: '', estimatedLossAmount: null, subscriptionId: this.subscriptions[0]?.id };
-                this.selectedFiles = [];
-                this.loadIncidents();
-                setTimeout(() => { this.activeTab = 'list'; this.formSuccess = ''; }, 2500);
+                this.formLoading.set(false);
+                this.formSuccess.set('Incident reported successfully! Our claims team will review it shortly.');
+                this.formData.set({ incidentType: '', description: '', estimatedLossAmount: null, subscriptionId: this.activeSubscriptions()[0]?.id });
+                this.selectedFiles.set([]);
+                
+                // Force data refetch for incidents
+                this.manualRefresh$.next();
+                
+                // Redirect immediately
+                this.activeTab.set('list');
             },
             error: (err) => {
-                this.formLoading = false;
-                this.formError = err.error?.message || 'Failed to report incident. Ensure you have an active policy.';
+                this.formLoading.set(false);
+                this.formError.set(err.error?.message || 'Failed to report incident. Ensure you have an active policy.');
             }
         });
     }
 
     getStatusColor(status: string) {
-        const map: any = { 'REPORTED': 'badge-pending', 'UNDER_INVESTIGATION': 'badge-review', 'CLOSED': 'badge-approved' };
-        return map[status] || 'badge-pending';
+        const map: any = { 'REPORTED': 'bg-amber-500/10 text-amber-400 border-amber-500/30', 'UNDER_INVESTIGATION': 'bg-blue-500/10 text-blue-400 border-blue-500/30', 'CLOSED': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' };
+        return map[status] || 'bg-amber-500/10 text-amber-400 border-amber-500/30';
     }
 }

@@ -1,24 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminApiService, User } from '../services/admin.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
+import { AdminApiService } from '../services/admin.service';
 
 @Component({
-    selector: 'app-underwriters',
-    standalone: true,
-    imports: [CommonModule],
-    templateUrl: './underwriters.html'
+  selector: 'app-underwriters',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './underwriters.html'
 })
-export class Underwriters implements OnInit {
+export class Underwriters {
 
-    underwritersList: any[] = [];
+  private adminApi = inject(AdminApiService);
 
-    constructor(private adminApi: AdminApiService) { }
-
-    ngOnInit() {
-        this.adminApi.getUnderwriters().subscribe({
-            next: (data) => this.underwritersList = data,
-            error: (err) => console.error("Error fetching underwriters", err)
-        });
-    }
-
+  underwritersList = toSignal(
+    this.adminApi.getUnderwriters().pipe(catchError(() => of([]))),
+    { initialValue: [] }
+  );
 }

@@ -3,72 +3,79 @@
     <!-- ═══════════════════ HEADER ═══════════════════ -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-            <h1 class="text-3xl font-bold tracking-tight text-white">Welcome back, {{ stats?.customerName?.split(' ')[0]
-                ?? 'there' }} 👋</h1>
-            <p class="text-slate-400 text-sm mt-1">{{ today }} · {{ stats?.customerCompany }} · {{
-                stats?.customerIndustry }}</p>
+            <h1 class="text-4xl font-bold tracking-tight text-white">Welcome back, {{ (stats()?.customerName || '').split(' ')[0] || 'there' }}</h1>
+            <p class="text-slate-400 text-base mt-2">{{ today }} · {{ stats()?.customerCompany }} · {{
+                stats()?.customerIndustry }}</p>
         </div>
         <div class="flex gap-2 flex-wrap">
-            <span *ngIf="stats?.subscriptionStatus === 'APPROVED'"
-                class="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold px-3 py-1.5 rounded-full">
-                <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>Policy Active
+            <span *ngIf="stats()?.subscriptionStatus === 'APPROVED' || stats()?.subscriptionStatus === 'ACTIVE'"
+                class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-semibold px-4 py-2 rounded-full">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>Policy Active
             </span>
-            <span *ngIf="stats?.subscriptionStatus === 'PENDING'"
-                class="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold px-3 py-1.5 rounded-full">
-                ⏳ Pending Underwriter Review
+            <span *ngIf="stats()?.subscriptionStatus === 'PENDING'"
+                class="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-semibold px-4 py-2 rounded-full">
+                Pending Underwriter Review
             </span>
-            <span *ngIf="stats?.subscriptionStatus === 'NONE'"
-                class="flex items-center gap-1.5 bg-slate-700/50 border border-slate-600 text-slate-400 text-xs font-semibold px-3 py-1.5 rounded-full">
+            <span *ngIf="stats()?.subscriptionStatus === 'NONE'"
+                class="flex items-center gap-2 bg-slate-700/50 border border-slate-600 text-slate-400 text-sm font-semibold px-4 py-2 rounded-full">
                 No Active Policy
             </span>
         </div>
     </div>
 
     <!-- ═══════════════════ LOADING ═══════════════════ -->
-    <div *ngIf="loading" class="flex flex-col items-center justify-center py-32 gap-4">
+    <div *ngIf="loading()" class="flex flex-col items-center justify-center py-32 gap-4">
         <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
         <p class="text-slate-400 text-sm">Loading your dashboard…</p>
     </div>
 
-    <ng-container *ngIf="!loading">
+    <ng-container *ngIf="!loading()">
 
         <!-- ═══════════════════ STAT CARDS ═══════════════════ -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 
-            <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Coverage</p>
-                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-sm">🛡️</div>
+            <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-sm font-semibold uppercase tracking-wider text-slate-400">Total Coverage</p>
+                    <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
+                        <svg class="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
                 </div>
-                <p class="text-2xl font-bold text-white">{{ coverageDisplay }}</p>
-                <p class="text-xs text-slate-500 mt-1">Cyber insurance limit</p>
+                <p class="text-3xl font-bold text-white">{{ coverageDisplay() }}</p>
+                <p class="text-sm text-slate-500 mt-2">Cyber insurance limit</p>
             </div>
 
-            <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Active Claims</p>
-                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-sm">📁</div>
+            <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-sm font-semibold uppercase tracking-wider text-slate-400">Active Claims</p>
+                    <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center border border-amber-500/30">
+                         <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </div>
                 </div>
-                <p class="text-2xl font-bold text-white">{{ stats?.activeClaimsCount ?? 0 }}</p>
-                <p class="text-xs text-slate-500 mt-1">Pending review</p>
+                <p class="text-3xl font-bold text-white">{{ stats()?.activeClaimsCount ?? 0 }}</p>
+                <p class="text-sm text-slate-500 mt-2">Pending review</p>
             </div>
 
-            <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Claimed This Year</p>
-                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-sm">✅</div>
+            <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-sm font-semibold uppercase tracking-wider text-slate-400">Claimed This Year</p>
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30">
+                        <svg class="w-5 h-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    </div>
                 </div>
-                <p class="text-2xl font-bold text-white">{{ claimedDisplay }}</p>
-                <p class="text-xs text-slate-500 mt-1">Approved payouts</p>
+                <p class="text-3xl font-bold text-white">{{ claimedDisplay() }}</p>
+                <p class="text-sm text-slate-500 mt-2">Approved payouts</p>
             </div>
 
-            <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Risk Score</p>
-                    <div class="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center text-sm">📊</div>
+            <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-sm font-semibold uppercase tracking-wider text-slate-400">Risk Score</p>
+                    <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center border border-violet-500/30">
+                        <svg class="w-5 h-5 text-violet-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    </div>
                 </div>
-                <p class="text-2xl font-bold" [style.color]="riskColor">{{ riskScore ?? '—' }}</p>
-                <p class="text-xs mt-1" [style.color]="riskColor">{{ riskLevel }} RISK</p>
+                <p class="text-3xl font-bold" [style.color]="riskColor()">{{ riskScore() ?? '—' }}</p>
+                <p class="text-sm mt-2 font-bold" [style.color]="riskColor()">{{ riskLevel() }} RISK</p>
             </div>
 
         </div>
@@ -81,95 +88,131 @@
 
                 <!-- POLICY CARD -->
                 <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl">
-                    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-700/50">
-                        <h2 class="font-bold text-white text-lg">Active Policy</h2>
-                        <span *ngIf="stats?.subscriptionStatus !== 'NONE'" [ngClass]="{
-              'bg-emerald-900/50 text-emerald-400 border-emerald-500/30': stats?.subscriptionStatus === 'APPROVED',
-              'bg-amber-900/50 text-amber-400 border-amber-500/30': stats?.subscriptionStatus === 'PENDING'
-            }" class="border text-xs font-bold px-2.5 py-1 rounded-full">{{ stats?.subscriptionStatus }}</span>
+                    <div class="flex items-center justify-between px-6 py-5 border-b border-slate-700/50">
+                        <h2 class="font-bold text-white text-xl">Active Policy</h2>
+                        <span *ngIf="stats()?.subscriptionStatus !== 'NONE'" [ngClass]="{
+              'bg-emerald-900/50 text-emerald-400 border-emerald-500/30': stats()?.subscriptionStatus === 'APPROVED' || stats()?.subscriptionStatus === 'ACTIVE',
+              'bg-amber-900/50 text-amber-400 border-amber-500/30': stats()?.subscriptionStatus === 'PENDING'
+            }" class="border text-sm font-bold px-3 py-1.5 rounded-full">{{ stats()?.subscriptionStatus }}</span>
                     </div>
 
-                    <div *ngIf="stats?.subscriptionStatus === 'NONE'" class="p-8 text-center">
-                        <p class="text-4xl mb-3">🔐</p>
-                        <h3 class="font-semibold text-white mb-2">No Policy Yet</h3>
-                        <p class="text-slate-400 text-sm mb-5">Browse our catalog and apply for a cyber policy tailored
+                    <div *ngIf="stats()?.subscriptionStatus === 'NONE'" class="p-8 text-center">
+                        <p class="text-5xl mb-4 text-slate-600 font-serif font-black italic">No Policy</p>
+                        <h3 class="font-semibold text-white text-xl mb-2">No Policy Yet</h3>
+                        <p class="text-slate-400 text-base mb-6">Browse our catalog and apply for a cyber policy tailored
                             to your industry.</p>
                         <button routerLink="/customer/policies"
-                            class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-2.5 rounded-xl transition text-sm">Browse
+                            class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-xl transition text-base">Browse
                             Policies →</button>
                     </div>
 
-                    <div *ngIf="stats?.subscriptionStatus !== 'NONE'" class="p-6">
-                        <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+                    <div *ngIf="stats()?.subscriptionStatus !== 'NONE'" class="p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-5 mb-8">
                             <div
-                                class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
-                                🛡️</div>
+                                class="w-16 h-16 bg-blue-500/20 rounded-xl flex items-center justify-center text-3xl flex-shrink-0 border border-blue-500/30">
+                                <svg class="w-8 h-8 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                            </div>
                             <div>
-                                <h3 class="font-bold text-white text-lg">{{ stats?.activePolicyName }}</h3>
-                                <p class="text-sm text-slate-400">ID: <span class="font-mono text-slate-300">{{
-                                        stats?.activePolicyId }}</span></p>
+                                <h3 class="font-bold text-white text-2xl">{{ stats()?.activePolicyName }}</h3>
+                                <p class="text-base text-slate-400 mt-1">ID: <span class="font-mono text-slate-300">{{
+                                        stats()?.activePolicyId }}</span></p>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                            <div class="bg-slate-900/50 rounded-xl p-3 border border-slate-700/50">
-                                <p class="text-xs text-slate-500 mb-1">Coverage</p>
-                                <p class="font-bold text-emerald-400">{{ coverageDisplay }}</p>
+                            <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
+                                <p class="text-sm font-semibold text-slate-500 mb-1">Coverage</p>
+                                <p class="text-lg font-bold text-emerald-400">{{ coverageDisplay() }}</p>
                             </div>
-                            <div class="bg-slate-900/50 rounded-xl p-3 border border-slate-700/50">
-                                <p class="text-xs text-slate-500 mb-1">Start Date</p>
-                                <p class="font-semibold text-white text-sm">{{ stats?.policyStartDate || '—' }}</p>
+                            <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
+                                <p class="text-sm font-semibold text-slate-500 mb-1">Start Date</p>
+                                <p class="text-base font-semibold text-white">{{ stats()?.policyStartDate || '—' }}</p>
                             </div>
-                            <div class="bg-slate-900/50 rounded-xl p-3 border border-slate-700/50">
-                                <p class="text-xs text-slate-500 mb-1">Valid Until</p>
-                                <p class="font-semibold text-white text-sm">{{ stats?.policyEndDate || '—' }}</p>
+                            <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
+                                <p class="text-sm font-semibold text-slate-500 mb-1">Valid Until</p>
+                                <p class="text-base font-semibold text-white">{{ stats()?.policyEndDate || '—' }}</p>
                             </div>
-                            <div class="bg-slate-900/50 rounded-xl p-3 border border-slate-700/50">
-                                <p class="text-xs text-slate-500 mb-1">Underwriter</p>
-                                <p class="font-semibold text-white text-sm">{{ stats?.assignedUnderwriterName }}</p>
+                            <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
+                                <p class="text-sm font-semibold text-slate-500 mb-1">Underwriter</p>
+                                <p class="text-base font-semibold text-white">{{ stats()?.assignedUnderwriterName }}</p>
                             </div>
                         </div>
 
                         <!-- Renewal Warning -->
-                        <div *ngIf="stats?.daysToRenewal !== null && stats?.daysToRenewal <= 60 && stats?.daysToRenewal > 0"
+                        <div *ngIf="stats()?.daysToRenewal != null && stats()?.daysToRenewal! <= 60 && stats()?.daysToRenewal! > 0"
                             class="mt-4 flex items-center justify-between bg-amber-900/20 border border-amber-500/30 rounded-xl p-3">
-                            <p class="text-sm text-amber-300">⚠️ Renewal due in <strong>{{ stats.daysToRenewal }}
+                            <p class="text-sm text-amber-300">Renewal due in <strong>{{ stats()?.daysToRenewal }}
                                     days</strong></p>
                             <button
                                 class="bg-amber-500 hover:bg-amber-400 text-black font-semibold text-xs px-3 py-1.5 rounded-lg transition">Renew
                                 Now</button>
                         </div>
 
-                        <!-- APPROVED: Plan Details from Underwriter -->
-                        <div *ngIf="stats?.subscriptionStatus === 'APPROVED'"
-                            class="mt-5 bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-4">
-                            <div class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-3">📋
-                                Underwriter Plan Details</div>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+                        <!-- APPROVED: Comprehensive Drafted Plan Details -->
+                        <div *ngIf="stats()?.subscriptionStatus === 'APPROVED' || stats()?.subscriptionStatus === 'ACTIVE'"
+                            class="mt-5 bg-emerald-900/10 border border-emerald-500/20 rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-5">
+                                <h4
+                                    class="text-sm font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+                                    Finalized Policy Drafting
+                                </h4>
+                                <span
+                                    class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-bold rounded-lg border border-emerald-500/30">
+                                    UNDERWRITER APPROVED
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                                 <div>
-                                    <div class="text-xs text-slate-400">Risk Score</div>
-                                    <div class="font-bold text-white">{{stats?.riskScore ?? '—'}}<span
-                                            class="text-slate-400 font-normal">/100</span></div>
-                                    <div class="text-xs"
-                                        [ngClass]="{'text-emerald-400': stats?.riskLevel === 'LOW', 'text-yellow-400': stats?.riskLevel === 'MEDIUM', 'text-red-400': stats?.riskLevel === 'HIGH'}">
-                                        {{stats?.riskLevel}} RISK</div>
+                                    <div class="text-sm text-slate-500 uppercase font-semibold mb-1">Premium</div>
+                                    <div class="text-2xl font-bold text-white">{{premiumDisplay()}}</div>
+                                    <div class="text-xs text-slate-500 mt-1">Annual payment</div>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-400">Annual Premium</div>
-                                    <div class="font-bold text-white">{{premiumDisplay}}</div>
+                                    <div class="text-sm text-slate-500 uppercase font-semibold mb-1">Total Coverage
+                                    </div>
+                                    <div class="text-2xl font-bold text-emerald-400">{{coverageGrantedDisplay()}}</div>
+                                    <div class="text-xs text-slate-500 mt-1">Policy aggregate limit</div>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-400">Coverage Granted</div>
-                                    <div class="font-bold text-emerald-300">{{coverageGrantedDisplay}}</div>
+                                    <div class="text-sm text-slate-500 uppercase font-semibold mb-1">Sub-Limit</div>
+                                    <div class="text-2xl font-bold text-white">{{policyLimitDisplay()}}</div>
+                                    <div class="text-xs text-slate-500 mt-1">Major claim cap</div>
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-400">Tenure</div>
-                                    <div class="font-bold text-white">{{stats?.tenureMonths ?? '—'}} months</div>
+                                    <div class="text-sm text-slate-500 uppercase font-semibold mb-1">Deductible</div>
+                                    <div class="text-2xl font-bold text-amber-400">{{deductibleDisplay()}}</div>
+                                    <div class="text-xs text-slate-500 mt-1">Per claim excess</div>
                                 </div>
                             </div>
-                            <div *ngIf="stats?.underwriterNotes"
-                                class="mt-3 text-xs text-slate-400 bg-slate-900/40 rounded-lg px-3 py-2">
-                                💬 Underwriter Notes: {{stats?.underwriterNotes}}
+
+                            <div class="space-y-4">
+                                <!-- Exclusions -->
+                                <div *ngIf="exclusionsList().length > 0">
+                                    <div
+                                        class="text-xs text-slate-500 uppercase font-semibold mb-2 flex items-center gap-1.5">
+                                        Policy Exclusions
+                                    </div>
+                                    <ul class="space-y-1.5">
+                                        <li *ngFor="let exc of exclusionsList()"
+                                            class="flex gap-2 text-xs text-slate-300">
+                                            <span class="text-slate-500">•</span>
+                                            <span>{{exc}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Notes -->
+                                <div *ngIf="stats()?.underwriterNotes">
+                                    <div
+                                        class="text-xs text-slate-500 uppercase font-semibold mb-2 flex items-center gap-1.5">
+                                        Underwriter Remarks
+                                    </div>
+                                    <div
+                                        class="text-xs text-slate-400 italic bg-slate-900/50 rounded-xl px-4 py-3 border border-slate-700/50">
+                                        "{{stats()?.underwriterNotes}}"
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -177,18 +220,19 @@
                 </div>
 
                 <!-- REJECTED Policy Banner -->
-                <div *ngIf="stats?.subscriptionStatus === 'REJECTED'"
+                <div *ngIf="stats()?.subscriptionStatus === 'REJECTED'"
                     class="bg-red-900/20 border border-red-500/40 rounded-2xl p-6">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl">❌</span>
+                        <span class="text-3xl text-red-500 font-bold">X</span>
                         <div>
                             <h3 class="font-bold text-red-300 text-lg">Policy Application Rejected</h3>
                             <p class="text-sm text-red-400 mt-1">Your policy application for
-                                <strong>{{stats?.activePolicyName}}</strong> was not approved.</p>
-                            <div *ngIf="stats?.rejectionReason"
+                                <strong>{{stats()?.activePolicyName}}</strong> was not approved.
+                            </p>
+                            <div *ngIf="stats()?.rejectionReason"
                                 class="mt-3 bg-red-900/30 border border-red-500/30 rounded-xl px-4 py-2">
                                 <div class="text-xs text-red-400 mb-1">Reason</div>
-                                <div class="text-sm text-white">{{stats?.rejectionReason}}</div>
+                                <div class="text-sm text-white">{{stats()?.rejectionReason}}</div>
                             </div>
                             <p class="text-sm text-slate-400 mt-3">You may apply for a different policy or contact
                                 support for more details.</p>
@@ -201,52 +245,49 @@
 
                 <!-- CLAIMS TABLE -->
                 <div class="bg-slate-800/60 border border-slate-700/50 rounded-2xl">
-                    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-700/50">
-                        <h2 class="font-bold text-white text-lg">My Claims</h2>
-                        <button (click)="openClaimModal()"
-                            class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">+
-                            File Claim</button>
+                    <div class="flex items-center justify-between px-6 py-5 border-b border-slate-700/50">
+                        <h2 class="font-bold text-white text-xl">My Claims</h2>
                     </div>
 
-                    <div *ngIf="claimsLoading" class="flex justify-center py-10">
+                    <div *ngIf="loading()" class="flex justify-center py-10">
                         <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">
                         </div>
                     </div>
 
-                    <div *ngIf="!claimsLoading && claims.length === 0" class="py-10 text-center">
-                        <p class="text-3xl mb-2">📄</p>
-                        <p class="text-slate-400 text-sm">No claims filed yet.</p>
+                    <div *ngIf="claimsList().length === 0" class="py-12 text-center">
+                        <p class="text-4xl mb-3 text-slate-600 font-serif font-black italic">NA</p>
+                        <p class="text-slate-400 text-base">No claims filed yet.</p>
                     </div>
 
-                    <div *ngIf="!claimsLoading && claims.length > 0" class="overflow-x-auto">
-                        <table class="w-full text-sm">
+                    <div *ngIf="claimsList().length > 0" class="overflow-x-auto">
+                        <table class="w-full text-base">
                             <thead>
                                 <tr
-                                    class="text-xs text-slate-500 uppercase tracking-wider border-b border-slate-700/50">
-                                    <th class="text-left px-6 py-3">Claim #</th>
-                                    <th class="text-left px-4 py-3">Incident</th>
-                                    <th class="text-left px-4 py-3">Amount</th>
-                                    <th class="text-left px-4 py-3">Status</th>
-                                    <th class="text-left px-4 py-3">Filed</th>
-                                    <th class="text-left px-6 py-3">Officer</th>
+                                    class="text-sm text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-700/50">
+                                    <th class="text-left px-6 py-4">Claim #</th>
+                                    <th class="text-left px-4 py-4">Incident</th>
+                                    <th class="text-left px-4 py-4">Amount</th>
+                                    <th class="text-left px-4 py-4">Status</th>
+                                    <th class="text-left px-4 py-4">Filed</th>
+                                    <th class="text-left px-6 py-4">Officer</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let c of claims"
+                                <tr *ngFor="let c of claimsList()"
                                     class="border-b border-slate-700/30 hover:bg-slate-700/20 transition">
-                                    <td class="px-6 py-3 font-mono text-blue-400">#{{ c.id }}</td>
-                                    <td class="px-4 py-3 text-white">{{ c.incident?.incidentType || '—' }}</td>
-                                    <td class="px-4 py-3 text-emerald-400 font-semibold">₹{{ c.claimAmount | number }}
+                                    <td class="px-6 py-4 font-mono text-blue-400 font-bold">#{{ c.id }}</td>
+                                    <td class="px-4 py-4 text-white font-medium">{{ c.incident?.incidentType || '—' }}</td>
+                                    <td class="px-4 py-4 text-emerald-400 font-bold">₹{{ c.claimAmount | number }}
                                     </td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-4 py-4">
                                         <span [ngClass]="{
                       'bg-amber-900/50 text-amber-400 border-amber-600/30': c.status === 'PENDING',
                       'bg-emerald-900/50 text-emerald-400 border-emerald-600/30': c.status === 'APPROVED',
                       'bg-red-900/50 text-red-400 border-red-600/30': c.status === 'REJECTED'
-                    }" class="border text-xs font-bold px-2.5 py-1 rounded-full">{{ c.status }}</span>
+                    }" class="border text-sm font-bold px-3 py-1.5 rounded-full">{{ c.status }}</span>
                                     </td>
-                                    <td class="px-4 py-3 text-slate-400">{{ c.filedAt | date:'mediumDate' }}</td>
-                                    <td class="px-6 py-3 text-slate-400">{{ c.reviewedBy?.fullName || '—' }}</td>
+                                    <td class="px-4 py-4 text-slate-400">{{ c.filedAt | date:'mediumDate' }}</td>
+                                    <td class="px-6 py-4 text-slate-400">{{ c.reviewedBy?.fullName || '—' }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -264,19 +305,19 @@
                     <div class="flex flex-col items-center">
                         <svg class="w-36 h-36" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="40" fill="none" stroke="#1e293b" stroke-width="10" />
-                            <circle cx="50" cy="50" r="40" fill="none" [attr.stroke]="riskColor" stroke-width="10"
+                            <circle cx="50" cy="50" r="40" fill="none" [attr.stroke]="riskColor()" stroke-width="10"
                                 stroke-linecap="round" [attr.stroke-dasharray]="2 * 3.14159 * 40"
-                                [attr.stroke-dashoffset]="riskStrokeDashoffset" transform="rotate(-90 50 50)"
+                                [attr.stroke-dashoffset]="riskStrokeDashoffset()" transform="rotate(-90 50 50)"
                                 style="transition: stroke-dashoffset 1.2s ease" />
                             <text x="50" y="47" text-anchor="middle" font-size="20" font-weight="bold"
-                                [attr.fill]="riskColor">{{ riskScore ?? '?' }}</text>
+                                [attr.fill]="riskColor()">{{ riskScore() ?? '?' }}</text>
                             <text x="50" y="60" text-anchor="middle" font-size="8" fill="#64748b">/ 100</text>
                         </svg>
 
-                        <p class="font-bold text-xl mt-2" [style.color]="riskColor">{{ riskLevel }}</p>
+                        <p class="font-bold text-xl mt-2" [style.color]="riskColor()">{{ riskLevel() }}</p>
                         <p class="text-xs text-slate-500">Cyber Risk Level</p>
 
-                        <div *ngIf="!stats?.latestRiskScore" class="text-center mt-4">
+                        <div *ngIf="!stats()?.latestRiskScore" class="text-center mt-4">
                             <p class="text-slate-400 text-xs mb-3">No risk assessment completed yet.</p>
                             <button routerLink="/customer/policies"
                                 class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">Take
@@ -293,46 +334,46 @@
     </ng-container>
 
     <!-- ═══════════════════ FILE CLAIM MODAL ═══════════════════ -->
-    <div *ngIf="showClaimModal"
+    <div *ngIf="showClaimModal()"
         class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md shadow-2xl">
-            <div class="flex items-center justify-between p-5 border-b border-slate-700">
-                <h3 class="font-bold text-lg text-white">File a New Claim</h3>
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-lg shadow-2xl">
+            <div class="flex items-center justify-between p-6 border-b border-slate-700">
+                <h3 class="font-bold text-xl text-white">File a New Claim</h3>
                 <button (click)="closeClaimModal()"
-                    class="text-slate-400 hover:text-white text-xl transition">✕</button>
+                    class="text-slate-400 hover:text-white text-2xl transition">✕</button>
             </div>
-            <div class="p-5 space-y-4">
-                <div *ngIf="claimError"
-                    class="bg-red-900/30 border border-red-500/30 text-red-400 text-sm p-3 rounded-xl">⚠️ {{ claimError
+            <div class="p-6 space-y-5">
+                <div *ngIf="claimError()"
+                    class="bg-red-900/30 border border-red-500/30 text-red-400 text-base font-semibold p-4 rounded-xl">⚠️ {{ claimError()
                     }}</div>
                 <div>
-                    <label class="block text-sm text-slate-300 mb-1.5 font-medium">Linked Incident <span
+                    <label class="block text-base text-slate-300 mb-2 font-semibold">Linked Incident <span
                             class="text-red-400">*</span></label>
-                    <select [(ngModel)]="claimData.incidentId"
-                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    <select [ngModel]="claimData().incidentId" (ngModelChange)="updateClaimData('incidentId', $event)"
+                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-500">
                         <option [ngValue]="null" disabled>Select a reported incident…</option>
-                        <option *ngFor="let inc of myIncidents" [value]="inc.id">
+                        <option *ngFor="let inc of myIncidents()" [value]="inc.id">
                             {{ inc.incidentType }} — ₹{{ inc.estimatedLossAmount | number }} ({{ inc.reportedAt |
                             date:'shortDate' }})
                         </option>
                     </select>
-                    <p *ngIf="myIncidents.length === 0" class="text-amber-400 text-xs mt-1.5">⚠️ No incidents yet. <a
+                    <p *ngIf="myIncidents().length === 0" class="text-amber-400 text-sm mt-2">⚠️ No incidents yet. <a
                             routerLink="/customer/incidents" class="underline">Report one first.</a></p>
                 </div>
                 <div>
-                    <label class="block text-sm text-slate-300 mb-1.5 font-medium">Claim Amount (₹) <span
+                    <label class="block text-base text-slate-300 mb-2 font-semibold">Claim Amount (₹) <span
                             class="text-red-400">*</span></label>
-                    <input type="number" [(ngModel)]="claimData.claimAmount" placeholder="e.g. 500000"
-                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
-                    <p class="text-xs text-slate-500 mt-1">Max: {{ coverageDisplay }}</p>
+                    <input type="number" [ngModel]="claimData().claimAmount" (ngModelChange)="updateClaimData('claimAmount', $event)" placeholder="e.g. 500000"
+                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-xl px-4 py-3 text-base focus:outline-none focus:border-blue-500" />
+                    <p class="text-sm text-slate-400 mt-2">Max: <span class="text-white font-medium">{{ coverageDisplay() }}</span></p>
                 </div>
             </div>
-            <div class="flex gap-3 p-5 border-t border-slate-700">
+            <div class="flex gap-4 p-6 border-t border-slate-700">
                 <button (click)="closeClaimModal()"
-                    class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 rounded-xl transition text-sm">Cancel</button>
-                <button (click)="submitClaim()" [disabled]="claimSubmitting || myIncidents.length === 0"
-                    class="flex-1 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-2.5 rounded-xl transition text-sm">
-                    {{ claimSubmitting ? 'Submitting…' : 'Submit Claim' }}
+                    class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl transition text-base">Cancel</button>
+                <button (click)="submitClaim()" [disabled]="claimSubmitting() || myIncidents().length === 0"
+                    class="flex-1 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-3 rounded-xl transition text-base">
+                    {{ claimSubmitting() ? 'Submitting…' : 'Submit Claim' }}
                 </button>
             </div>
         </div>

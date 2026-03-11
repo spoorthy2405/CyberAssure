@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, catchError, of } from 'rxjs';
 import { AdminApiService } from '../services/admin.service';
 
 @Component({
@@ -8,54 +10,87 @@ import { AdminApiService } from '../services/admin.service';
   imports: [CommonModule],
   templateUrl: './dashboard.html'
 })
-export class AdminDashboard implements OnInit {
+export class AdminDashboard {
 
-  // Initializing with some baseline demo data so it doesn't look empty on fresh start
-  stats: any = {
-    totalCustomers: 4,
-    totalPolicies: 32,
-    activeClaims: 8,
-    approvedClaims: 15,
-    totalClaims: 28,
-    rejectedClaims: 5,
-    totalUnderwriters: 2,
-    totalClaimsOfficers: 2
-  };
+  private adminApi = inject(AdminApiService);
 
-  recentClaims = [
-    { id: '#CLM-8012', customer: 'TechCorp India', amount: '₹12,50,000', status: 'Pending' },
-    { id: '#CLM-8011', customer: 'Global Health Clinics', amount: '₹4,20,000', status: 'Approved' },
-    { id: '#CLM-8010', customer: 'FinSecure Bank', amount: '₹8,90,000', status: 'Under Review' }
-  ];
+  // Modal State
+  showClaimsModal = signal(false);
+  showPoliciesModal = signal(false);
 
-  recentPolicies = [
-    { customer: 'TechCorp India', type: 'Financial Data Protection', premium: '₹2,50,000/yr', status: 'Active' },
-    { customer: 'Global Health Clinics', type: 'Patient Data Protection', premium: '₹1,20,000/yr', status: 'Pending' },
-    { customer: 'FinSecure Bank', type: 'Core Banking System Shield', premium: '₹5,00,000/yr', status: 'Active' }
-  ];
+  // Stats — converted from Observable to Signal (auto-triggers re-render)
+  private statsRaw = toSignal(
+    this.adminApi.getDashboardStats().pipe(
+      catchError(() => of(null))
+    ),
+    { initialValue: null }
+  );
 
-  constructor(private adminApi: AdminApiService) { }
+  stats = computed(() => {
+    const data = this.statsRaw();
+    return {
+      totalCustomers: data?.totalCustomers ?? 0,
+      totalPolicies: data?.totalPolicies ?? 0,
+      totalUnderwriters: data?.totalUnderwriters ?? 0,
+      totalClaimsOfficers: data?.totalClaimsOfficers ?? 0,
+      totalClaims: data?.totalClaims ?? 0,
+      activeClaims: data?.activeClaims ?? 0,
+      approvedClaims: data?.approvedClaims ?? 0,
+      rejectedClaims: data?.rejectedClaims ?? 0
+    };
+  });
 
-  ngOnInit() {
-    this.adminApi.getDashboardStats().subscribe({
-      next: (data) => {
-        // Merge real data onto our baseline to ensure a "full" look
-        this.stats = {
-          ...this.stats,
-          ...data,
-          // If real DB has data, we use it, otherwise keep the baseline "demo" values
-          totalCustomers: data.totalCustomers || this.stats.totalCustomers,
-          totalPolicies: data.totalPolicies || this.stats.totalPolicies,
-          totalUnderwriters: data.totalUnderwriters || this.stats.totalUnderwriters,
-          totalClaimsOfficers: data.totalClaimsOfficers || this.stats.totalClaimsOfficers,
-          totalClaims: data.totalClaims || this.stats.totalClaims,
-          activeClaims: data.activeClaims || this.stats.activeClaims,
-          approvedClaims: data.approvedClaims || this.stats.approvedClaims,
-          rejectedClaims: data.rejectedClaims || this.stats.rejectedClaims
-        };
-      },
-      error: (err) => console.error("Error fetching dashboard stats", err)
-    });
+  // Claims — Signal from Observable
+  private claimsRaw = toSignal(
+    this.adminApi.getClaims().pipe(
+      map(claims => claims.map(c => ({
+        id: '#CLM-' + c.id,
+        customer: c.customer?.companyName || c.customer?.fullName || 'Unknown',
+        amount: '₹' + (c.claimAmount || 0).toLocaleString('en-IN'),
+        status: c.status,
+        date: c.filedAt ? new Date(c.filedAt).toLocaleDateString() : 'N/A'
+      }))),
+      catchError(() => of([]))
+    ),
+    { initialValue: [] }
+  );
+
+  allClaims = computed(() => this.claimsRaw());
+  recentClaims = computed(() => this.claimsRaw().slice(0, 5));
+
+  // Policies — Signal from Observable
+  private policiesRaw = toSignal(
+    this.adminApi.getPolicies().pipe(
+      map(policies => policies.map(p => ({
+        customer: p.customer?.companyName || p.customer?.fullName || 'Unknown',
+        type: p.policy?.policyName || 'Standard Policy',
+        premium: '₹' + (p.calculatedPremium || 0).toLocaleString('en-IN') + '/yr',
+        status: p.status,
+        date: p.createdAt ? new Date(p.createdAt).toLocaleDateString() : 'N/A'
+      }))),
+      catchError(() => of([]))
+    ),
+    { initialValue: [] }
+  );
+
+  allPolicies = computed(() => this.policiesRaw());
+  recentPolicies = computed(() => this.policiesRaw().slice(0, 5));
+
+  // --- Modal Triggers ---
+
+  openClaimsDirectory() {
+    this.showClaimsModal.set(true);
   }
 
+  closeClaimsDirectory() {
+    this.showClaimsModal.set(false);
+  }
+
+  openPolicyCatalog() {
+    this.showPoliciesModal.set(true);
+  }
+
+  closePolicyCatalog() {
+    this.showPoliciesModal.set(false);
+  }
 }

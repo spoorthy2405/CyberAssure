@@ -52,4 +52,11 @@ public class PolicySubscriptionController {
     public ResponseEntity<List<PolicySubscription>> getMyAssigned(java.security.Principal principal) {
         return ResponseEntity.ok(service.getAssignedToMe(principal.getName()));
     }
+
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @PostMapping("/{id}/pay")
+    public ResponseEntity<PolicySubscription> paySubscription(
+            @PathVariable Long id) {
+        return ResponseEntity.ok(service.paySubscription(id));
+    }
 }

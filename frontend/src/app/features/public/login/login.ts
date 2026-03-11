@@ -1,58 +1,73 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule],
+    imports: [CommonModule, RouterModule, ReactiveFormsModule],
     templateUrl: './login.html',
     styleUrl: './login.css'
 })
-export class Login {
+export class Login implements OnInit {
+    loginForm!: FormGroup;
 
-    email = '';
-    password = '';
-    rememberMe = false;
     loading = false;
     errorMsg = '';
     showPassword = false;
 
-    constructor(private authService: AuthService) { }
+    constructor(
+        private authService: AuthService,
+        private fb: FormBuilder
+    ) { }
+
+    ngOnInit(): void {
+        this.loginForm = this.fb.group({
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', Validators.required],
+            rememberMe: [false]
+        });
+    }
 
     togglePassword() {
         this.showPassword = !this.showPassword;
     }
 
     onLogin() {
-
         this.errorMsg = '';
 
-        if (!this.email || !this.password) {
-            this.errorMsg = 'Please enter your email and password.';
+        if (this.loginForm.invalid) {
+            this.loginForm.markAllAsTouched();
             return;
         }
 
         this.loading = true;
 
         this.authService.login({
-            email: this.email,
-            password: this.password
+            email: this.loginForm.value.email,
+            password: this.loginForm.value.password
         }).subscribe({
-
-            next: () => {
+            next: (res) => {
                 this.loading = false;
-                // redirect handled in AuthService
-            },
+                
+                // store JWT synchronously first
+                if (res.token) localStorage.setItem('token', res.token);
+                if (res.role) localStorage.setItem('role', res.role);
+                if (res.email) localStorage.setItem('email', res.email);
 
+                // Redirect based on role
+                Promise.resolve().then(() => {
+                    if (res.role) {
+                        this.authService.redirectByRole(res.role);
+                    }
+                });
+            },
             error: (err) => {
                 this.loading = false;
-                this.errorMsg =
-                    err.error?.message || 'Invalid email or password.';
+                this.errorMsg = err.error?.message || 'Invalid email or password.';
             }
-
         });
     }
 }

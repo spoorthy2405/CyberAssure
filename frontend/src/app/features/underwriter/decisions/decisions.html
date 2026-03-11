@@ -1,62 +1,92 @@
-<h2 class="text-2xl font-bold mb-6">
-    Underwriter Decisions
-</h2>
+<div class="max-w-7xl mx-auto px-6 py-8">
 
-<div *ngIf="loading" class="text-gray-400 mb-4">
-    Loading decisions...
+    <!-- PAGE TITLE -->
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-semibold text-white">
+            Underwriter Decisions
+        </h2>
+    </div>
+
+    <!-- LOADING -->
+    <div *ngIf="loading()" class="text-gray-400 text-sm mb-4">
+        Loading decisions...
+    </div>
+
+    <!-- TABLE CONTAINER -->
+    <div class="bg-slate-800 rounded-lg shadow border border-slate-700 overflow-hidden">
+
+        <table class="w-full text-sm text-left">
+
+            <!-- TABLE HEADER -->
+            <thead class="bg-slate-700 text-gray-300 uppercase text-xs tracking-wider">
+                <tr>
+
+                    <th class="px-6 py-4">Customer</th>
+                    <th class="px-6 py-4">Policy</th>
+                    <th class="px-6 py-4 text-center">Risk Level</th>
+                    <th class="px-6 py-4 text-center">Premium</th>
+                    <th class="px-6 py-4 text-center">Status</th>
+
+                </tr>
+            </thead>
+
+            <!-- TABLE BODY -->
+            <tbody class="divide-y divide-slate-700">
+
+                <tr *ngFor="let d of decisions()" class="hover:bg-slate-750 transition">
+
+                    <td class="px-6 py-4 font-medium text-white">
+                        {{ d.customer?.fullName }}
+                    </td>
+
+                    <td class="px-6 py-4 text-gray-300">
+                        {{ d.policy?.policyName }}
+                    </td>
+
+                    <td class="px-6 py-4 text-center">
+
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full" [ngClass]="{
+                                'bg-yellow-500/20 text-yellow-400': d.riskAssessment?.riskLevel === 'MEDIUM',
+                                'bg-red-500/20 text-red-400': d.riskAssessment?.riskLevel === 'HIGH',
+                                'bg-green-500/20 text-green-400': d.riskAssessment?.riskLevel === 'LOW'
+                              }">
+
+                            {{ d.riskAssessment?.riskLevel }}
+
+                        </span>
+
+                    </td>
+
+                    <td class="px-6 py-4 text-center font-semibold text-white">
+                        ₹ {{ d.calculatedPremium }}
+                    </td>
+
+                    <td class="px-6 py-4 text-center">
+
+                        <span class="px-3 py-1 text-xs font-bold rounded-full" [ngClass]="{
+                                'bg-green-500/20 text-green-400': d.status === 'APPROVED',
+                                'bg-red-500/20 text-red-400': d.status === 'REJECTED'
+                              }">
+
+                            {{ d.status }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                <!-- EMPTY STATE -->
+                <tr *ngIf="!loading() && decisions().length === 0">
+                    <td colspan="5" class="text-center py-8 text-gray-400">
+                        No decisions available
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>
-
-<table class="w-full bg-slate-800 rounded overflow-hidden">
-
-    <thead class="bg-slate-700">
-
-        <tr class="text-left text-sm uppercase text-gray-300">
-
-            <th class="p-3">Customer</th>
-            <th class="p-3">Policy</th>
-            <th class="p-3">Risk Level</th>
-            <th class="p-3">Premium</th>
-            <th class="p-3">Status</th>
-
-        </tr>
-
-    </thead>
-
-    <tbody>
-
-        <tr *ngFor="let d of decisions" class="border-t border-slate-700">
-
-            <td class="p-3">
-                {{ d.customer?.fullName }}
-            </td>
-
-            <td class="p-3">
-                {{ d.policy?.policyName }}
-            </td>
-
-            <td class="p-3">
-                {{ d.riskAssessment?.riskLevel }}
-            </td>
-
-            <td class="p-3">
-                ₹ {{ d.calculatedPremium }}
-            </td>
-
-            <td class="p-3">
-
-                <span class="font-bold" [ngClass]="{
-'text-green-400': d.status === 'APPROVED',
-'text-red-400': d.status === 'REJECTED'
-}">
-
-                    {{ d.status }}
-
-                </span>
-
-            </td>
-
-        </tr>
-
-    </tbody>
-
-</table>

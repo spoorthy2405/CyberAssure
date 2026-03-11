@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
 import { AdminApiService } from '../services/admin.service';
 
 @Component({
@@ -8,17 +10,12 @@ import { AdminApiService } from '../services/admin.service';
   imports: [CommonModule],
   templateUrl: './analytics.html'
 })
-export class Analytics implements OnInit {
+export class Analytics {
 
-  analyticsData: any = {};
+  private adminApi = inject(AdminApiService);
 
-  constructor(private adminApi: AdminApiService) { }
-
-  ngOnInit() {
-    this.adminApi.getAnalytics().subscribe({
-      next: (data) => this.analyticsData = data,
-      error: (err) => console.error("Error fetching analytics data", err)
-    });
-  }
-
+  analyticsData = toSignal(
+    this.adminApi.getAnalytics().pipe(catchError(() => of({}))),
+    { initialValue: {} }
+  );
 }

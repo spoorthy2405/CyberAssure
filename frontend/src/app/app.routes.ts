@@ -31,6 +31,7 @@ export const routes: Routes = [
     {
         path: 'customer',
         canActivate: [authGuard],
+        data: { roles: ['ROLE_CUSTOMER'] },
         loadChildren: () =>
             import('./features/customer/customer.routes')
                 .then(m => m.CUSTOMER_ROUTES)
@@ -40,6 +41,7 @@ export const routes: Routes = [
     {
         path: 'admin',
         canActivate: [authGuard],
+        data: { roles: ['ROLE_ADMIN'] },
         loadChildren: () =>
             import('./features/admin/admin.routes')
                 .then(m => m.ADMIN_ROUTES)
@@ -49,6 +51,7 @@ export const routes: Routes = [
     {
         path: 'underwriter',
         canActivate: [authGuard],
+        data: { roles: ['ROLE_UNDERWRITER'] },
         loadChildren: () =>
             import('./features/underwriter/underwriter.routes')
                 .then(m => m.UNDERWRITER_ROUTES)
@@ -58,6 +61,7 @@ export const routes: Routes = [
     {
         path: 'claims',
         canActivate: [authGuard],
+        data: { roles: ['ROLE_CLAIMS_OFFICER'] },
         loadChildren: () =>
             import('./features/claims/claims.routes')
                 .then(m => m.CLAIMS_ROUTES)

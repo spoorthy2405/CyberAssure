@@ -6,7 +6,9 @@ import com.cyberassure.cyberassureproject.entity.User;
 import com.cyberassure.cyberassureproject.repository.RoleRepository;
 import com.cyberassure.cyberassureproject.repository.UserRepository;
 import com.cyberassure.cyberassureproject.repository.CyberPolicyRepository;
+import com.cyberassure.cyberassureproject.repository.ClaimRepository;
 import com.cyberassure.cyberassureproject.entity.CyberPolicy;
+import com.cyberassure.cyberassureproject.entity.Claim;
 import com.cyberassure.cyberassureproject.dto.CyberPolicyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,7 @@ public class AdminService {
     private final RoleRepository roleRepository;
     private final CyberPolicyRepository policyRepository;
     private final com.cyberassure.cyberassureproject.repository.PolicySubscriptionRepository subscriptionRepository;
+    private final ClaimRepository claimRepository;
     private final PasswordEncoder passwordEncoder;
 
     public User createStaff(CreateStaffRequest request) {
@@ -65,6 +68,55 @@ public class AdminService {
                 .stream()
                 .filter(u -> !u.getRole().getRoleName().equals("ROLE_CUSTOMER"))
                 .toList();
+    }
+
+    public User updateStaff(Long userId, com.cyberassure.cyberassureproject.dto.UpdateStaffRequest request) {
+        User staff = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Staff member not found"));
+
+        // Don't allow changing role if they aren't staff
+        if (staff.getRole().getRoleName().equals("ROLE_CUSTOMER")) {
+            throw new RuntimeException("Cannot update customer via staff endpoint");
+        }
+
+        staff.setFullName(request.getFullName());
+        staff.setEmail(request.getEmail());
+        
+        // Only update password if provided
+        if (request.getPassword() != null && !request.getPassword().trim().isEmpty()) {
+            staff.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        }
+
+        // Handle Role Update
+        if (!staff.getRole().getRoleName().equals(request.getRoleName())) {
+            if (!request.getRoleName().equals("ROLE_UNDERWRITER")
+                    && !request.getRoleName().equals("ROLE_CLAIMS_OFFICER")) {
+                throw new RuntimeException("Invalid staff role");
+            }
+            Role role = roleRepository.findByRoleName(request.getRoleName())
+                    .orElseThrow(() -> new RuntimeException("Role not found"));
+            staff.setRole(role);
+        }
+
+        return userRepository.save(staff);
+    }
+
+    public void deactivateStaff(Long userId) {
+        User staff = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Staff member not found"));
+
+        if (staff.getRole().getRoleName().equals("ROLE_CUSTOMER")) {
+            throw new RuntimeException("Cannot deactivate customer via staff endpoint");
+        }
+
+        // Toggle logic based on current status
+        if ("ACTIVE".equals(staff.getAccountStatus())) {
+             staff.setAccountStatus("INACTIVE");
+        } else {
+             staff.setAccountStatus("ACTIVE");
+        }
+        
+        userRepository.save(staff);
     }
 
     public List<User> getUnderwriters() {
@@ -133,5 +185,20 @@ public class AdminService {
 
         subscription.setAssignedUnderwriter(underwriter);
         subscriptionRepository.save(subscription);
+    }
+
+    public void assignClaimsOfficer(Long claimId, Long officerId) {
+        Claim claim = claimRepository.findById(claimId)
+                .orElseThrow(() -> new RuntimeException("Claim not found"));
+
+        User officer = userRepository.findById(officerId)
+                .orElseThrow(() -> new RuntimeException("Claims Officer not found"));
+
+        if (!officer.getRole().getRoleName().equals("ROLE_CLAIMS_OFFICER")) {
+            throw new RuntimeException("Assigned user must be a claims officer");
+        }
+
+        claim.setAssignedOfficer(officer);
+        claimRepository.save(claim);
     }
 }

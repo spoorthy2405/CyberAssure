@@ -1,35 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-register',
-    imports: [CommonModule, RouterModule, FormsModule],
+    imports: [CommonModule, RouterModule, ReactiveFormsModule],
     templateUrl: './register.html',
     styleUrl: './register.css'
 })
-export class Register {
-
-    // Form fields — match your RegisterRequest exactly
-    fullName = '';
-    email = '';
-    phoneNumber = '';
-    companyName = '';
-    industry = '';
-    companySize = '';
-
-    // New Corporate Identity Fields
-    companyAddress = '';
-    companyWebsite = '';
-    registrationNumber = '';
-    annualRevenue = '';
-
-    password = '';
-    confirmPassword = '';
-    agreeTerms = false;
-    agreeData = false;
+export class Register implements OnInit {
+    registerForm!: FormGroup;
 
     loading = false;
     errorMsg = '';
@@ -66,10 +48,39 @@ export class Register {
         'Over ₹250 Crore'
     ];
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(
+        private fb: FormBuilder,
+        private http: HttpClient, 
+        private router: Router
+    ) { }
+
+    ngOnInit(): void {
+        this.registerForm = this.fb.group({
+            fullName: ['', [Validators.required]],
+            email: ['', [Validators.required, Validators.email]],
+            phoneNumber: ['', [Validators.required, Validators.pattern('^[+0-9\\s-]{10,15}$')]],
+            companyName: ['', [Validators.required]],
+            registrationNumber: ['', [Validators.required]],
+            companyAddress: [''],
+            companyWebsite: [''],
+            annualRevenue: [''],
+            industry: [''],
+            companySize: [''],
+            password: ['', [Validators.required, Validators.minLength(8)]],
+            confirmPassword: ['', [Validators.required]],
+            agreeTerms: [false, Validators.requiredTrue],
+            agreeData: [false, Validators.requiredTrue]
+        }, { validators: this.passwordMatchValidator });
+    }
+
+    passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+        const password = control.get('password')?.value;
+        const confirm = control.get('confirmPassword')?.value;
+        return password === confirm ? null : { passwordMismatch: true };
+    }
 
     get passwordStrength(): number {
-        const p = this.password;
+        const p = this.registerForm.get('password')?.value || '';
         if (!p) return 0;
         let score = 0;
         if (p.length >= 8) score++;
@@ -96,44 +107,20 @@ export class Register {
         this.errorMsg = '';
         this.successMsg = '';
 
-        // Validate all fields
-        if (!this.fullName || !this.email || !this.phoneNumber ||
-            !this.companyName || !this.password || !this.confirmPassword) {
-            this.errorMsg = 'Please fill in all required fields.';
-            return;
-        }
-
-        if (this.password !== this.confirmPassword) {
-            this.errorMsg = 'Passwords do not match.';
-            return;
-        }
-
-        if (this.password.length < 8) {
-            this.errorMsg = 'Password must be at least 8 characters.';
-            return;
-        }
-
-        if (!this.agreeTerms) {
-            this.errorMsg = 'Please accept the Terms & Privacy Policy.';
+        if (this.registerForm.invalid) {
+            this.registerForm.markAllAsTouched();
+            // Show a specific common error if passwords mismatch
+            if (this.registerForm.hasError('passwordMismatch')) {
+                 this.errorMsg = 'Passwords do not match.';
+            } else {
+                 this.errorMsg = 'Please ensure all required fields are filled out correctly.';
+            }
             return;
         }
 
         this.loading = true;
 
-        // Payload matches your RegisterRequest exactly
-        const payload = {
-            fullName: this.fullName,
-            email: this.email,
-            password: this.password,
-            companyName: this.companyName,
-            phoneNumber: this.phoneNumber,
-            industry: this.industry,
-            companySize: this.companySize,
-            companyAddress: this.companyAddress,
-            companyWebsite: this.companyWebsite,
-            registrationNumber: this.registrationNumber,
-            annualRevenue: this.annualRevenue
-        };
+        const payload = this.registerForm.value;
 
         this.http.post<any>(
             'http://localhost:8080/api/v1/auth/register', payload

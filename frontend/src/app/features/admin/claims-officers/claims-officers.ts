@@ -1,24 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminApiService, User } from '../services/admin.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
+import { AdminApiService } from '../services/admin.service';
 
 @Component({
-    selector: 'app-claims-officers',
-    standalone: true,
-    imports: [CommonModule],
-    templateUrl: './claims-officers.html'
+  selector: 'app-claims-officers',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './claims-officers.html'
 })
-export class ClaimsOfficers implements OnInit {
+export class ClaimsOfficers {
 
-    officersList: any[] = [];
+  private adminApi = inject(AdminApiService);
 
-    constructor(private adminApi: AdminApiService) { }
-
-    ngOnInit() {
-        this.adminApi.getClaimsOfficers().subscribe({
-            next: (data) => this.officersList = data,
-            error: (err) => console.error("Error fetching claims officers", err)
-        });
-    }
-
+  officersList = toSignal(
+    this.adminApi.getClaimsOfficers().pipe(catchError(() => of([]))),
+    { initialValue: [] }
+  );
 }

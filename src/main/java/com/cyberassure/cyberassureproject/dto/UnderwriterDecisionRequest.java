@@ -12,4 +12,10 @@ public class UnderwriterDecisionRequest {
     private BigDecimal coverageAmount; // ₹ amount of coverage granted
     private Integer tenureMonths; // policy tenure in months
     private String underwriterNotes; // optional notes
+
+    // Advanced terms
+    private BigDecimal fixedPremium; // Manual override for premium
+    private BigDecimal policyLimit;
+    private BigDecimal deductible;
+    private String exclusions;
 }

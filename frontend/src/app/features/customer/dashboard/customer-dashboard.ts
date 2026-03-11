@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CustomerService } from '../services/customer.service';
-import { timeout, catchError } from 'rxjs/operators';
+import { catchError, filter, startWith, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -12,126 +13,163 @@ import { of } from 'rxjs';
   imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './customer-dashboard.html'
 })
-export class CustomerDashboard implements OnInit {
+export class CustomerDashboard {
+  private service = inject(CustomerService);
+  private router  = inject(Router);
 
-  stats: any = null;
-  claims: any[] = [];
-  loading = false;      // Start as FALSE — show page immediately
-  claimsLoading = false;
-  dataFetching = true;  // Small indicator, not full-page block
+  // Trigger data fetch on navigation to ensure freshness
+  private refresh$ = this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd),
+    startWith(null)
+  );
 
-  // File a Claim modal
-  showClaimModal = false;
-  myIncidents: any[] = [];
-  claimData = { incidentId: null as number | null, claimAmount: null as number | null };
-  claimSubmitting = false;
-  claimError = '';
+  loading = signal(true);
+  
+  // Dashboard Stats Signal
+  stats = toSignal(
+    this.refresh$.pipe(
+      tap(() => this.loading.set(true)),
+      switchMap(() => this.service.getDashboardStats().pipe(
+        catchError((err) => {
+          console.error('Dashboard Stats Error:', err);
+          return of(null);
+        })
+      )),
+      tap(() => this.loading.set(false))
+    ),
+    { initialValue: null }
+  );
+
+  // Claims Signal
+  claimsList = toSignal(
+    this.refresh$.pipe(
+      switchMap(() => this.service.getClaims().pipe(
+        catchError(err => {
+          console.error('Claims API error:', err);
+          return of([]);
+        })
+      ))
+    ),
+    { initialValue: [] as any[] }
+  );
+
+  // Modal State Signals
+  showClaimModal = signal(false);
+  myIncidents = signal<any[]>([]);
+  claimSubmitting = signal(false);
+  claimError = signal('');
+  claimData = signal({ incidentId: null as number | null, claimAmount: null as number | null });
 
   today = new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-  constructor(private service: CustomerService) { }
+  // Computed Properties for Display Logic
+  riskScore = computed(() => this.stats()?.latestRiskScore ?? null);
+  riskLevel = computed(() => this.stats()?.latestRiskLevel ?? 'UNKNOWN');
 
-  ngOnInit() {
-    this.dataFetching = true;
-
-    // DASHBOARD STATS — 5 second max wait
-    this.service.getDashboardStats().pipe(
-      timeout(5000),
-      catchError(err => {
-        console.error('Dashboard API error (or timeout):', err);
-        return of(null);
-      })
-    ).subscribe(data => {
-      if (data) this.stats = data;
-      this.dataFetching = false;
-      console.log('Dashboard data:', data);
-    });
-
-    // CLAIMS — 5 second max wait
-    this.service.getClaims().pipe(
-      timeout(5000),
-      catchError(err => {
-        console.error('Claims API error:', err);
-        return of([]);
-      })
-    ).subscribe(data => {
-      this.claims = data || [];
-    });
-  }
-
-  get riskScore() { return this.stats?.latestRiskScore ?? null; }
-  get riskLevel() { return this.stats?.latestRiskLevel ?? 'UNKNOWN'; }
-
-  get riskStrokeDashoffset() {
+  riskStrokeDashoffset = computed(() => {
     const circumference = 2 * Math.PI * 40;
-    const score = this.riskScore ?? 0;
+    const score = this.riskScore() ?? 0;
     return circumference - (score / 100) * circumference;
-  }
+  });
 
-  get riskColor() {
-    const level = this.riskLevel?.toUpperCase();
+  riskColor = computed(() => {
+    const level = this.riskLevel()?.toUpperCase();
     if (level === 'LOW') return '#10b981';
     if (level === 'HIGH') return '#ef4444';
     return '#f59e0b';
-  }
+  });
 
-  get coverageDisplay() {
-    const val = this.stats?.totalCoverage ?? 0;
+  coverageDisplay = computed(() => {
+    const val = this.stats()?.totalCoverage ?? 0;
     if (val >= 10000000) return `₹${(val / 10000000).toFixed(1)} Cr`;
     if (val >= 100000) return `₹${(val / 100000).toFixed(0)} L`;
     if (val > 0) return `₹${val}`;
     return '—';
-  }
+  });
 
-  get premiumDisplay(): string {
-    const val = Number(this.stats?.calculatedPremium ?? 0);
+  premiumDisplay = computed(() => {
+    const val = Number(this.stats()?.calculatedPremium ?? 0);
     if (val >= 100000) return `₹${(val / 100000).toFixed(2)} L`;
     if (val > 0) return `₹${val.toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
     return '—';
-  }
+  });
 
-  get coverageGrantedDisplay(): string {
-    const val = Number(this.stats?.coverageAmount ?? 0);
+  coverageGrantedDisplay = computed(() => {
+    const val = Number(this.stats()?.coverageAmount ?? 0);
     if (val >= 10000000) return `₹${(val / 10000000).toFixed(1)} Cr`;
     if (val >= 100000) return `₹${(val / 100000).toFixed(0)} L`;
     if (val > 0) return `₹${val.toLocaleString('en-IN')}`;
     return '—';
-  }
+  });
 
-  get claimedDisplay() {
-    const val = this.stats?.claimedAmountYearly ?? 0;
+  policyLimitDisplay = computed(() => {
+    const val = Number(this.stats()?.policyLimit ?? 0);
+    if (val >= 10000000) return `₹${(val / 10000000).toFixed(1)} Cr`;
+    if (val >= 100000) return `₹${(val / 100000).toFixed(0)} L`;
+    if (val > 0) return `₹${val.toLocaleString('en-IN')}`;
+    return '—';
+  });
+
+  deductibleDisplay = computed(() => {
+    const val = Number(this.stats()?.deductible ?? 0);
+    if (val >= 100000) return `₹${(val / 100000).toFixed(2)} L`;
+    if (val > 0) return `₹${val.toLocaleString('en-IN')}`;
+    return '—';
+  });
+
+  exclusionsList = computed(() => {
+    const exc = this.stats()?.exclusions;
+    if (!exc) return [];
+    if (exc.includes('. ')) {
+      return exc.split('. ').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+        .map((s: string) => s.endsWith('.') ? s : s + '.');
+    }
+    return [exc];
+  });
+
+  claimedDisplay = computed(() => {
+    const val = this.stats()?.claimedAmountYearly ?? 0;
     if (val >= 100000) return `₹${(val / 100000).toFixed(0)}L`;
     return `₹${val}`;
-  }
+  });
 
   openClaimModal() {
-    this.claimError = '';
-    this.claimData = { incidentId: null, claimAmount: null };
-    this.showClaimModal = true;
-    this.service.getMyIncidents().pipe(
-      catchError(() => of([]))
-    ).subscribe(incidents => { this.myIncidents = incidents; });
+    this.claimError.set('');
+    this.claimData.set({ incidentId: null, claimAmount: null });
+    this.showClaimModal.set(true);
+    this.service.getMyIncidents().subscribe(incidents => {
+        this.myIncidents.set(incidents);
+    });
   }
 
-  closeClaimModal() { this.showClaimModal = false; }
+  closeClaimModal() { 
+    this.showClaimModal.set(false); 
+  }
 
   submitClaim() {
-    if (!this.claimData.incidentId || !this.claimData.claimAmount) {
-      this.claimError = 'Please select an incident and enter a claim amount.';
+    const data = this.claimData();
+    if (!data.incidentId || !data.claimAmount) {
+      this.claimError.set('Please select an incident and enter a claim amount.');
       return;
     }
-    this.claimSubmitting = true;
-    this.service.fileClaim(this.claimData).subscribe({
+    this.claimSubmitting.set(true);
+    this.service.fileClaim(data).subscribe({
       next: () => {
-        this.claimSubmitting = false;
-        this.showClaimModal = false;
-        this.service.getClaims().pipe(catchError(() => of([]))).subscribe(data => this.claims = data);
-        this.service.getDashboardStats().pipe(catchError(() => of(null))).subscribe(data => { if (data) this.stats = data; });
+        this.claimSubmitting.set(false);
+        this.showClaimModal.set(false);
+        // Force refresh by navigating to same route or handling internally (handled by service normally, but here we can just reload the router)
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/customer/dashboard']);
+        });
       },
       error: (err) => {
-        this.claimSubmitting = false;
-        this.claimError = err.error?.message || 'Failed to file claim.';
+        this.claimSubmitting.set(false);
+        this.claimError.set(err.error?.message || 'Failed to file claim.');
       }
     });
+  }
+
+  updateClaimData(field: 'incidentId' | 'claimAmount', value: any) {
+    this.claimData.update(curr => ({ ...curr, [field]: value }));
   }
 }

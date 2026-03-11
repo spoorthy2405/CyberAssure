@@ -4,6 +4,7 @@ import com.cyberassure.cyberassureproject.dto.CreatePolicyRequest;
 import com.cyberassure.cyberassureproject.dto.CyberPolicyRequest;
 import com.cyberassure.cyberassureproject.dto.PolicyResponse;
 import com.cyberassure.cyberassureproject.entity.CyberPolicy;
+import com.cyberassure.cyberassureproject.exception.ResourceNotFoundException;
 import com.cyberassure.cyberassureproject.repository.CyberPolicyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,11 +36,13 @@ public class CyberPolicyService {
 
         repository.save(policy);
         return mapToResponse(policy);
+        // CyberPolicy entity into PolicyResponse DTO.required policy details are sent
+        // to the frontend instead of exposing the entire database entity.
     }
 
     public PolicyResponse updatePolicy(Long id, CyberPolicyRequest request) {
         CyberPolicy policy = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Policy not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("No policy found with ID: " + id));
 
         policy.setPolicyName(request.getPolicyName());
         policy.setSector(request.getSector());

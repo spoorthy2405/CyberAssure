@@ -10,9 +10,9 @@
 
         <!-- Status filter -->
         <div class="flex gap-2 bg-slate-800 rounded-xl p-1 border border-slate-700">
-            <button *ngFor="let s of ['ALL','PENDING','APPROVED','REJECTED']" (click)="filterStatus = s"
-                [class.bg-blue-600]="filterStatus === s" [class.text-white]="filterStatus === s"
-                [class.text-slate-400]="filterStatus !== s"
+            <button *ngFor="let s of ['ALL','PENDING','APPROVED','REJECTED']" (click)="filterStatus.set(s)"
+                [class.bg-blue-600]="filterStatus() === s" [class.text-white]="filterStatus() === s"
+                [class.text-slate-400]="filterStatus() !== s"
                 class="px-4 py-1.5 rounded-lg text-sm font-medium transition-all">
                 {{s}}
             </button>
@@ -20,26 +20,26 @@
     </div>
 
     <!-- Success Toast -->
-    <div *ngIf="successMessage"
+    <div *ngIf="successMessage()"
         class="mb-4 flex items-center gap-3 bg-emerald-500/20 border border-emerald-500/40 rounded-xl px-5 py-3 text-emerald-300 text-sm font-medium">
-        <span>✅</span> {{successMessage}}
+        {{successMessage()}}
     </div>
 
     <!-- Loading -->
-    <div *ngIf="loading" class="flex justify-center items-center h-48">
+    <div *ngIf="loading()" class="flex justify-center items-center h-48">
         <div class="w-8 h-8 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"></div>
     </div>
 
     <!-- Empty state -->
-    <div *ngIf="!loading && filtered.length === 0"
+    <div *ngIf="!loading() && filtered().length === 0"
         class="flex flex-col items-center justify-center h-48 border border-dashed border-slate-600 rounded-2xl bg-slate-800/30">
-        <span class="text-4xl mb-3">📭</span>
+        <div class="w-10 h-10 rounded border border-slate-600 flex items-center justify-center text-slate-500 text-xs mb-3">0</div>
         <h3 class="text-lg font-semibold text-white">No Applications Found</h3>
         <p class="text-slate-400 text-sm mt-1">No policy applications match the selected filter.</p>
     </div>
 
     <!-- Table -->
-    <div *ngIf="!loading && filtered.length > 0" class="overflow-hidden rounded-2xl border border-slate-700">
+    <div *ngIf="!loading() && filtered().length > 0" class="overflow-hidden rounded-2xl border border-slate-700">
         <table class="w-full text-sm">
             <thead class="bg-slate-800/80">
                 <tr>
@@ -58,7 +58,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-700/60">
-                <tr *ngFor="let sub of filtered" class="bg-slate-800/30 hover:bg-slate-800/70 transition-colors">
+                <tr *ngFor="let sub of filtered()" class="bg-slate-800/30 hover:bg-slate-800/70 transition-colors">
 
                     <td class="px-6 py-4 text-slate-400 font-mono">CA-{{sub.id}}</td>
 
@@ -102,11 +102,11 @@
     <!-- Stats bar -->
     <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-center">
-            <div class="text-2xl font-bold text-white">{{subscriptions.length}}</div>
+            <div class="text-2xl font-bold text-white">{{subscriptions().length}}</div>
             <div class="text-xs text-slate-400 mt-1">Total Applications</div>
         </div>
         <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 text-center">
-            <div class="text-2xl font-bold text-yellow-300">{{getPendingCount()}}</div>
+            <div class="text-2xl font-bold text-yellow-300">{{getCount('PENDING')}}</div>
             <div class="text-xs text-slate-400 mt-1">Pending</div>
         </div>
         <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-center">
@@ -122,15 +122,15 @@
 </div>
 
 <!-- Assign Underwriter Modal -->
-<div *ngIf="showAssignModal"
+<div *ngIf="showAssignModal()"
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
     <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md shadow-2xl">
 
         <div class="p-6 border-b border-slate-700">
             <h2 class="text-xl font-bold text-white">Assign Underwriter</h2>
             <p class="text-sm text-slate-400 mt-1">
-                Application <span class="font-mono text-blue-400">CA-{{selectedSub?.id}}</span>
-                — {{selectedSub?.customer?.fullName}}
+                Application <span class="font-mono text-blue-400">CA-{{selectedSub()?.id}}</span>
+                — {{selectedSub()?.customer?.fullName}}
             </p>
         </div>
 
@@ -139,36 +139,36 @@
             <!-- Policy info -->
             <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700">
                 <div class="text-xs text-slate-400 mb-2 uppercase tracking-wider">Policy Details</div>
-                <div class="font-semibold text-white">{{selectedSub?.policy?.policyName}}</div>
-                <div class="text-sm text-slate-400">{{selectedSub?.policy?.sector}}</div>
+                <div class="font-semibold text-white">{{selectedSub()?.policy?.policyName}}</div>
+                <div class="text-sm text-slate-400">{{selectedSub()?.policy?.sector}}</div>
             </div>
 
             <!-- Underwriter selector -->
             <div>
                 <label class="block text-sm font-medium text-slate-300 mb-2">Select Underwriter</label>
-                <select [(ngModel)]="selectedUnderwriterId"
+                <select [ngModel]="selectedUnderwriterId()" (ngModelChange)="selectedUnderwriterId.set($event)"
                     class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-all">
                     <option [ngValue]="null" disabled>— Choose an underwriter —</option>
-                    <option *ngFor="let uw of underwriters" [ngValue]="uw.userId">
+                    <option *ngFor="let uw of underwriters()" [ngValue]="uw.userId">
                         {{uw.fullName}} ({{uw.email}})
                     </option>
                 </select>
-                <p *ngIf="underwriters.length === 0" class="text-sm text-amber-400 mt-2">
-                    ⚠ No underwriters found.
+                <p *ngIf="underwriters().length === 0" class="text-sm text-amber-400 mt-2">
+                    No underwriters found.
                 </p>
             </div>
         </div>
 
         <div class="p-6 border-t border-slate-700 flex justify-end gap-3">
-            <button (click)="closeModal()" [disabled]="assigning"
+            <button (click)="closeModal()" [disabled]="assigning()"
                 class="px-5 py-2 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors text-sm font-medium disabled:opacity-50">
                 Cancel
             </button>
-            <button (click)="confirmAssign()" [disabled]="!selectedUnderwriterId || assigning"
+            <button (click)="confirmAssign()" [disabled]="!selectedUnderwriterId() || assigning()"
                 class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm transition-colors disabled:opacity-50 flex items-center gap-2">
-                <span *ngIf="assigning"
+                <span *ngIf="assigning()"
                     class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                {{assigning ? 'Assigning...' : 'Assign Underwriter'}}
+                {{assigning() ? 'Assigning...' : 'Assign Underwriter'}}
             </button>
         </div>
 

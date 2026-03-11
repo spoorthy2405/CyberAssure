@@ -1,5 +1,12 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
+
+
+//This interceptor automatically attaches the JWT authentication token to every request.
+
+// Why clone()?
+// Angular HTTP requests are immutable.
+// So you cannot modify original request, you must clone and modify it.
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
     const token = localStorage.getItem('token');

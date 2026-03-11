@@ -1,524 +1,273 @@
-<!-- NAVBAR -->
-<nav class="navbar">
-    <div class="nav-inner">
-        <a class="nav-logo" routerLink="/">
-            <span class="logo-shield">⬡</span>
-            CyberAssure
-        </a>
-        <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#industries">Industries</a>
-            <a href="#plans">Plans</a>
-            <a href="#faq">FAQ</a>
-        </div>
-        <div class="nav-actions">
-            <a routerLink="/login" class="btn-outline-sm">Login</a>
-            <a routerLink="/register" class="btn-primary-sm">Get Started</a>
-        </div>
-        <input type="checkbox" id="mob-toggle" class="mob-input" />
-        <label for="mob-toggle" class="mob-btn">
-            <span></span><span></span><span></span>
-        </label>
-        <div class="mob-menu">
-            <a href="#features">Features</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#industries">Industries</a>
-            <a href="#plans">Plans</a>
-            <a href="#faq">FAQ</a>
-            <div class="mob-actions">
-                <a routerLink="/login" class="btn-outline-sm">Login</a>
-                <a routerLink="/register" class="btn-primary-sm">Get Started</a>
-            </div>
-        </div>
+<div class="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-blue-500/30">
+  
+  <!-- NAVBAR -->
+  <nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a routerLink="/" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center gap-2">
+        <svg class="w-8 h-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        CyberAssure
+      </a>
+      <div class="hidden md:flex gap-8">
+        <a href="#what" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">What is it</a>
+        <a href="#why" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Why Us</a>
+        <a href="#how" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">How it Works</a>
+        <a href="#who" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Industries</a>
+        <a href="#policies" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Policies</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <a routerLink="/login" class="px-5 py-2.5 text-sm font-medium text-slate-300 hover:text-white transition-colors border border-slate-700 rounded-lg hover:border-slate-500">Login</a>
+        <a routerLink="/register" class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.3)]">Get Quote</a>
+      </div>
     </div>
-</nav>
+  </nav>
 
-<!-- HERO -->
-<section class="hero-section">
-    <div class="hero-bg-grid"></div>
-    <div class="hero-orb orb-1"></div>
-    <div class="hero-orb orb-2"></div>
-    <div class="hero-orb orb-3"></div>
-    <div class="hero-content">
-        <div class="hero-badge">
-            <span class="badge-dot"></span>
-            Trusted Cyber Insurance Platform for Indian Businesses
+  <!-- HERO -->
+  <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-slate-950 -z-10"></div>
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold uppercase tracking-wider mb-6">
+          <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span> Corporate Cyber Protection
         </div>
-        <h1 class="hero-headline">
-            Your Business <em>Will</em> Face<br />
-            <span class="headline-red">a Cyberattack.</span>
+        <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight mb-8 leading-tight">
+          Secure your <br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Digital Legacy.</span>
         </h1>
-        <p class="hero-sub">Be Ready When It Happens.</p>
-        <p class="hero-desc">
-            CyberAssure helps Indian companies assess cyber risk,
-            get insured, and recover fast when incidents strike.
+        <p class="text-lg text-slate-400 mb-10 leading-relaxed max-w-xl">
+          CyberAssure provides enterprise-grade cyber insurance policies, meticulously tailored for Indian businesses. Protect against ransomware, data breaches, and business interruptions.
         </p>
-        <div class="hero-ctas">
-            <a routerLink="/register" class="btn-hero-primary">
-                Assess My Risk — It's Free <span class="arrow">→</span>
-            </a>
-            <a href="#how-it-works" class="btn-hero-secondary">
-                See How It Works
-            </a>
+        <div class="flex flex-wrap gap-4">
+          <a routerLink="/register" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg shadow-blue-500/25 flex items-center gap-2">
+            Assess Your Risk
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+          <a href="#how" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-xl font-semibold transition-all flex items-center gap-2">
+            See How
+          </a>
         </div>
-        <div class="hero-trust">
-            <span><span class="check">✓</span> No credit card required</span>
-            <span><span class="check">✓</span> 10-minute assessment</span>
-            <span><span class="check">✓</span> Trusted by 500+ companies</span>
-        </div>
+      </div>
+      <div class="relative group">
+        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+        <img src="/images/hero_business_cyber_1773145171490.png" alt="Corporate Executive" class="relative rounded-2xl border border-slate-800 shadow-2xl object-cover w-full h-[500px]" />
+      </div>
     </div>
-    <div class="cyber-nodes">
-        <div class="node n1"></div>
-        <div class="node n2"></div>
-        <div class="node n3"></div>
-        <div class="node n4"></div>
-        <div class="node n5"></div>
-    </div>
-</section>
+  </section>
 
-<!-- PROBLEM -->
-<section class="section-dark" id="problem">
-    <div class="container">
-        <div class="section-header reveal">
-            <p class="eyebrow">The Threat Landscape</p>
-            <h2>The Threat is Real.
-                <span class="text-red">And It's Growing.</span>
-            </h2>
-            <p class="subtitle">
-                Most companies think cyberattacks only happen to large
-                enterprises. The data tells a very different story.
-            </p>
-        </div>
-        <div class="stats-grid">
-            <div class="stat-card reveal">
-                <div class="stat-num text-blue">43%</div>
-                <p>of cyberattacks target small and medium businesses</p>
-                <div class="stat-bar">
-                    <div class="bar-fill" style="width:43%;background:var(--blue)"></div>
-                </div>
-            </div>
-            <div class="stat-card reveal">
-                <div class="stat-num text-orange">₹17.9 Cr</div>
-                <p>average cost of a data breach in India in 2024</p>
-                <div class="stat-bar">
-                    <div class="bar-fill" style="width:72%;background:var(--orange)"></div>
-                </div>
-            </div>
-            <div class="stat-card reveal">
-                <div class="stat-num text-red">60%</div>
-                <p>of small companies shut down within 6 months of a breach</p>
-                <div class="stat-bar">
-                    <div class="bar-fill" style="width:60%;background:var(--red)"></div>
-                </div>
-            </div>
-        </div>
-        <div class="threat-grid">
-            <div class="threat-card reveal">
-                <div class="threat-icon">🔒</div>
-                <h3>Ransomware</h3>
-                <p>Attackers encrypt your entire system and demand
-                    cryptocurrency payment to restore access.</p>
-                <span class="threat-tag">₹2.1 Cr avg demand</span>
-            </div>
-            <div class="threat-card reveal">
-                <div class="threat-icon">📂</div>
-                <h3>Data Breach</h3>
-                <p>Sensitive customer and business data stolen and
-                    sold on dark web marketplaces.</p>
-                <span class="threat-tag">72hr CERT-In deadline</span>
-            </div>
-            <div class="threat-card reveal">
-                <div class="threat-icon">🌐</div>
-                <h3>DDoS Attack</h3>
-                <p>Your website and services taken completely offline.
-                    Business operations halt immediately.</p>
-                <span class="threat-tag">₹80L avg hourly loss</span>
-            </div>
-        </div>
-        <div class="closer reveal">
-            <div class="closer-line"></div>
-            <p>"It's not <em>if</em> it happens. It's <em>when.</em>"</p>
-            <div class="closer-line"></div>
-        </div>
+  <!-- WHAT IS CYBERASSURE -->
+  <section id="what" class="py-24 bg-slate-900 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-3xl lg:text-5xl font-bold mb-6">What is CyberAssure?</h2>
+      <p class="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed">
+        We are a specialized cyber insurance provider dedicated to closing the security gap for modern businesses. Our platform uses deep risk analytics to provide instant, tailored insurance coverage that scales with your IT infrastructure. Don't wait for a breach to discover your vulnerabilities.
+      </p>
     </div>
-</section>
+  </section>
 
-<!-- HOW IT WORKS -->
-<section class="section-deep" id="how-it-works">
-    <div class="container">
-        <div class="section-header reveal">
-            <p class="eyebrow">The Process</p>
-            <h2>How CyberAssure Works</h2>
-            <p class="subtitle">Get protected in 4 simple steps.
-                No jargon. No friction.</p>
+  <!-- WHY CYBERASSURE -->
+  <section id="why" class="py-32">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-16 text-center">
+        <h2 class="text-4xl font-bold mb-4">Why CyberAssure</h2>
+        <p class="text-slate-400">Industry-leading protection backed by sophisticated analytics.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Reusing features from existing component -->
+        <div *ngFor="let f of features" class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-blue-500/50 transition-colors group">
+          <div class="w-14 h-14 bg-slate-800 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-white/5">{{ f.icon }}</div>
+          <h3 class="text-xl font-semibold mb-3 text-white">{{ f.title }}</h3>
+          <p class="text-slate-400 leading-relaxed">{{ f.desc }}</p>
         </div>
-        <div class="steps-flow">
-            <div class="steps-line"></div>
-            <div class="step-card reveal" *ngFor="let s of steps">
-                <div class="step-num">{{ s.num }}</div>
-                <div class="step-icon">{{ s.icon }}</div>
-                <span class="step-tag">{{ s.tag }}</span>
-                <h3>{{ s.title }}</h3>
-                <p>{{ s.desc }}</p>
-            </div>
-        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- FEATURES -->
-<section class="section-dark" id="features">
-    <div class="container">
-        <div class="section-header reveal">
-            <p class="eyebrow">Why CyberAssure</p>
-            <h2>Built Different.
-                <span class="text-blue">For India.</span>
-            </h2>
-            <p class="subtitle">Purpose-built for Indian businesses,
-                regulations, and threat landscape.</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card reveal" *ngFor="let f of features">
-                <div class="feat-icon">{{ f.icon }}</div>
-                <h3>{{ f.title }}</h3>
-                <p>{{ f.desc }}</p>
-                <div class="feat-glow"></div>
+  <!-- HOW IT WORKS -->
+  <section id="how" class="py-32 bg-slate-900 overflow-hidden relative">
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+      <div class="relative order-2 lg:order-1">
+        <img src="/images/how_it_works_cyber_1773145187572.png" alt="How it works" class="rounded-2xl border border-slate-800 shadow-2xl relative z-10 w-full" />
+        <div class="absolute inset-0 bg-blue-500/10 blur-3xl -z-10 rounded-full"></div>
+      </div>
+      <div class="order-1 lg:order-2">
+        <h2 class="text-4xl font-bold mb-8">How It Works</h2>
+        <div class="space-y-8">
+          <div *ngFor="let s of steps; let i = index" class="flex gap-6">
+            <div class="shrink-0 w-12 h-12 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-mono font-bold">{{ s.num }}</div>
+            <div>
+              <h4 class="text-xl font-semibold mb-2">{{ s.title }}</h4>
+              <p class="text-slate-400">{{ s.desc }}</p>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- INDUSTRIES -->
-<section class="section-deep" id="industries">
-    <div class="container">
-        <div class="section-header reveal">
-            <p class="eyebrow">Industry Coverage</p>
-            <h2>Built for
-                <span class="text-blue">Your Industry</span>
-            </h2>
-            <p class="subtitle">Every sector faces unique cyber threats.
-                See exactly what your business faces.</p>
+  <!-- WHO IT'S FOR -->
+  <section id="who" class="py-32">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-16 text-center">
+        <h2 class="text-4xl font-bold mb-4">Who It's For</h2>
+        <p class="text-slate-400">Tailored policies for every major industry sector.</p>
+      </div>
+      <div class="grid lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col gap-2">
+          <button *ngFor="let ind of industries" 
+                  (click)="setIndustry(ind.id)"
+                  [class.bg-blue-600]="activeIndustry === ind.id"
+                  [class.text-white]="activeIndustry === ind.id"
+                  [class.text-slate-400]="activeIndustry !== ind.id"
+                  class="text-left px-6 py-4 rounded-xl font-medium transition-all hover:bg-slate-800">
+            {{ ind.label }}
+          </button>
         </div>
-        <div class="ind-tabs reveal">
-            <button *ngFor="let ind of industries" class="ind-tab" [class.active]="activeIndustry === ind.id"
-                (click)="setIndustry(ind.id)">
-                {{ ind.label }}
-            </button>
-        </div>
-        <div class="ind-card reveal">
-            <div class="ind-left">
-                <div class="ind-big-emoji">{{ currentIndustry.icon }}</div>
-                <h3>{{ currentIndustry.title }}</h3>
-                <div class="ind-block">
-                    <p class="ind-label">⚠️ Top Cyber Risks</p>
-                    <ul class="ind-list">
-                        <li *ngFor="let r of currentIndustry.risks">{{ r }}</li>
-                    </ul>
-                </div>
-                <div class="ind-block">
-                    <p class="ind-label">📋 Compliance Covered</p>
-                    <div class="comp-tags">
-                        <span class="comp-tag" *ngFor="let c of currentIndustry.compliance">
-                            {{ c }}
-                        </span>
-                    </div>
-                </div>
-                <div class="ind-block">
-                    <p class="ind-label">✅ Recommended Plan</p>
-                    <span class="rec-plan" [ngClass]="'plan-' + currentIndustry.planColor">
-                        {{ currentIndustry.plan }}
-                    </span>
-                </div>
-            </div>
-            <div class="ind-right">
-                <div class="ind-visual">
-                    <div class="ind-icon-big">{{ currentIndustry.icon }}</div>
-                    <div class="ring r1"></div>
-                    <div class="ring r2"></div>
-                    <div class="ring r3"></div>
-                </div>
-                <a routerLink="/register" class="btn-primary-md">
-                    Assess {{ currentIndustry.title }} Risk →
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+        <div class="lg:col-span-9 bg-slate-900 border border-slate-800 rounded-3xl p-10 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-3xl rounded-full"></div>
+          <div class="relative z-10 flex flex-col md:flex-row gap-8">
+             <div class="flex-1 space-y-8">
+               <div class="flex items-center gap-4 border-b border-slate-800 pb-6">
+                 <span class="text-4xl">{{ currentIndustry.icon }}</span>
+                 <h3 class="text-3xl font-bold">{{ currentIndustry.title }}</h3>
+               </div>
+               
+               <div>
+                 <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                   <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                   Top Cyber Risks
+                 </h4>
+                 <ul class="space-y-3">
+                   <li *ngFor="let r of currentIndustry.risks" class="text-slate-300 flex items-start gap-3">
+                     <span class="text-red-500 mt-1">›</span> {{ r }}
+                   </li>
+                 </ul>
+               </div>
 
-<!-- THREAT PULSE -->
-<section class="pulse-section">
-    <div class="pulse-glow"></div>
-    <div class="container">
-        <div class="pulse-header reveal">
-            <div class="live-badge">
-                <span class="live-dot"></span>
-                LIVE THREAT INTELLIGENCE
-            </div>
-            <div class="counter-wrap">
-                <span class="counter-num">{{ attackCount | number }}</span>
-            </div>
-            <p class="pulse-sub">Cyberattacks detected across
-                India in the last 24 hours</p>
-        </div>
-        <div class="threat-feed reveal">
-            <div class="threat-row" *ngFor="let t of threats">
-                <span class="t-dot"></span>
-                <div class="t-text">
-                    <span class="t-desc">{{ t.text }}</span>
-                    <span class="t-meta">{{ t.city }} · {{ t.time }}</span>
-                </div>
-                <span class="t-badge">HIGH</span>
-            </div>
-        </div>
-        <div class="pulse-cta reveal">
-            <p class="pulse-q">Is your business next?</p>
-            <a routerLink="/register" class="btn-danger">
-                Start Free Risk Assessment →
-            </a>
-        </div>
-    </div>
-</section>
+               <div>
+                 <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                   <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                   Compliance Covered
+                 </h4>
+                 <div class="flex flex-wrap gap-2">
+                   <span *ngFor="let c of currentIndustry.compliance" class="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-xs font-medium text-slate-300">
+                     {{ c }}
+                   </span>
+                 </div>
+               </div>
 
-<!-- PLANS -->
-<section class="section-dark" id="plans">
-    <div class="container">
-        <div class="section-header reveal">
-            <p class="eyebrow">Coverage Options</p>
-            <h2>Protection Plans</h2>
-            <p class="subtitle">
-                Choose the right coverage for your business size and
-                risk profile.<br />Exact premium determined after your
-                risk assessment.
-            </p>
+               <div>
+                 <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                   <svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                   Recommended Plan
+                 </h4>
+                 <span class="px-4 py-2 bg-green-500/10 border border-green-500/20 text-green-400 rounded-lg font-semibold shadow-inner inline-block">
+                   {{ currentIndustry.plan }}
+                 </span>
+               </div>
+             </div>
+             
+             <!-- Image instead of visual rings -->
+             <div class="hidden md:flex flex-1 items-center justify-center">
+                <img src="/images/who_its_for_cyber_1773145204681.png" alt="Who it is for" class="rounded-xl border border-slate-700 shadow-xl w-full object-cover aspect-square"/>
+             </div>
+          </div>
         </div>
-        <div class="plans-grid">
-            <div class="plan-card reveal" *ngFor="let plan of plans" [class.plan-featured]="plan.highlight">
-                <div class="plan-pop-badge" *ngIf="plan.highlight">Most Popular</div>
-                <div class="plan-head">
-                    <p class="plan-tag">{{ plan.tag }}</p>
-                    <h3>{{ plan.name }}</h3>
-                    <div class="plan-amount">{{ plan.coverage }}</div>
-                    <p class="plan-amount-label">Maximum Coverage</p>
-                </div>
-                <div class="plan-divider"></div>
-                <ul class="plan-feats">
-                    <li class="inc" *ngFor="let i of plan.included">
-                        <span class="feat-check">✓</span>{{ i }}
-                    </li>
-                    <li class="exc" *ngFor="let e of plan.excluded">
-                        <span class="feat-cross">✗</span>{{ e }}
-                    </li>
-                </ul>
-                <a [routerLink]="plan.ctaRoute" class="plan-btn" [class.plan-btn-primary]="plan.highlight">
-                    {{ plan.cta }} →
-                </a>
-            </div>
-        </div>
-        <p class="plans-note reveal">
-            🔒 All plans subject to risk assessment approval by our
-            certified underwriting team · IRDAI Guidelines Apply
-        </p>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- TRUST -->
-<section class="section-deep">
-    <div class="container">
-        <div class="section-header reveal">
-            <p class="eyebrow">Compliance & Security</p>
-            <h2>Trusted, Compliant
-                <span class="text-blue">& Secure</span>
-            </h2>
-            <p class="subtitle">Operating under India's leading
-                regulatory and cybersecurity frameworks.</p>
-        </div>
-        <div class="trust-grid reveal">
-            <div class="trust-left">
-                <h3>Regulatory Compliance</h3>
-                <div class="comp-badges">
-                    <div class="comp-badge">🏛️ IRDAI Guidelines Compliant</div>
-                    <div class="comp-badge">🔐 CERT-In Framework Aligned</div>
-                    <div class="comp-badge">📋 DPDP Act 2023 Ready</div>
-                    <div class="comp-badge">🏦 RBI Cyber Security Framework</div>
-                    <div class="comp-badge">🌐 ISO 27001 Aligned</div>
-                    <div class="comp-badge">⚖️ SEBI Cybersecurity Guidelines</div>
-                </div>
+  <!-- POLICIES -->
+  <section id="policies" class="py-32 bg-slate-900 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-16 text-center">
+        <h2 class="text-4xl font-bold mb-4">Protection Policies</h2>
+        <p class="text-slate-400">Enterprise plans rigorously modeled around precise business risks.</p>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-8">
+        <div *ngFor="let plan of plans" [class.border-blue-500]="plan.highlight" [class.shadow-blue-500/20]="plan.highlight" class="bg-slate-950 border border-slate-800 rounded-3xl p-8 relative flex flex-col shadow-xl transition-all hover:-translate-y-1">
+          <div *ngIf="plan.highlight" class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue-600 text-xs font-bold uppercase tracking-wider rounded-full shadow-lg">Most Popular</div>
+          <div class="mb-8">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">{{ plan.tag }}</span>
+            <h3 class="text-2xl font-bold mb-4">{{ plan.name }}</h3>
+            <div class="flex items-baseline gap-2">
+              <span class="text-4xl font-extrabold">{{ plan.coverage }}</span>
+              <span class="text-slate-500 text-sm">coverage</span>
             </div>
-            <div class="trust-right">
-                <h3>Security Guarantees</h3>
-                <ul class="trust-pts">
-                    <li>
-                        <span>🔒</span>
-                        <div>
-                            <strong>AES-256 Encrypted Storage</strong>
-                            <p>All data encrypted at rest and in transit.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <span>👁️</span>
-                        <div>
-                            <strong>Zero Data Sharing</strong>
-                            <p>Your data is never sold or shared. Ever.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <span>📜</span>
-                        <div>
-                            <strong>IRDAI-Governed Claims</strong>
-                            <p>All decisions under IRDAI regulations.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <span>✅</span>
-                        <div>
-                            <strong>Annual Security Audits</strong>
-                            <p>Third-party audits conducted annually.</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+          </div>
+          <div class="flex-1 space-y-6">
+            <ul class="space-y-4">
+              <li *ngFor="let i of plan.included" class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-slate-300 text-sm">{{ i }}</span>
+              </li>
+              <li *ngFor="let e of plan.excluded" class="flex items-start gap-3 opacity-50">
+                <svg class="w-5 h-5 text-slate-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <span class="text-slate-400 text-sm line-through">{{ e }}</span>
+              </li>
+            </ul>
+          </div>
+          <a [routerLink]="plan.ctaRoute" [ngClass]="plan.highlight ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'" class="mt-8 block w-full py-4 text-center rounded-xl font-semibold transition-colors">
+            {{ plan.cta }}
+          </a>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- TESTIMONIALS -->
-<section class="section-dark">
-    <div class="container">
-        <div class="section-header reveal">
-            <p class="eyebrow">Social Proof</p>
-            <h2>Trusted Across India</h2>
-        </div>
-        <div class="testi-grid">
-            <div class="testi-card reveal" *ngFor="let t of testimonials">
-                <div class="quote-mark">"</div>
-                <p class="testi-quote">{{ t.quote }}</p>
-                <div class="testi-stars">
-                    <span *ngFor="let s of getStars(t.stars)">⭐</span>
-                </div>
-                <div class="testi-author">
-                    <div class="author-av">{{ t.name[0] }}</div>
-                    <div>
-                        <strong>{{ t.name }}</strong>
-                        <p>{{ t.title }} · {{ t.city }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="stats-bar reveal">
-            <div class="sb-item">
-                <span class="sb-num">500+</span>
-                <span class="sb-label">Companies Protected</span>
-            </div>
-            <div class="sb-div"></div>
-            <div class="sb-item">
-                <span class="sb-num">₹50 Cr+</span>
-                <span class="sb-label">Coverage Issued</span>
-            </div>
-            <div class="sb-div"></div>
-            <div class="sb-item">
-                <span class="sb-num">98%</span>
-                <span class="sb-label">Claim Satisfaction</span>
-            </div>
-            <div class="sb-div"></div>
-            <div class="sb-item">
-                <span class="sb-num">48hr</span>
-                <span class="sb-label">Avg Policy Approval</span>
-            </div>
-        </div>
+  <!-- CTA -->
+  <section class="py-32 relative overflow-hidden">
+    <div class="absolute inset-0 bg-blue-600/10 blur-[100px] -z-10"></div>
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-4xl lg:text-6xl font-bold mb-6 tracking-tight">Don't wait for a breach to get protected.</h2>
+      <p class="text-xl text-slate-400 mb-10">Start your premium cyber risk assessment today. Secure, comprehensive, and perfectly tailored for modern business.</p>
+      <a routerLink="/register" class="inline-flex items-center gap-2 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold text-lg transition-all shadow-xl shadow-blue-500/25">
+        Start Free Risk Assessment
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
     </div>
-</section>
+  </section>
 
-<!-- FAQ -->
-<section class="section-deep" id="faq">
-    <div class="container">
-        <div class="section-header reveal">
-            <p class="eyebrow">FAQ</p>
-            <h2>Frequently Asked Questions</h2>
-            <p class="subtitle">Everything you need to know
-                before getting started.</p>
+  <!-- FOOTER -->
+  <footer class="bg-slate-950 border-t border-slate-900 pt-20 pb-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+        <div class="col-span-2 md:col-span-1">
+          <a routerLink="/" class="text-xl font-bold mb-4 flex items-center gap-2">
+            <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            CyberAssure
+          </a>
+          <p class="text-slate-500 text-sm">Enterprise Cyber Risk Intelligence for Modern Businesses.</p>
         </div>
-        <div class="faq-list reveal">
-            <div class="faq-item" *ngFor="let faq of faqs; let i = index" [class.open]="faq.open"
-                (click)="toggleFaq(i)">
-                <div class="faq-q">
-                    <span>{{ faq.q }}</span>
-                    <span class="faq-arrow">{{ faq.open ? '−' : '+' }}</span>
-                </div>
-                <div class="faq-a" [style.maxHeight]="faq.open ? '300px' : '0'">
-                    <p>{{ faq.a }}</p>
-                </div>
-            </div>
+        <div>
+          <h4 class="font-bold mb-4 text-white">Platform</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Risk Assessment</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Policies</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Claims Portal</a></li>
+          </ul>
         </div>
+        <div>
+          <h4 class="font-bold mb-4 text-white">Company</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="#" class="hover:text-blue-400 transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Careers</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4 text-white">Legal</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+        <p>© 2026 CyberAssure Technologies. All rights reserved.</p>
+        <div class="flex gap-4">
+          <span class="px-3 py-1 bg-slate-900 rounded border border-slate-800">IRDAI Registered</span>
+          <span class="px-3 py-1 bg-slate-900 rounded border border-slate-800">CERT-In Aligned</span>
+        </div>
+      </div>
     </div>
-</section>
+  </footer>
 
-<!-- FINAL CTA -->
-<section class="cta-section">
-    <div class="cta-glow"></div>
-    <div class="container">
-        <div class="cta-content reveal">
-            <div class="cta-shield">🛡️</div>
-            <h2>Don't Wait for a Breach<br />to Get Protected</h2>
-            <p>Start your free risk assessment today.
-                No commitment. No payment required.</p>
-            <a routerLink="/register" class="btn-cta">
-                Assess My Risk — It's Free →
-            </a>
-            <p class="cta-note">
-                Takes 10 minutes · Instant risk score · No credit card
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="footer">
-    <div class="footer-inner">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <div class="footer-logo">
-                    <span class="logo-shield">⬡</span>CyberAssure
-                </div>
-                <p>Cyber Risk Intelligence for Modern Indian Businesses</p>
-                <div class="socials">
-                    <a href="#" class="social">in</a>
-                    <a href="#" class="social">𝕏</a>
-                    <a href="#" class="social">f</a>
-                </div>
-            </div>
-            <div class="footer-col">
-                <h4>Platform</h4>
-                <a href="#">Risk Assessment</a>
-                <a href="#">Policy Plans</a>
-                <a href="#">Claims Portal</a>
-                <a routerLink="/login">Login</a>
-                <a routerLink="/register">Register</a>
-            </div>
-            <div class="footer-col">
-                <h4>Company</h4>
-                <a href="#">About Us</a>
-                <a href="#">Careers</a>
-                <a href="#">Blog</a>
-                <a href="#">Press</a>
-            </div>
-            <div class="footer-col">
-                <h4>Legal & Support</h4>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact Us</a>
-                <a href="mailto:support@cyberassure.in">
-                    support&#64;cyberassure.in
-                </a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 CyberAssure Insurance Technologies Pvt. Ltd.
-                All rights reserved.</p>
-            <div class="footer-badges">
-                <span>IRDAI Registered</span>
-                <span>CERT-In Aligned</span>
-                <span>DPDP Compliant</span>
-            </div>
-        </div>
-    </div>
-</footer>
+</div>

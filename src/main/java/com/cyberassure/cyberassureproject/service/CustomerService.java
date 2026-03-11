@@ -2,6 +2,7 @@ package com.cyberassure.cyberassureproject.service;
 
 import com.cyberassure.cyberassureproject.dto.*;
 import com.cyberassure.cyberassureproject.entity.*;
+import com.cyberassure.cyberassureproject.exception.ResourceNotFoundException;
 import com.cyberassure.cyberassureproject.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
-
     private final CyberPolicyRepository policyRepository;
     private final UserRepository userRepository;
     private final RiskAssessmentRepository riskAssessmentRepository;
@@ -31,7 +31,7 @@ public class CustomerService {
     // ============================================================
     public CustomerDashboardResponse getDashboardStats(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found: " + userEmail));
+                .orElseThrow(() -> new ResourceNotFoundException("No account found for email: " + userEmail));
 
         // Defaults
         BigDecimal totalCoverage = BigDecimal.ZERO;
@@ -42,7 +42,6 @@ public class CustomerService {
         String subscriptionStatus = "NONE";
         String policyStartDate = null;
         String policyEndDate = null;
-
         // Defaults for underwriter plan fields
         Integer uwRiskScore = null;
         String uwRiskLevel = null;
@@ -50,15 +49,24 @@ public class CustomerService {
         BigDecimal uwCoverage = null;
         Integer uwTenure = null;
         String uwNotes = null;
+        BigDecimal uwPolicyLimit = null;
+        BigDecimal uwDeductible = null;
+        String uwExclusions = null;
         String rejectionReason = null;
-
         try {
-            List<PolicySubscription> approved = policySubscriptionRepository
-                    .findByCustomerAndStatus(user, SubscriptionStatus.APPROVED);
+            // First check if customer has any ACTIVE policy
+            List<PolicySubscription> active = policySubscriptionRepository
+                    .findByCustomerAndStatus(user, SubscriptionStatus.ACTIVE);
 
-            if (!approved.isEmpty()) {
-                PolicySubscription sub = approved.get(0);
-                subscriptionStatus = "APPROVED";
+            if (active.isEmpty()) {
+                // Fallback to APPROVED if not yet active
+                active = policySubscriptionRepository
+                        .findByCustomerAndStatus(user, SubscriptionStatus.APPROVED);
+            }
+
+            if (!active.isEmpty()) {
+                PolicySubscription sub = active.get(0);
+                subscriptionStatus = sub.getStatus().name(); // Will be ACTIVE or APPROVED
 
                 if (sub.getPolicy() != null) {
                     totalCoverage = safe(sub.getCoverageAmount() != null ? sub.getCoverageAmount()
@@ -90,6 +98,9 @@ public class CustomerService {
                 uwCoverage = sub.getCoverageAmount();
                 uwTenure = sub.getTenureMonths();
                 uwNotes = sub.getUnderwriterNotes();
+                uwPolicyLimit = sub.getPolicyLimit();
+                uwDeductible = sub.getDeductible();
+                uwExclusions = sub.getExclusions();
 
             } else {
                 List<PolicySubscription> rejected = policySubscriptionRepository
@@ -117,7 +128,8 @@ public class CustomerService {
                 }
             }
         } catch (Exception e) {
-            // log and fall through to defaults
+            e.printStackTrace();
+            subscriptionStatus = "ERROR: " + e.getMessage();
         }
 
         // Risk
@@ -174,6 +186,9 @@ public class CustomerService {
                 .coverageAmount(uwCoverage)
                 .tenureMonths(uwTenure)
                 .underwriterNotes(uwNotes)
+                .policyLimit(uwPolicyLimit)
+                .deductible(uwDeductible)
+                .exclusions(uwExclusions)
                 .rejectionReason(rejectionReason)
                 .build();
     }
@@ -183,7 +198,7 @@ public class CustomerService {
     // ============================================================
     public List<PolicyResponse> getRecommendedPolicies(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("No account found for email: " + userEmail));
 
         String userIndustry = user.getIndustry() != null ? user.getIndustry().trim() : "";
 
@@ -203,10 +218,11 @@ public class CustomerService {
     public void applyForPolicy(ApplyPolicyRequest request, String userEmail,
             java.util.List<org.springframework.web.multipart.MultipartFile> proofFiles) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("No account found for email: " + userEmail));
 
         CyberPolicy policy = policyRepository.findById(request.getPolicyId())
-                .orElseThrow(() -> new RuntimeException("Policy not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No policy found with ID: " + request.getPolicyId()));
 
         // Save proof documents
         String savedPaths = "";
@@ -217,14 +233,17 @@ public class CustomerService {
                     continue;
                 try {
                     String uploadDir = "uploads/proofs/" + user.getUserId();
-                    java.nio.file.Path dir = java.nio.file.Paths.get(uploadDir);
-                    java.nio.file.Files.createDirectories(dir);
+                    java.nio.file.Path dir = java.nio.file.Paths.get(uploadDir).toAbsolutePath().normalize();
+                    if (!java.nio.file.Files.exists(dir)) {
+                        java.nio.file.Files.createDirectories(dir);
+                    }
                     String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
                     java.nio.file.Path target = dir.resolve(filename);
-                    file.transferTo(target.toFile());
-                    paths.add(target.toString());
+                    java.nio.file.Files.copy(file.getInputStream(), target,
+                            java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                    paths.add(uploadDir + "/" + filename); // Store relative path for frontend parsing consistency
                 } catch (Exception e) {
-                    throw new RuntimeException("Failed to save proof document: " + e.getMessage());
+                    throw new ResourceNotFoundException("Failed to save proof document '" + file.getOriginalFilename() + "': " + e.getMessage());
                 }
             }
             savedPaths = String.join(",", paths);

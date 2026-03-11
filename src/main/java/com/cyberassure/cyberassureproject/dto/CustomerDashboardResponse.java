@@ -35,6 +35,9 @@ public class CustomerDashboardResponse {
     private BigDecimal coverageAmount;
     private Integer tenureMonths;
     private String underwriterNotes;
+    private BigDecimal policyLimit;
+    private BigDecimal deductible;
+    private String exclusions;
 
     // Rejection details (set when REJECTED)
     private String rejectionReason;

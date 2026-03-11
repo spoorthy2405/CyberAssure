@@ -1,161 +1,181 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router, NavigationEnd } from '@angular/router';
 import { CustomerService } from '../services/customer.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, filter, startWith, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
-    standalone: true,
-    imports: [CommonModule, FormsModule],
-    templateUrl: './policies.html'
+  selector: 'app-policies',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './policies.html'
 })
-export class Policies implements OnInit {
+export class Policies {
+  private service = inject(CustomerService);
+  private router = inject(Router);
 
-    policies: any[] = [];
-    selectedPolicy: any = null;
-    showModal = false;
-    loading = false;
+  // Trigger data fetch on navigation for fresh data without caching bugs
+  private refresh$ = this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd),
+    startWith(null)
+  );
 
-    // Risk Assessment Form
-    riskForm = {
-        firewallEnabled: false,
-        encryptionEnabled: false,
-        backupAvailable: false,
-        mfaEnabled: false,
-        iso27001Certified: false,
-        hasDataPrivacyOfficer: false,
-        previousIncidentCount: 0,
-        employeeCount: 50,
-        annualRevenue: 5000000
+  loadingPage = signal(true);
+
+  // Signal for policies list
+  policies = toSignal(
+    this.refresh$.pipe(
+      tap(() => this.loadingPage.set(true)),
+      switchMap(() => this.service.getRecommendedPolicies().pipe(
+        catchError((err) => {
+          console.error('Error fetching policies:', err);
+          return of([]);
+        })
+      )),
+      tap(() => this.loadingPage.set(false))
+    ),
+    { initialValue: [] as any[] }
+  );
+
+  // Modal State Signals
+  selectedPolicy = signal<any>(null);
+  showModal = signal(false);
+  loadingSubmit = signal(false);
+
+  // Risk Assessment Form Signal
+  riskForm = signal({
+    firewallEnabled: false,
+    encryptionEnabled: false,
+    backupAvailable: false,
+    mfaEnabled: false,
+    iso27001Certified: false,
+    hasDataPrivacyOfficer: false,
+    previousIncidentCount: 0,
+    employeeCount: 50,
+    annualRevenue: 5000000
+  });
+
+  // Individual proof documents for each control
+  controlProofs = signal<{ [key: string]: File }>({});
+
+  // Additional proof document files
+  proofFiles = signal<File[]>([]);
+
+  openApplication(policy: any) {
+    this.selectedPolicy.set(policy);
+    this.showModal.set(true);
+    this.proofFiles.set([]);
+    this.controlProofs.set({});
+    this.riskForm.set({
+      firewallEnabled: false,
+      encryptionEnabled: false,
+      backupAvailable: false,
+      mfaEnabled: false,
+      iso27001Certified: false,
+      hasDataPrivacyOfficer: false,
+      previousIncidentCount: 0,
+      employeeCount: 50,
+      annualRevenue: 5000000
+    });
+  }
+
+  closeModal() {
+    this.showModal.set(false);
+    this.selectedPolicy.set(null);
+    this.proofFiles.set([]);
+    this.controlProofs.set({});
+  }
+
+  onControlFileSelect(event: any, controlKey: string) {
+    const file = event.target.files[0];
+    if (file) {
+      this.controlProofs.update(curr => ({ ...curr, [controlKey]: file }));
+    }
+  }
+
+  onFileSelect(event: any) {
+    const files = event.target.files;
+    if (files) {
+      const newFiles = [...this.proofFiles()];
+      for (let i = 0; i < files.length; i++) {
+        newFiles.push(files[i]);
+      }
+      this.proofFiles.set(newFiles);
+    }
+    event.target.value = '';
+  }
+
+  removeFile(index: number) {
+    this.proofFiles.update(curr => {
+      const copy = [...curr];
+      copy.splice(index, 1);
+      return copy;
+    });
+  }
+
+  updateRiskForm(field: string, value: any) {
+      this.riskForm.update(curr => ({ ...curr, [field]: value }));
+  }
+
+  submitApplication() {
+    const policy = this.selectedPolicy();
+    const form = this.riskForm();
+    const controls = this.controlProofs();
+    const additionalFiles = this.proofFiles();
+
+    if (!policy) return;
+
+    const missingProofs = [];
+    if (form.firewallEnabled && !controls['firewall']) missingProofs.push('Active Firewall');
+    if (form.encryptionEnabled && !controls['encryption']) missingProofs.push('Data Encryption');
+    if (form.backupAvailable && !controls['backup']) missingProofs.push('Regular Backups');
+    if (form.mfaEnabled && !controls['mfa']) missingProofs.push('Multi-Factor Auth');
+    if (form.iso27001Certified && !controls['iso27001']) missingProofs.push('ISO 27001 Certified');
+    if (form.hasDataPrivacyOfficer && !controls['dpo']) missingProofs.push('Dedicated DPO');
+
+    if (missingProofs.length > 0) {
+      alert(`Please upload proof documents for the following enabled controls:\n- ${missingProofs.join('\n- ')}`);
+      return;
+    }
+
+    if (!form.employeeCount || !form.annualRevenue) {
+      alert("Please fill in Employee Count and Annual Revenue.");
+      return;
+    }
+
+    this.loadingSubmit.set(true);
+
+    const payload = {
+      policyId: policy.id,
+      ...form
     };
 
-    // Individual proof documents for each control
-    controlProofs: { [key: string]: File } = {};
+    const formData = new FormData();
+    formData.append('data', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
 
-    // Additional proof document files
-    proofFiles: File[] = [];
-
-    constructor(private service: CustomerService) { }
-
-    ngOnInit() {
-        this.fetchRecommendedPolicies();
+    for (const [key, file] of Object.entries(controls)) {
+      if (file) {
+        formData.append('proofFiles', file, `${key.toUpperCase()}_PROOF_${file.name}`);
+      }
     }
 
-    fetchRecommendedPolicies() {
-        this.loading = true;
-        this.service.getRecommendedPolicies().subscribe({
-            next: (data) => {
-                console.log('Fetched policies:', data);
-                this.policies = data || [];
-                this.loading = false;
-            },
-            error: (err) => {
-                console.error('Error fetching policies:', err);
-                this.loading = false;
-            }
-        });
+    for (const file of additionalFiles) {
+      formData.append('proofFiles', file, `ADDITIONAL_${file.name}`);
     }
 
-    openApplication(policy: any) {
-        this.selectedPolicy = policy;
-        this.showModal = true;
-        this.proofFiles = [];
-        this.controlProofs = {};
-        this.riskForm = {
-            firewallEnabled: false,
-            encryptionEnabled: false,
-            backupAvailable: false,
-            mfaEnabled: false,
-            iso27001Certified: false,
-            hasDataPrivacyOfficer: false,
-            previousIncidentCount: 0,
-            employeeCount: 50,
-            annualRevenue: 5000000
-        };
-    }
-
-    closeModal() {
-        this.showModal = false;
-        this.selectedPolicy = null;
-        this.proofFiles = [];
-        this.controlProofs = {};
-    }
-
-    onControlFileSelect(event: any, controlKey: string) {
-        const file = event.target.files[0];
-        if (file) {
-            this.controlProofs[controlKey] = file;
-        }
-    }
-
-    onFileSelect(event: any) {
-        const files = event.target.files;
-        if (files) {
-            for (let i = 0; i < files.length; i++) {
-                this.proofFiles.push(files[i]);
-            }
-        }
-        // reset input so same file can be re-selected
-        event.target.value = '';
-    }
-
-    removeFile(index: number) {
-        this.proofFiles.splice(index, 1);
-    }
-
-    submitApplication() {
-        if (!this.selectedPolicy) return;
-
-        // Check if every enabled security control has a proof uploaded
-        const missingProofs = [];
-        if (this.riskForm.firewallEnabled && !this.controlProofs['firewall']) missingProofs.push('Active Firewall');
-        if (this.riskForm.encryptionEnabled && !this.controlProofs['encryption']) missingProofs.push('Data Encryption');
-        if (this.riskForm.backupAvailable && !this.controlProofs['backup']) missingProofs.push('Regular Backups');
-        if (this.riskForm.mfaEnabled && !this.controlProofs['mfa']) missingProofs.push('Multi-Factor Auth');
-        if (this.riskForm.iso27001Certified && !this.controlProofs['iso27001']) missingProofs.push('ISO 27001 Certified');
-        if (this.riskForm.hasDataPrivacyOfficer && !this.controlProofs['dpo']) missingProofs.push('Dedicated DPO');
-
-        if (missingProofs.length > 0) {
-            alert(`Please upload proof documents for the following enabled controls:\n- ${missingProofs.join('\n- ')}`);
-            return;
-        }
-
-        if (!this.riskForm.employeeCount || !this.riskForm.annualRevenue) {
-            alert("Please fill in Employee Count and Annual Revenue.");
-            return;
-        }
-
-        this.loading = true;
-
-        const payload = {
-            policyId: this.selectedPolicy.id,
-            ...this.riskForm
-        };
-
-        const formData = new FormData();
-        formData.append('data', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
-
-        // Append individual control proofs with prefix
-        for (const [key, file] of Object.entries(this.controlProofs)) {
-            if (file) {
-                formData.append('proofFiles', file, `${key.toUpperCase()}_PROOF_${file.name}`);
-            }
-        }
-
-        // Append additional optional proofs
-        for (const file of this.proofFiles) {
-            formData.append('proofFiles', file, `ADDITIONAL_${file.name}`);
-        }
-
-        this.service.applyForPolicy(formData).subscribe({
-            next: (res: any) => {
-                this.loading = false;
-                alert("✅ Application submitted successfully! Your request has been sent to the Admin for underwriter assignment.");
-                this.closeModal();
-            },
-            error: (err: any) => {
-                this.loading = false;
-                alert("Failed to apply: " + (err.error?.message || err.error || err.message));
-            }
-        });
-    }
+    this.service.applyForPolicy(formData).subscribe({
+      next: (res: any) => {
+        this.loadingSubmit.set(false);
+        this.closeModal();
+        this.router.navigate(['/customer/subscriptions']);
+      },
+      error: (err: any) => {
+        this.loadingSubmit.set(false);
+        alert("Failed to apply: " + (err.error?.message || err.error || err.message));
+      }
+    });
+  }
 }

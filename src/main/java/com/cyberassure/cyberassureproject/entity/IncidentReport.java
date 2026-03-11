@@ -21,6 +21,7 @@ public class IncidentReport {
 
     private String incidentType; // Ransomware, Data Breach, Phishing etc
 
+    @Column(length = 2000)
     private String description;
 
     private BigDecimal estimatedLossAmount;

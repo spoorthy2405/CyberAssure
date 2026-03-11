@@ -10,7 +10,7 @@
         </div>
         <div class="flex items-center gap-3">
             <span class="bg-slate-800 border border-slate-700 text-slate-300 text-sm px-4 py-2 rounded-lg">
-                Total: <span class="font-bold text-white">{{ filteredCustomers.length }}</span>
+            Total: <span class="font-bold text-white">{{ filteredCustomers().length }}</span>
             </span>
         </div>
     </div>
@@ -24,13 +24,13 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0" />
             </svg>
-            <input type="text" [(ngModel)]="searchText" (ngModelChange)="applyFilters()"
+            <input type="text" [ngModel]="searchText()" (ngModelChange)="searchText.set($event); applyFilters()"
                 placeholder="Search by name, email, company..."
                 class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
         </div>
 
         <!-- STATUS FILTER -->
-        <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()"
+        <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event); applyFilters()"
             class="bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-lg px-4 py-2.5 focus:outline-none focus:border-blue-500 transition-all appearance-none cursor-pointer">
             <option value="">All Statuses</option>
             <option value="ACTIVE">Active</option>
@@ -39,16 +39,16 @@
         </select>
 
         <!-- INDUSTRY FILTER -->
-        <select [(ngModel)]="industryFilter" (ngModelChange)="applyFilters()"
+        <select [ngModel]="industryFilter()" (ngModelChange)="industryFilter.set($event); applyFilters()"
             class="bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-lg px-4 py-2.5 focus:outline-none focus:border-blue-500 transition-all appearance-none cursor-pointer">
             <option value="">All Industries</option>
-            <option *ngFor="let ind of industries" [value]="ind">{{ ind }}</option>
+            <option *ngFor="let ind of industries()" [value]="ind">{{ ind }}</option>
         </select>
 
     </div>
 
     <!-- LOADING STATE -->
-    <div *ngIf="isLoading" class="flex items-center justify-center py-24">
+    <div *ngIf="isLoading()" class="flex items-center justify-center py-24">
         <div class="flex flex-col items-center gap-4">
             <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
             <p class="text-slate-400 text-sm">Loading customers...</p>
@@ -56,7 +56,7 @@
     </div>
 
     <!-- TABLE -->
-    <div *ngIf="!isLoading" class="bg-slate-800/70 rounded-2xl border border-slate-700 overflow-hidden">
+    <div *ngIf="!isLoading()" class="bg-slate-800/70 rounded-2xl border border-slate-700 overflow-hidden">
 
         <table class="w-full text-left text-sm">
 
@@ -74,7 +74,7 @@
             <tbody class="divide-y divide-slate-700/60">
 
                 <!-- EMPTY STATE -->
-                <tr *ngIf="paginatedCustomers.length === 0">
+                <tr *ngIf="paginatedCustomers().length === 0">
                     <td colspan="6" class="py-16 text-center">
                         <svg class="w-14 h-14 mx-auto text-slate-600 mb-4" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
@@ -86,7 +86,7 @@
                     </td>
                 </tr>
 
-                <tr *ngFor="let cust of paginatedCustomers"
+                <tr *ngFor="let cust of paginatedCustomers()"
                     class="hover:bg-slate-700/30 transition-colors group cursor-pointer" (click)="openDetail(cust)">
 
                     <!-- CUSTOMER NAME + AVATAR -->
@@ -174,23 +174,23 @@
     </div>
 
     <!-- PAGINATION -->
-    <div *ngIf="!isLoading && filteredCustomers.length > 0" class="flex items-center justify-between">
+    <div *ngIf="!isLoading() && filteredCustomers().length > 0" class="flex items-center justify-between">
 
         <span class="text-slate-400 text-sm">
-            Showing {{ (page - 1) * pageSize + 1 }}–{{ min(page * pageSize, filteredCustomers.length) }} of
-            {{ filteredCustomers.length }} customers
+            Showing {{ (page() - 1) * pageSize + 1 }}–{{ min(page() * pageSize, filteredCustomers().length) }} of
+            {{ filteredCustomers().length }} customers
         </span>
 
         <div class="flex items-center gap-2">
-            <button (click)="prevPage()" [disabled]="page === 1"
+            <button (click)="prevPage()" [disabled]="page() === 1"
                 class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                [ngClass]="page === 1 ? 'bg-slate-800 text-slate-600 cursor-not-allowed' : 'bg-slate-700 text-white hover:bg-slate-600'">
+                [ngClass]="page() === 1 ? 'bg-slate-800 text-slate-600 cursor-not-allowed' : 'bg-slate-700 text-white hover:bg-slate-600'">
                 ← Previous
             </button>
-            <span class="text-slate-400 text-sm px-2">Page {{ page }} of {{ totalPages }}</span>
-            <button (click)="nextPage()" [disabled]="page >= totalPages"
+            <span class="text-slate-400 text-sm px-2">Page {{ page() }} of {{ totalPages() }}</span>
+            <button (click)="nextPage()" [disabled]="page() >= totalPages()"
                 class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                [ngClass]="page >= totalPages ? 'bg-slate-800 text-slate-600 cursor-not-allowed' : 'bg-slate-700 text-white hover:bg-slate-600'">
+                [ngClass]="page() >= totalPages() ? 'bg-slate-800 text-slate-600 cursor-not-allowed' : 'bg-slate-700 text-white hover:bg-slate-600'">
                 Next →
             </button>
         </div>
@@ -204,7 +204,7 @@
 <!-- CUSTOMER DETAIL DRAWER (slide-in panel)                  -->
 <!-- ======================================================== -->
 
-<div *ngIf="selectedCustomer" class="fixed inset-0 z-50 flex justify-end" role="dialog" aria-modal="true">
+<div *ngIf="selectedCustomer()" class="fixed inset-0 z-50 flex justify-end" role="dialog" aria-modal="true">
 
     <!-- Backdrop -->
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" (click)="closeDetail()"></div>
@@ -231,18 +231,18 @@
             <!-- Avatar + Name -->
             <div class="flex items-center gap-4">
                 <div class="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold text-white flex-shrink-0"
-                    [ngStyle]="{'background': getAvatarColor(selectedCustomer.fullName)}">
-                    {{ selectedCustomer.fullName ? selectedCustomer.fullName.charAt(0).toUpperCase() : '?' }}
+                    [ngStyle]="{'background': getAvatarColor(selectedCustomer()!.fullName)}">
+                    {{ selectedCustomer()!.fullName ? selectedCustomer()!.fullName.charAt(0).toUpperCase() : '?' }}
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold text-white">{{ selectedCustomer.fullName }}</h3>
+                    <h3 class="text-xl font-bold text-white">{{ selectedCustomer()!.fullName }}</h3>
                     <span class="inline-block mt-1 px-3 py-0.5 rounded-full text-xs font-semibold border" [ngClass]="{
-                        'bg-emerald-500/10 text-emerald-400 border-emerald-500/30': selectedCustomer.accountStatus === 'ACTIVE',
-                        'bg-yellow-500/10 text-yellow-400 border-yellow-500/30': selectedCustomer.accountStatus === 'INACTIVE',
-                        'bg-red-500/10 text-red-400 border-red-500/30': selectedCustomer.accountStatus === 'SUSPENDED',
-                        'bg-slate-500/10 text-slate-400 border-slate-500/30': selectedCustomer.accountStatus !== 'ACTIVE' && selectedCustomer.accountStatus !== 'INACTIVE' && selectedCustomer.accountStatus !== 'SUSPENDED'
+                        'bg-emerald-500/10 text-emerald-400 border-emerald-500/30': selectedCustomer()!.accountStatus === 'ACTIVE',
+                        'bg-yellow-500/10 text-yellow-400 border-yellow-500/30': selectedCustomer()!.accountStatus === 'INACTIVE',
+                        'bg-red-500/10 text-red-400 border-red-500/30': selectedCustomer()!.accountStatus === 'SUSPENDED',
+                        'bg-slate-500/10 text-slate-400 border-slate-500/30': selectedCustomer()!.accountStatus !== 'ACTIVE' && selectedCustomer()!.accountStatus !== 'INACTIVE' && selectedCustomer()!.accountStatus !== 'SUSPENDED'
                     }">
-                        {{ selectedCustomer.accountStatus }}
+                        {{ selectedCustomer()!.accountStatus }}
                     </span>
                 </div>
             </div>
@@ -260,7 +260,7 @@
                         </svg>
                         <div>
                             <p class="text-xs text-slate-500">Email</p>
-                            <p class="text-sm text-slate-200">{{ selectedCustomer.email }}</p>
+                            <p class="text-sm text-slate-200">{{ selectedCustomer()!.email }}</p>
                         </div>
                     </div>
 
@@ -272,7 +272,7 @@
                         </svg>
                         <div>
                             <p class="text-xs text-slate-500">Phone</p>
-                            <p class="text-sm text-slate-200">{{ selectedCustomer.phoneNumber || '—' }}</p>
+                            <p class="text-sm text-slate-200">{{ selectedCustomer()!.phoneNumber || '—' }}</p>
                         </div>
                     </div>
 
@@ -292,7 +292,7 @@
                         </svg>
                         <div>
                             <p class="text-xs text-slate-500">Company Name</p>
-                            <p class="text-sm text-slate-200">{{ selectedCustomer.companyName || '—' }}</p>
+                            <p class="text-sm text-slate-200">{{ selectedCustomer()!.companyName || '—' }}</p>
                         </div>
                     </div>
 
@@ -304,7 +304,7 @@
                         </svg>
                         <div>
                             <p class="text-xs text-slate-500">Industry</p>
-                            <p class="text-sm text-slate-200">{{ selectedCustomer.industry || '—' }}</p>
+                            <p class="text-sm text-slate-200">{{ selectedCustomer()!.industry || '—' }}</p>
                         </div>
                     </div>
 
@@ -316,7 +316,7 @@
                         </svg>
                         <div>
                             <p class="text-xs text-slate-500">Company Size</p>
-                            <p class="text-sm text-slate-200">{{ selectedCustomer.companySize || '—' }}</p>
+                            <p class="text-sm text-slate-200">{{ selectedCustomer()!.companySize || '—' }}</p>
                         </div>
                     </div>
 
@@ -335,8 +335,8 @@
                         </svg>
                         <div>
                             <p class="text-xs text-slate-500">Role</p>
-                            <p class="text-sm text-slate-200">{{ (selectedCustomer.role &&
-                                selectedCustomer.role.roleName) ? selectedCustomer.role.roleName : 'CUSTOMER' }}</p>
+                            <p class="text-sm text-slate-200">{{ (selectedCustomer()!.role &&
+                                selectedCustomer()!.role.roleName) ? selectedCustomer()!.role.roleName : 'CUSTOMER' }}</p>
                         </div>
                     </div>
                 </div>
@@ -346,11 +346,11 @@
 
         <!-- Panel Footer: Actions -->
         <div class="sticky bottom-0 px-6 py-4 border-t border-slate-700 bg-slate-900 flex items-center gap-3">
-            <button (click)="toggleSuspend(selectedCustomer)"
-                class="flex-1 py-2.5 rounded-lg text-sm font-medium transition-all" [ngClass]="selectedCustomer.accountStatus === 'SUSPENDED'
+            <button (click)="toggleSuspend(selectedCustomer()!)"
+                class="flex-1 py-2.5 rounded-lg text-sm font-medium transition-all" [ngClass]="selectedCustomer()!.accountStatus === 'SUSPENDED'
                     ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
                     : 'bg-red-600/30 hover:bg-red-600/60 text-red-400 border border-red-500/30'">
-                {{ selectedCustomer.accountStatus === 'SUSPENDED' ? '✓ Reactivate Account' : '⊘ Suspend Account' }}
+                {{ selectedCustomer()!.accountStatus === 'SUSPENDED' ? 'Reactivate Account' : 'Suspend Account' }}
             </button>
             <button (click)="closeDetail()"
                 class="flex-1 py-2.5 rounded-lg text-sm font-medium bg-slate-700 hover:bg-slate-600 text-slate-200 transition-all">

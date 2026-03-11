@@ -3,6 +3,7 @@ package com.cyberassure.cyberassureproject.service;
 import com.cyberassure.cyberassureproject.dto.CreateSubscriptionRequest;
 import com.cyberassure.cyberassureproject.dto.UnderwriterDecisionRequest;
 import com.cyberassure.cyberassureproject.entity.*;
+import com.cyberassure.cyberassureproject.exception.*;
 import com.cyberassure.cyberassureproject.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,14 +34,16 @@ public class PolicySubscriptionService {
                 .getName();
 
         User customer = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Authenticated user not found. Please log in again."));
 
         CyberPolicy policy = policyRepository.findById(request.getPolicyId())
-                .orElseThrow(() -> new RuntimeException("Policy not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No policy found with ID: " + request.getPolicyId()));
 
         RiskAssessment latestRisk = riskRepository
                 .findTopByCustomerOrderByCreatedAtDesc(customer)
-                .orElseThrow(() -> new RuntimeException("No risk assessment found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No risk assessment found for your account. Please complete a risk assessment before applying."));
 
         BigDecimal finalPremium = calculatePremium(
                 policy.getBasePremium(),
@@ -53,8 +56,6 @@ public class PolicySubscriptionService {
                 .riskAssessment(latestRisk)
                 .calculatedPremium(finalPremium)
                 .status(SubscriptionStatus.PENDING)
-                .startDate(LocalDate.now())
-                .endDate(LocalDate.now().plusMonths(policy.getDurationMonths()))
                 .tenureMonths(policy.getDurationMonths())
                 .build();
 
@@ -110,7 +111,7 @@ public class PolicySubscriptionService {
 
     public List<PolicySubscription> getAssignedToMe(String email) {
         User underwriter = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Underwriter not found with email: " + email));
         return subscriptionRepository.findByAssignedUnderwriter(underwriter);
     }
 
@@ -127,14 +128,17 @@ public class PolicySubscriptionService {
                 .getName();
 
         User underwriter = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Authenticated underwriter not found."));
 
         PolicySubscription subscription = subscriptionRepository
                 .findById(subscriptionId)
-                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No subscription found with ID: " + subscriptionId));
 
         if (subscription.getStatus() != SubscriptionStatus.PENDING) {
-            throw new RuntimeException("Already reviewed");
+            throw new SubscriptionStateException(
+                    "Subscription #" + subscriptionId + " has already been reviewed (current status: '"
+                    + subscription.getStatus() + "'). Only PENDING applications can be reviewed.");
         }
 
         RiskAssessment risk = subscription.getRiskAssessment();
@@ -159,23 +163,30 @@ public class PolicySubscriptionService {
                 : calculateCoverage(policy.getCoverageLimit(), risk.getRiskLevel());
         subscription.setCoverageAmount(coverage);
 
-        // Step 4: Calculate Premium
-        BigDecimal premium = calculatePremium(policy.getBasePremium(), risk.getRiskLevel(), tenure);
+        // Step 4: Calculate / accept Premium
+        BigDecimal premium = request.getFixedPremium() != null
+                ? request.getFixedPremium()
+                : calculatePremium(policy.getBasePremium(), risk.getRiskLevel(), tenure);
         subscription.setCalculatedPremium(premium);
 
-        // Step 5: Notes
+        // Step 5: Advanced Terms
+        subscription.setPolicyLimit(request.getPolicyLimit());
+        subscription.setDeductible(request.getDeductible());
+        subscription.setExclusions(request.getExclusions());
+
+        // Step 6: Notes
         subscription.setUnderwriterNotes(request.getUnderwriterNotes());
 
-        // Step 6: Apply decision
-        if (request.getDecision().equalsIgnoreCase("APPROVED")) {
-            subscription.setStatus(SubscriptionStatus.APPROVED);
-            subscription.setStartDate(LocalDate.now());
-            subscription.setEndDate(LocalDate.now().plusMonths(tenure));
-        } else if (request.getDecision().equalsIgnoreCase("REJECTED")) {
+        // Step 7: Apply decision
+        String dec = request.getDecision();
+        if (dec.equalsIgnoreCase("APPROVED")) {
+            subscription.setStatus(SubscriptionStatus.PENDING_PAYMENT);
+        } else if (dec.equalsIgnoreCase("REJECTED")) {
             subscription.setStatus(SubscriptionStatus.REJECTED);
             subscription.setRejectionReason(request.getRejectionReason());
         } else {
-            throw new RuntimeException("Invalid decision");
+            throw new InvalidDecisionException(
+                    "Decision '" + dec + "' is not recognised. Allowed values: APPROVED, REJECTED.");
         }
 
         // Audit
@@ -187,7 +198,38 @@ public class PolicySubscriptionService {
 
     public List<PolicySubscription> getSubscriptionsByCustomer(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
         return subscriptionRepository.findByCustomer(user);
+    }
+
+    // ==============================
+    // CUSTOMER PAY SUBSCRIPTION
+    // ==============================
+    public PolicySubscription paySubscription(Long subscriptionId) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User customer = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Authenticated user not found. Please log in again."));
+
+        PolicySubscription subscription = subscriptionRepository.findById(subscriptionId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No subscription found with ID: " + subscriptionId));
+
+        // Security: ensure this customer owns the subscription they're paying for
+        if (!subscription.getCustomer().getUserId().equals(customer.getUserId())) {
+            throw new UnauthorizedAccessException(
+                    "You are not authorised to make a payment for subscription #" + subscriptionId + ".");
+        }
+
+        if (subscription.getStatus() != SubscriptionStatus.PENDING_PAYMENT) {
+            throw new SubscriptionStateException(
+                    "Subscription #" + subscriptionId + " is not awaiting payment (current status: '"
+                    + subscription.getStatus() + "'). Only PENDING_PAYMENT subscriptions can be activated.");
+        }
+
+        subscription.setStatus(SubscriptionStatus.ACTIVE);
+        subscription.setStartDate(LocalDate.now());
+        subscription.setEndDate(LocalDate.now().plusMonths(subscription.getTenureMonths()));
+
+        return subscriptionRepository.save(subscription);
     }
 }

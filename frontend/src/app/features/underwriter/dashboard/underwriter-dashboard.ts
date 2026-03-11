@@ -1,7 +1,9 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
 import { UnderwriterService } from '../services/underwriter.service';
 
 @Component({
@@ -10,37 +12,36 @@ import { UnderwriterService } from '../services/underwriter.service';
   imports: [RouterModule, CommonModule],
   templateUrl: './underwriter-dashboard.html'
 })
-export class UnderwriterDashboard implements OnInit {
+export class UnderwriterDashboard {
 
-  total = 0;
-  pending = 0;
-  approved = 0;
-  rejected = 0;
-  userName = 'Underwriter';
-  userInitial = 'U';
+  private service = inject(UnderwriterService);
+  private router = inject(Router);
 
-  constructor(private service: UnderwriterService, private router: Router) { }
+  // Load subscriptions via toSignal — auto-triggers re-render when HTTP responds
+  private allSubs = toSignal(
+    this.service.getMyAssignedSubscriptions().pipe(catchError(() => of([]))),
+    { initialValue: [] as any[] }
+  );
 
-  ngOnInit(): void {
-    this.loadStats();
-    // Get name from stored token/session
+  total    = computed(() => this.allSubs().length);
+  pending  = computed(() => this.allSubs().filter((s: any) => s.status === 'PENDING').length);
+  approved = computed(() => this.allSubs().filter((s: any) => s.status === 'APPROVED').length);
+  rejected = computed(() => this.allSubs().filter((s: any) => s.status === 'REJECTED').length);
+
+  userName = signal('Underwriter');
+  userInitial = signal('U');
+
+  constructor() {
+    // Read user info from localStorage synchronously — no async needed
     const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
     if (stored) {
       try {
         const user = JSON.parse(stored);
-        this.userName = user.fullName || user.name || 'Underwriter';
-        this.userInitial = this.userName.charAt(0).toUpperCase();
+        const name = user.fullName || user.name || 'Underwriter';
+        this.userName.set(name);
+        this.userInitial.set(name.charAt(0).toUpperCase());
       } catch (e) { }
     }
-  }
-
-  loadStats() {
-    this.service.getMyAssignedSubscriptions().subscribe((data: any[]) => {
-      this.total = data.length;
-      this.pending = data.filter((s: any) => s.status === 'PENDING').length;
-      this.approved = data.filter((s: any) => s.status === 'APPROVED').length;
-      this.rejected = data.filter((s: any) => s.status === 'REJECTED').length;
-    });
   }
 
   signOut() {

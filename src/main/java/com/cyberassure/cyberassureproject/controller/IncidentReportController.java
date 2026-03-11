@@ -3,6 +3,7 @@ package com.cyberassure.cyberassureproject.controller;
 import com.cyberassure.cyberassureproject.dto.CreateIncidentRequest;
 import com.cyberassure.cyberassureproject.entity.IncidentReport;
 import com.cyberassure.cyberassureproject.service.IncidentReportService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,13 +19,15 @@ import java.util.List;
 public class IncidentReportController {
 
         private final IncidentReportService incidentService;
+        private final ObjectMapper objectMapper;
 
         // Customer reports an incident with optional document uploads
         @PostMapping(consumes = "multipart/form-data")
         @PreAuthorize("hasRole('CUSTOMER')")
         public ResponseEntity<IncidentReport> reportIncident(
-                        @RequestPart("data") CreateIncidentRequest request,
-                        @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+                        @RequestPart("data") String dataJson,
+                        @RequestPart(value = "files", required = false) List<MultipartFile> files) throws Exception {
+                CreateIncidentRequest request = objectMapper.readValue(dataJson, CreateIncidentRequest.class);
                 return ResponseEntity.ok(incidentService.reportIncident(request, files));
         }
 

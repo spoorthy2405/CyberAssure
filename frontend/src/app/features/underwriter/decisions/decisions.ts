@@ -1,52 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
 import { UnderwriterService } from '../services/underwriter.service';
 
 @Component({
-    selector: 'app-decisions',
-    standalone: true,
-    imports: [CommonModule],
-    templateUrl: './decisions.html'
+  selector: 'app-decisions',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './decisions.html'
 })
-export class Decisions implements OnInit {
+export class Decisions {
 
-    decisions: any[] = [];
-    loading = false;
+  private service = inject(UnderwriterService);
 
-    constructor(private service: UnderwriterService) { }
+  private allSubs = toSignal(
+    this.service.getMyAssignedSubscriptions().pipe(catchError(() => of([]))),
+    { initialValue: [] as any[] }
+  );
 
-    ngOnInit(): void {
-        this.loadDecisions();
-    }
+  // Show only APPROVED or REJECTED — computed auto-updates when allSubs changes
+  decisions = computed(() =>
+    this.allSubs().filter((s: any) => s.status !== 'PENDING')
+  );
 
-    loadDecisions() {
-
-        this.loading = true;
-
-        this.service.getMyAssignedSubscriptions().subscribe({
-
-            next: (data: any[]) => {
-
-                console.log("Decisions:", data);
-
-                // show only approved/rejected
-                this.decisions = data.filter(
-                    (s: any) => s.status !== 'PENDING'
-                );
-
-                this.loading = false;
-
-            },
-
-            error: (err: any) => {
-
-                console.error("Error loading decisions", err);
-                this.loading = false;
-
-            }
-
-        });
-
-    }
-
+  loading = computed(() => this.allSubs().length === 0);
 }

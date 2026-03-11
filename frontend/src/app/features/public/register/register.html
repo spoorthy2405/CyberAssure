@@ -1,281 +1,330 @@
-<div class="auth-page">
+<div class="min-h-screen flex bg-slate-950 text-slate-100 font-sans selection:bg-blue-500/30">
 
-    <!-- LEFT PANEL -->
-    <div class="auth-left">
-        <div class="auth-left-inner">
-            <div class="brand">
-                <span class="brand-shield">⬡</span>
-                <span class="brand-name">CyberAssure</span>
-            </div>
+  <!-- LEFT PANEL -->
+  <div class="hidden lg:flex flex-col w-1/2 bg-slate-900 border-r border-slate-800 p-12 justify-between relative overflow-hidden">
+      
+      <!-- Background Glow -->
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-            <div class="left-visual">
-                <div class="shield-wrap">
-                    <div class="shield-icon">🛡️</div>
-                    <div class="shield-ring r1"></div>
-                    <div class="shield-ring r2"></div>
-                    <div class="shield-ring r3"></div>
-                </div>
-            </div>
+      <div class="relative z-10 flex items-center gap-2 mb-8">
+          <svg class="w-8 h-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">CyberAssure</span>
+      </div>
 
-            <div class="left-copy">
-                <h2>Start Your Free Risk Assessment Today</h2>
-                <p>Create your account in minutes and get your
-                    cybersecurity risk score instantly.</p>
-            </div>
+      <div class="relative z-10 flex-1 flex flex-col justify-center">
+          <!-- WHY JOIN CYBERASSURE -->
+          <div class="max-w-md mx-auto xl:mx-0">
+              <h2 class="text-3xl font-extrabold mb-8 leading-tight text-white">Why Join CyberAssure?</h2>
+              <div class="space-y-8">
+                  <div class="flex items-start gap-5">
+                      <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0 mt-1">
+                          <svg class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                      </div>
+                      <div>
+                          <h4 class="font-bold text-slate-200 text-base mb-1">Detailed Risk Profiling</h4>
+                          <p class="text-slate-400 text-sm leading-relaxed">Upload comprehensive proof documents for an accurate initial risk evaluation of your environments.</p>
+                      </div>
+                  </div>
+                  <div class="flex items-start gap-5">
+                      <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0 mt-1">
+                          <svg class="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                      </div>
+                      <div>
+                          <h4 class="font-bold text-slate-200 text-base mb-1">Expert Underwriting</h4>
+                          <p class="text-slate-400 text-sm leading-relaxed">Our special underwriters personally review your assessments to craft precise, highly realistic terms.</p>
+                      </div>
+                  </div>
+                  <div class="flex items-start gap-5">
+                      <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0 mt-1">
+                          <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                      </div>
+                      <div>
+                          <h4 class="font-bold text-slate-200 text-base mb-1">Customizable Policies</h4>
+                          <p class="text-slate-400 text-sm leading-relaxed">Every plan is completely calibrated with tailored premiums, coverages, and specific deductibles.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <div class="relative z-10 text-xs text-slate-500 mt-auto">
+          Trusted by leading enterprises &bull; IRDAI Compliant &bull; 256-bit AES
+      </div>
+  </div>
 
-            <div class="left-steps">
-                <div class="left-step">
-                    <div class="step-dot">1</div>
-                    <div>
-                        <strong>Create Account</strong>
-                        <p>Fill in your company details</p>
-                    </div>
-                </div>
-                <div class="left-step">
-                    <div class="step-dot">2</div>
-                    <div>
-                        <strong>Complete Assessment</strong>
-                        <p>10-minute risk questionnaire</p>
-                    </div>
-                </div>
-                <div class="left-step">
-                    <div class="step-dot">3</div>
-                    <div>
-                        <strong>Get Insured</strong>
-                        <p>Choose a plan, get approved in 48hrs</p>
-                    </div>
-                </div>
-            </div>
+  <!-- RIGHT PANEL -->
+  <div class="flex-1 flex flex-col justify-center items-center p-6 sm:p-12 relative overflow-y-auto">
+      
+      <!-- Tiny Mobile Logo -->
+      <div class="absolute w-full top-6 left-0 px-6 lg:hidden flex items-center gap-2 mb-8">
+          <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">CyberAssure</span>
+      </div>
 
-            <div class="left-trust">
-                <div class="trust-item">
-                    <span class="trust-icon">🏛️</span>
-                    <span>IRDAI Compliant</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">🔒</span>
-                    <span>256-bit Encrypted</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">📋</span>
-                    <span>DPDP Act Compliant</span>
-                </div>
-            </div>
-        </div>
-    </div>
+      <div class="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-3xl p-8 sm:p-10 shadow-2xl relative z-10 my-auto lg:my-0 mt-20 lg:mt-0">
+          
+          <div class="mb-10 text-center lg:text-left">
+              <h1 class="text-3xl font-bold text-white mb-2 tracking-tight">Create your account</h1>
+              <p class="text-slate-400 text-sm">Join the leading enterprise cyber risk platform</p>
+          </div>
 
-    <!-- RIGHT PANEL -->
-    <div class="auth-right">
-        <div class="auth-card">
+          <!-- SUCCESS MESSAGE -->
+          <div *ngIf="successMsg" class="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-start gap-3 text-emerald-400 text-sm">
+              <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>{{ successMsg }} Redirecting...</span>
+          </div>
 
-            <div class="auth-card-header">
-                <h1>Get started for free</h1>
-                <p>Create your CyberAssure account</p>
-            </div>
+          <!-- ERROR MESSAGE -->
+          <div *ngIf="errorMsg" class="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3 text-red-400 text-sm">
+              <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              <span>{{ errorMsg }}</span>
+          </div>
 
-            <!-- SUCCESS -->
-            <div class="alert-success" *ngIf="successMsg">
-                <span>✅</span> {{ successMsg }} Redirecting to login...
-            </div>
+          <form [formGroup]="registerForm" (submit)="onRegister(); $event.preventDefault();" class="space-y-8">
 
-            <!-- ERROR -->
-            <div class="alert-error" *ngIf="errorMsg">
-                <span>⚠️</span> {{ errorMsg }}
-            </div>
+              <!-- SECTION 1: Personal -->
+              <div class="space-y-6">
+                  <div class="flex items-center gap-3 border-b border-slate-800 pb-2">
+                       <span class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs text-slate-400 font-bold">1</span>
+                       <h3 class="font-semibold text-slate-300">Personal Details</h3>
+                  </div>
 
-            <div class="auth-form">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <!-- FULL NAME -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Full Name <span class="text-red-500">*</span></label>
+                          <input type="text" placeholder="Rajesh Kumar" formControlName="fullName"
+                              [class.border-red-500]="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched)"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                          <div *ngIf="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched)" class="text-red-400 text-xs mt-1">
+                              Full Name is required.
+                          </div>
+                      </div>
 
-                <!-- SECTION: Personal Info -->
-                <div class="form-section-title">Personal Information</div>
+                      <!-- EMAIL -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Work Email <span class="text-red-500">*</span></label>
+                          <input type="email" placeholder="you@company.com" formControlName="email"
+                              [class.border-red-500]="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                          <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)" class="text-red-400 text-xs mt-1">
+                              <span *ngIf="registerForm.get('email')?.hasError('required')">Work Email is required.</span>
+                              <span *ngIf="registerForm.get('email')?.hasError('email')">Please enter a valid email address.</span>
+                          </div>
+                      </div>
+                  </div>
 
-                <!-- FULL NAME -->
-                <div class="field-group">
-                    <label>Full Name <span class="required">*</span></label>
-                    <div class="input-wrap">
-                        <span class="input-icon">👤</span>
-                        <input type="text" placeholder="Rajesh Kumar" [(ngModel)]="fullName" />
-                    </div>
-                </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <!-- PHONE -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Phone Number <span class="text-red-500">*</span></label>
+                          <input type="tel" placeholder="+91 98765 43210" formControlName="phoneNumber"
+                              [class.border-red-500]="registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                          <div *ngIf="registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)" class="text-red-400 text-xs mt-1">
+                              <span *ngIf="registerForm.get('phoneNumber')?.hasError('required')">Phone Number is required.</span>
+                              <span *ngIf="registerForm.get('phoneNumber')?.hasError('pattern')">Please enter a valid phone number.</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
-                <!-- EMAIL -->
-                <div class="field-group">
-                    <label>Work Email <span class="required">*</span></label>
-                    <div class="input-wrap">
-                        <span class="input-icon">✉️</span>
-                        <input type="email" placeholder="you@company.com" [(ngModel)]="email" />
-                    </div>
-                    <p class="field-hint">Use your official company email</p>
-                </div>
 
-                <!-- PHONE -->
-                <div class="field-group">
-                    <label>Phone Number <span class="required">*</span></label>
-                    <div class="input-wrap">
-                        <span class="input-icon">📱</span>
-                        <input type="tel" placeholder="+91 98765 43210" [(ngModel)]="phoneNumber" />
-                    </div>
-                </div>
+              <!-- SECTION 2: Company -->
+              <div class="space-y-6">
+                  <div class="flex items-center gap-3 border-b border-slate-800 pb-2">
+                       <span class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs text-slate-400 font-bold">2</span>
+                       <h3 class="font-semibold text-slate-300">Company Information</h3>
+                  </div>
 
-                <!-- SECTION: Company Info -->
-                <div class="form-section-title">Company Information</div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <!-- COMPANY NAME -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Name <span class="text-red-500">*</span></label>
+                          <input type="text" placeholder="Acme Tech Pvt. Ltd." formControlName="companyName"
+                              [class.border-red-500]="registerForm.get('companyName')?.invalid && (registerForm.get('companyName')?.dirty || registerForm.get('companyName')?.touched)"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                          <div *ngIf="registerForm.get('companyName')?.invalid && (registerForm.get('companyName')?.dirty || registerForm.get('companyName')?.touched)" class="text-red-400 text-xs mt-1">
+                              Company Name is required.
+                          </div>
+                      </div>
+                      
+                      <!-- REGISTRATION NUMBER -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Registration Number <span class="text-red-500">*</span></label>
+                          <input type="text" placeholder="CIN / GSTIN" formControlName="registrationNumber"
+                              [class.border-red-500]="registerForm.get('registrationNumber')?.invalid && (registerForm.get('registrationNumber')?.dirty || registerForm.get('registrationNumber')?.touched)"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                          <div *ngIf="registerForm.get('registrationNumber')?.invalid && (registerForm.get('registrationNumber')?.dirty || registerForm.get('registrationNumber')?.touched)" class="text-red-400 text-xs mt-1">
+                              Registration Number is required.
+                          </div>
+                      </div>
+                  </div>
 
-                <!-- COMPANY NAME -->
-                <div class="field-group">
-                    <label>Company Name <span class="required">*</span></label>
-                    <div class="input-wrap">
-                        <span class="input-icon">🏢</span>
-                        <input type="text" placeholder="Acme Technologies Pvt. Ltd." [(ngModel)]="companyName" />
-                    </div>
-                </div>
+                  <div class="grid grid-cols-1 gap-6">
+                      <!-- COMPANY ADDRESS -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Address</label>
+                          <input type="text" placeholder="Headquarters Address" formControlName="companyAddress"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                      </div>
+                  </div>
 
-                <!-- REGISTRATION NUMBER -->
-                <div class="field-group">
-                    <label>Registration Number <span class="required">*</span></label>
-                    <div class="input-wrap">
-                        <span class="input-icon">📝</span>
-                        <input type="text" placeholder="CIN / GSTIN / Tax ID" [(ngModel)]="registrationNumber" />
-                    </div>
-                </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <!-- WEBSITE -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Website URL</label>
+                          <input type="url" placeholder="https://example.com" formControlName="companyWebsite"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                      </div>
+                      
+                      <!-- REVENUE -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Annual Revenue</label>
+                          <select formControlName="annualRevenue"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm appearance-none">
+                              <option value="">Select revenue range</option>
+                              <option *ngFor="let r of annualRevenues" [value]="r">{{ r }}</option>
+                          </select>
+                      </div>
+                  </div>
 
-                <!-- COMPANY ADDRESS -->
-                <div class="field-group">
-                    <label>Company Address</label>
-                    <div class="input-wrap">
-                        <span class="input-icon">📍</span>
-                        <input type="text" placeholder="Headquarters Address" [(ngModel)]="companyAddress" />
-                    </div>
-                </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <!-- INDUSTRY -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Industry</label>
+                          <select formControlName="industry"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm appearance-none">
+                              <option value="">Select industry</option>
+                              <option *ngFor="let i of industries" [value]="i">{{ i }}</option>
+                          </select>
+                      </div>
+                      
+                      <!-- SIZE -->
+                      <div class="space-y-2">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Size</label>
+                          <select formControlName="companySize"
+                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm appearance-none">
+                              <option value="">Select size</option>
+                              <option *ngFor="let s of companySizes" [value]="s">{{ s }}</option>
+                          </select>
+                      </div>
+                  </div>
+              </div>
 
-                <!-- COMPANY WEBSITE -->
-                <div class="field-group">
-                    <label>Company Website</label>
-                    <div class="input-wrap">
-                        <span class="input-icon">🌐</span>
-                        <input type="url" placeholder="https://www.example.com" [(ngModel)]="companyWebsite" />
-                    </div>
-                </div>
 
-                <!-- TWO COLUMNS: Industry + Size -->
-                <div class="field-row">
-                    <div class="field-group">
-                        <label>Industry</label>
-                        <div class="select-wrap">
-                            <select [(ngModel)]="industry">
-                                <option value="">Select industry</option>
-                                <option *ngFor="let i of industries" [value]="i">{{ i }}</option>
-                            </select>
-                            <span class="select-arrow">▾</span>
-                        </div>
-                    </div>
-                    <div class="field-group">
-                        <label>Company Size</label>
-                        <div class="select-wrap">
-                            <select [(ngModel)]="companySize">
-                                <option value="">Select size</option>
-                                <option *ngFor="let s of companySizes" [value]="s">{{ s }}</option>
-                            </select>
-                            <span class="select-arrow">▾</span>
-                        </div>
-                    </div>
-                </div>
+              <!-- SECTION 3: Security -->
+              <div class="space-y-6">
+                  <div class="flex items-center gap-3 border-b border-slate-800 pb-2">
+                       <span class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-xs text-slate-400 font-bold">3</span>
+                       <h3 class="font-semibold text-slate-300">Account Security</h3>
+                  </div>
 
-                <!-- ANNUAL REVENUE -->
-                <div class="field-group">
-                    <label>Annual Revenue</label>
-                    <div class="select-wrap">
-                        <select [(ngModel)]="annualRevenue">
-                            <option value="">Select revenue range</option>
-                            <option *ngFor="let r of annualRevenues" [value]="r">{{ r }}</option>
-                        </select>
-                        <span class="select-arrow">▾</span>
-                    </div>
-                </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <!-- PASSWORD -->
+                      <div class="space-y-2 relative">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Password <span class="text-red-500">*</span></label>
+                          <div class="relative">
+                            <input [type]="showPassword ? 'text' : 'password'" placeholder="Create a strong password" formControlName="password"
+                                [class.border-red-500]="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
+                                class="w-full pl-4 pr-10 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300" (click)="togglePassword()">
+                                <svg *ngIf="!showPassword" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <svg *ngIf="showPassword" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                            </button>
+                          </div>
+                          <!-- Password Errors -->
+                          <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="text-red-400 text-xs mt-1">
+                              <span *ngIf="registerForm.get('password')?.hasError('required')">Password is required.</span>
+                              <span *ngIf="registerForm.get('password')?.hasError('minlength')">Password must be at least 8 characters.</span>
+                          </div>
+                          
+                          <!-- Strength meter -->
+                          <div class="flex items-center gap-2 mt-2" *ngIf="registerForm.get('password')?.value">
+                              <div class="flex-1 flex gap-1 h-1.5 rounded-full overflow-hidden bg-slate-800">
+                                  <div *ngFor="let b of [1,2,3,4]" class="flex-1 transition-all duration-300" [style.background]="passwordStrength >= b ? strengthColor : 'transparent'"></div>
+                              </div>
+                              <span class="text-[10px] font-bold uppercase" [style.color]="strengthColor">{{ strengthLabel }}</span>
+                          </div>
+                      </div>
 
-                <!-- SECTION: Security -->
-                <div class="form-section-title">Account Security</div>
+                      <!-- CONFIRM PASSWORD -->
+                      <div class="space-y-2 relative">
+                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Confirm <span class="text-red-500">*</span></label>
+                          <div class="relative">
+                            <input [type]="showConfirm ? 'text' : 'password'" placeholder="Repeat password" formControlName="confirmPassword"
+                                [class.border-red-500]="(registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch')) && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)"
+                                class="w-full pl-4 pr-10 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300" (click)="toggleConfirm()">
+                                <svg *ngIf="!showConfirm" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <svg *ngIf="showConfirm" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                            </button>
+                          </div>
+                          <div *ngIf="(registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch')) && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)" class="text-red-400 text-xs mt-1">
+                              <span *ngIf="registerForm.get('confirmPassword')?.hasError('required') && !registerForm.hasError('passwordMismatch')">Please confirm your password.</span>
+                              <span *ngIf="registerForm.hasError('passwordMismatch')">Passwords do not match.</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
-                <!-- PASSWORD -->
-                <div class="field-group">
-                    <label>Password <span class="required">*</span></label>
-                    <div class="input-wrap">
-                        <span class="input-icon">🔒</span>
-                        <input [type]="showPassword ? 'text' : 'password'" placeholder="Create a strong password"
-                            [(ngModel)]="password" />
-                        <button type="button" class="eye-btn" (click)="togglePassword()">
-                            {{ showPassword ? '🙈' : '👁️' }}
-                        </button>
-                    </div>
-                    <!-- Strength meter -->
-                    <div class="strength-wrap" *ngIf="password">
-                        <div class="strength-bars">
-                            <div class="s-bar" *ngFor="let b of [1,2,3,4]" [style.background]="passwordStrength >= b
-                  ? strengthColor : '#1e293b'">
-                            </div>
-                        </div>
-                        <span class="strength-label" [style.color]="strengthColor">
-                            {{ strengthLabel }}
-                        </span>
-                    </div>
-                </div>
+              <!-- CHECKBOXES -->
+              <div class="space-y-4 pt-4 border-t border-slate-800">
+                  <div class="flex items-start">
+                      <div class="flex items-center h-5">
+                          <input type="checkbox" id="terms" formControlName="agreeTerms" 
+                              class="w-4 h-4 rounded border-slate-700 bg-slate-950 text-blue-600 focus:ring-blue-500 focus:ring-offset-slate-900 cursor-pointer accent-blue-600" />
+                      </div>
+                      <div class="ml-3 text-sm">
+                          <label for="terms" class="text-slate-400 cursor-pointer select-none">
+                              I agree to the <a href="#" class="text-blue-400 hover:text-blue-300">Terms of Service</a> and <a href="#" class="text-blue-400 hover:text-blue-300">Privacy Policy</a>
+                          </label>
+                      </div>
+                  </div>
 
-                <!-- CONFIRM PASSWORD -->
-                <div class="field-group">
-                    <label>
-                        Confirm Password <span class="required">*</span>
-                    </label>
-                    <div class="input-wrap">
-                        <span class="input-icon">🔒</span>
-                        <input [type]="showConfirm ? 'text' : 'password'" placeholder="Repeat your password"
-                            [(ngModel)]="confirmPassword" [class.input-error]="
-                confirmPassword && password !== confirmPassword" />
-                        <button type="button" class="eye-btn" (click)="toggleConfirm()">
-                            {{ showConfirm ? '🙈' : '👁️' }}
-                        </button>
-                    </div>
-                    <p class="field-error" *ngIf="confirmPassword && password !== confirmPassword">
-                        Passwords do not match
-                    </p>
-                </div>
+                  <div class="flex items-start">
+                      <div class="flex items-center h-5">
+                          <input type="checkbox" id="data" formControlName="agreeData" 
+                              class="w-4 h-4 rounded border-slate-700 bg-slate-950 text-blue-600 focus:ring-blue-500 focus:ring-offset-slate-900 cursor-pointer accent-blue-600" />
+                      </div>
+                      <div class="ml-3 text-sm">
+                          <label for="data" class="text-slate-400 cursor-pointer select-none">
+                              I consent to data processing under the DPDP Act 2023
+                          </label>
+                      </div>
+                  </div>
+                  <div *ngIf="registerForm.get('agreeData')?.invalid && (registerForm.get('agreeData')?.dirty || registerForm.get('agreeData')?.touched)" class="text-red-400 text-xs pl-8">
+                      You must consent to data processing.
+                  </div>
+              </div>
 
-                <!-- CHECKBOXES -->
-                <div class="check-group">
-                    <label class="checkbox-wrap">
-                        <input type="checkbox" [(ngModel)]="agreeTerms" />
-                        <span class="checkbox-custom"></span>
-                        <span class="checkbox-label">
-                            I agree to the
-                            <a href="#">Terms of Service</a> and
-                            <a href="#">Privacy Policy</a>
-                        </span>
-                    </label>
+              <!-- SUBMIT -->
+              <button type="submit" [disabled]="loading" 
+                  class="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(37,99,235,0.2)] flex justify-center items-center gap-2 mt-8">
+                  <span *ngIf="!loading">Create My Account</span>
+                  <svg *ngIf="!loading" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                  
+                  <!-- Spinner -->
+                  <svg *ngIf="loading" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+              </button>
 
-                    <label class="checkbox-wrap">
-                        <input type="checkbox" [(ngModel)]="agreeData" />
-                        <span class="checkbox-custom"></span>
-                        <span class="checkbox-label">
-                            I consent to data processing under
-                            the DPDP Act 2023
-                        </span>
-                    </label>
-                </div>
+              <div class="text-center text-sm text-slate-400 mt-6 border-t border-slate-800 pt-6">
+                  Already have an account? 
+                  <a routerLink="/login" class="font-semibold text-white hover:text-blue-400 transition-colors ml-1">Sign In</a>
+              </div>
+          </form>
 
-                <!-- SUBMIT -->
-                <button class="btn-submit" (click)="onRegister()" [disabled]="loading">
-                    <span *ngIf="!loading">Create My Account →</span>
-                    <span *ngIf="loading" class="spinner"></span>
-                </button>
+      </div>
 
-                <p class="auth-switch">
-                    Already have an account?
-                    <a routerLink="/login">Sign In</a>
-                </p>
+      <!-- Secure note -->
+      <div class="mt-8 flex items-center gap-2 text-xs text-slate-500 mb-8 lg:mb-0">
+          <svg class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          Protected by enterprise-grade SSL encryption under DPDP Act 2023
+      </div>
 
-            </div>
+  </div>
 
-            <p class="auth-secure">
-                🔒 Your data is encrypted and protected under DPDP Act 2023
-            </p>
-
-        </div>
-    </div>
 </div>

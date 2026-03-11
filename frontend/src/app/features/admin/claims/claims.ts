@@ -1,26 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of, BehaviorSubject, switchMap } from 'rxjs';
 import { AdminApiService } from '../services/admin.service';
 
 @Component({
   selector: 'app-claims',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './claims.html'
 })
-export class Claims implements OnInit {
+export class Claims {
 
-  claimsList: any[] = [];
+  private adminApi = inject(AdminApiService);
+  private refresh$ = new BehaviorSubject<void>(undefined);
 
-  constructor(private adminApi: AdminApiService) { }
+  claimsList = toSignal(
+    this.refresh$.pipe(
+      switchMap(() => this.adminApi.getClaims().pipe(catchError(() => of([]))))
+    ),
+    { initialValue: [] }
+  );
 
-  ngOnInit() {
-    this.adminApi.getClaims().subscribe({
-      next: (data) => {
-        this.claimsList = data;
+  officers = toSignal(
+    this.adminApi.getClaimsOfficers().pipe(catchError(() => of([]))),
+    { initialValue: [] }
+  );
+
+  assignOfficer(claim: any) {
+    if (!claim.selectedOfficerId) {
+      alert('Please select an officer first');
+      return;
+    }
+    this.adminApi.assignClaimsOfficer(claim.id, parseInt(claim.selectedOfficerId, 10)).subscribe({
+      next: () => {
+        alert('Officer assigned successfully!');
+        this.refresh$.next(); // Instantly refresh
       },
-      error: (err) => console.error('Error loading claims', err)
+      error: (err) => { alert('Failed to assign officer.'); console.error(err); }
     });
   }
-
 }

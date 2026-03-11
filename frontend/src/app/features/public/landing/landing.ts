@@ -77,47 +77,47 @@ export class Landing implements OnInit, OnDestroy, AfterViewInit {
 
     features = [
         {
-            icon: '🎯', title: 'Precision Risk Assessment',
-            desc: 'Not a generic checklist. Purpose-built for Indian business infrastructure, threat vectors, and regulatory landscape.'
+            icon: '📋', title: 'Detailed Risk Profiling',
+            desc: 'Submit your security infrastructure details and upload supporting proof documents for an accurate risk evaluation.'
         },
         {
-            icon: '⚡', title: 'Sub-48hr Policy Approval',
-            desc: 'Certified underwriters review and respond within 48 hours. No endless paperwork. No opaque delays.'
+            icon: '🧑‍💼', title: 'Expert Underwriting',
+            desc: 'Our specialized underwriters personally review your assessments to craft precise, realistic terms rather than relying on rigid algorithms.'
         },
         {
-            icon: '📋', title: 'Industry-Tailored Coverage',
-            desc: 'Plans calibrated to your sector — IT, BFSI, Healthcare, E-commerce. Generic policies leave dangerous gaps.'
+            icon: '⚙️', title: 'Customizable Policy Terms',
+            desc: 'Every policy can be calibrated with customized premiums, coverage amounts, and specific deductibles tailored to your exact profile.'
         },
         {
-            icon: '🔍', title: 'Real-Time Claim Transparency',
-            desc: 'Track every claim milestone live. Full audit trail. No black-box processing.'
+            icon: '🔍', title: 'Transparent Claims Process',
+            desc: 'Submit incidents directly through your dashboard. Our dedicated claims officers investigate and process settlements seamlessly.'
         },
         {
-            icon: '🛡️', title: 'CERT-In & IRDAI Compliant',
-            desc: 'Fully aligned with India\'s CERT-In cybersecurity framework and IRDAI regulations.'
+            icon: '🛡️', title: 'Secure Customer Portal',
+            desc: 'Manage your active subscriptions, track pending assessments, and review policy documentation in one centralized environment.'
         },
         {
-            icon: '🤝', title: 'Dedicated Incident Officer',
-            desc: 'One named claims officer personally assigned to every incident.'
+            icon: '🤝', title: 'End-to-End Support',
+            desc: 'From initial application to claim resolution, we provide structured, role-based workflows to protect your business operations.'
         }
     ];
 
     steps = [
         {
-            num: '01', icon: '🔍', title: 'Complete Risk Assessment',
-            desc: 'Answer 20 targeted questions about your company, IT infrastructure, and security posture. Takes 10 minutes.', tag: '10 MIN'
+            num: '01', icon: '🔍', title: 'Submit Risk Details',
+            desc: 'Create an account and submit your company\'s cyber risk assessment along with necessary proof documents.', tag: 'EASY SETUP'
         },
         {
-            num: '02', icon: '📊', title: 'Receive Your Risk Score',
-            desc: 'Our engine calculates a precise 0–100 cyber risk score and maps your exact vulnerability profile.', tag: 'INSTANT'
+            num: '02', icon: '📊', title: 'Underwriter Review',
+            desc: 'Our expert underwriters analyze your unique operational profile to accurately gauge your coverage requirements.', tag: 'EXPERT REVIEW'
         },
         {
-            num: '03', icon: '📋', title: 'Choose Your Policy',
-            desc: 'Browse plans matched to your risk level. Underwriters approve within 48 hours.', tag: '48 HRS'
+            num: '03', icon: '📋', title: 'Get Custom Terms',
+            desc: 'Receive a finalized, personalized policy complete with customized premiums, limits, and tailored provisions.', tag: 'TAILORED'
         },
         {
-            num: '04', icon: '🛡️', title: 'Stay Protected & Claim',
-            desc: 'Incident happens? Submit online. Your dedicated officer handles investigation and settlement.', tag: 'ALWAYS ON'
+            num: '04', icon: '🛡️', title: 'Subscribe & Protect',
+            desc: 'Subscribe directly from your dashboard. If a breach occurs, file claims instantly for officer investigation.', tag: 'SECURE'
         }
     ];
 

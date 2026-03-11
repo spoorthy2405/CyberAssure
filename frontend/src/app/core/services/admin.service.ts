@@ -1,6 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UserDto } from '../../shared/models/user.dto';
+import { CyberPolicyDto } from '../../shared/models/policy.dto';
+import { RiskAssessmentDto } from '../../shared/models/assessment.dto';
+import { ClaimDto } from '../../shared/models/claim.dto';
+import { DashboardStatsDto } from '../../shared/models/dashboard.dto';
 
 @Injectable({
     providedIn: 'root'
@@ -8,27 +13,34 @@ import { Observable } from 'rxjs';
 export class AdminService {
 
     private API = "http://localhost:8080/api/v1";
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) { }
-
-    getDashboardStats(): Observable<any> {
-        return this.http.get(`${this.API}/admin/dashboard`);
+    getDashboardStats(): Observable<DashboardStatsDto> {
+        return this.http.get<DashboardStatsDto>(`${this.API}/admin/dashboard`);
     }
 
-    getUsers(): Observable<any> {
-        return this.http.get(`${this.API}/admin/users`);
+    getUsers(): Observable<UserDto[]> {
+        return this.http.get<UserDto[]>(`${this.API}/admin/users`);
     }
 
-    getPolicies(): Observable<any> {
-        return this.http.get(`${this.API}/policies`);
+    getPolicies(): Observable<CyberPolicyDto[]> {
+        return this.http.get<CyberPolicyDto[]>(`${this.API}/policies`);
     }
 
-    getAssessments(): Observable<any> {
-        return this.http.get(`${this.API}/risk-assessments`);
+    getAssessments(): Observable<RiskAssessmentDto[]> {
+        return this.http.get<RiskAssessmentDto[]>(`${this.API}/risk-assessments`);
     }
 
-    getClaims(): Observable<any> {
-        return this.http.get(`${this.API}/claims`);
+    getClaims(): Observable<ClaimDto[]> {
+        return this.http.get<ClaimDto[]>(`${this.API}/claims`);
+    }
+
+    assignClaimsOfficer(claimId: number, officerId: number): Observable<any> {
+        return this.http.put(`${this.API}/admin/claims/${claimId}/assign`, { officerId });
+    }
+
+    assignUnderwriter(subscriptionId: number, underwriterId: number): Observable<any> {
+        return this.http.put(`${this.API}/admin/subscriptions/${subscriptionId}/assign`, { underwriterId });
     }
 
 }
