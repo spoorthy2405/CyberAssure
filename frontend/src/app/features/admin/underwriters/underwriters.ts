@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of } from 'rxjs';
 import { AdminApiService } from '../services/admin.service';
@@ -7,7 +7,7 @@ import { AdminApiService } from '../services/admin.service';
 @Component({
   selector: 'app-underwriters',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './underwriters.html'
 })
 export class Underwriters {

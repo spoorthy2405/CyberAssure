@@ -1,0 +1,137 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< com.cyberassure:CyberAssureProject >-----------------
+[INFO] Building CyberAssureProject 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ CyberAssureProject ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ CyberAssureProject ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ CyberAssureProject ---
+[INFO] skip non existing resourceDirectory D:\CyberAssureProject\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ CyberAssureProject ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 10 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/ClaimRepositoryTest.java:[7,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/ClaimRepositoryTest.java:[8,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/ClaimRepositoryTest.java:[16,2] cannot find symbol
+  symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/ClaimRepositoryTest.java:[23,13] cannot find symbol
+  symbol:   class TestEntityManager
+  location: class com.cyberassure.cyberassureproject.repository.ClaimRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/CyberPolicyRepositoryTest.java:[7,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/CyberPolicyRepositoryTest.java:[8,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/CyberPolicyRepositoryTest.java:[16,2] cannot find symbol
+  symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/CyberPolicyRepositoryTest.java:[23,13] cannot find symbol
+  symbol:   class TestEntityManager
+  location: class com.cyberassure.cyberassureproject.repository.CyberPolicyRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/IncidentReportRepositoryTest.java:[10,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/IncidentReportRepositoryTest.java:[11,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/IncidentReportRepositoryTest.java:[19,2] cannot find symbol
+  symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/IncidentReportRepositoryTest.java:[26,13] cannot find symbol
+  symbol:   class TestEntityManager
+  location: class com.cyberassure.cyberassureproject.repository.IncidentReportRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/PolicySubscriptionRepositoryTest.java:[7,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/PolicySubscriptionRepositoryTest.java:[8,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/PolicySubscriptionRepositoryTest.java:[16,2] cannot find symbol
+  symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/PolicySubscriptionRepositoryTest.java:[23,13] cannot find symbol
+  symbol:   class TestEntityManager
+  location: class com.cyberassure.cyberassureproject.repository.PolicySubscriptionRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RiskAssessmentRepositoryTest.java:[9,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RiskAssessmentRepositoryTest.java:[10,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RiskAssessmentRepositoryTest.java:[17,2] cannot find symbol
+  symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RiskAssessmentRepositoryTest.java:[24,13] cannot find symbol
+  symbol:   class TestEntityManager
+  location: class com.cyberassure.cyberassureproject.repository.RiskAssessmentRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RoleRepositoryTest.java:[6,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RoleRepositoryTest.java:[7,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RoleRepositoryTest.java:[15,2] cannot find symbol
+  symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RoleRepositoryTest.java:[22,13] cannot find symbol
+  symbol:   class TestEntityManager
+  location: class com.cyberassure.cyberassureproject.repository.RoleRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/UserRepositoryTest.java:[8,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/UserRepositoryTest.java:[9,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/UserRepositoryTest.java:[17,2] cannot find symbol
+  symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/UserRepositoryTest.java:[24,13] cannot find symbol
+  symbol:   class TestEntityManager
+  location: class com.cyberassure.cyberassureproject.repository.UserRepositoryTest
+[INFO] 28 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.678 s
+[INFO] Finished at: 2026-03-12T22:40:19+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:testCompile (default-testCompile) on project CyberAssureProject: Compilation failure: Compilation failure: 
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/ClaimRepositoryTest.java:[7,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/ClaimRepositoryTest.java:[8,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/ClaimRepositoryTest.java:[16,2] cannot find symbol
+[ERROR]   symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/ClaimRepositoryTest.java:[23,13] cannot find symbol
+[ERROR]   symbol:   class TestEntityManager
+[ERROR]   location: class com.cyberassure.cyberassureproject.repository.ClaimRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/CyberPolicyRepositoryTest.java:[7,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/CyberPolicyRepositoryTest.java:[8,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/CyberPolicyRepositoryTest.java:[16,2] cannot find symbol
+[ERROR]   symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/CyberPolicyRepositoryTest.java:[23,13] cannot find symbol
+[ERROR]   symbol:   class TestEntityManager
+[ERROR]   location: class com.cyberassure.cyberassureproject.repository.CyberPolicyRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/IncidentReportRepositoryTest.java:[10,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/IncidentReportRepositoryTest.java:[11,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/IncidentReportRepositoryTest.java:[19,2] cannot find symbol
+[ERROR]   symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/IncidentReportRepositoryTest.java:[26,13] cannot find symbol
+[ERROR]   symbol:   class TestEntityManager
+[ERROR]   location: class com.cyberassure.cyberassureproject.repository.IncidentReportRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/PolicySubscriptionRepositoryTest.java:[7,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/PolicySubscriptionRepositoryTest.java:[8,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/PolicySubscriptionRepositoryTest.java:[16,2] cannot find symbol
+[ERROR]   symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/PolicySubscriptionRepositoryTest.java:[23,13] cannot find symbol
+[ERROR]   symbol:   class TestEntityManager
+[ERROR]   location: class com.cyberassure.cyberassureproject.repository.PolicySubscriptionRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RiskAssessmentRepositoryTest.java:[9,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RiskAssessmentRepositoryTest.java:[10,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RiskAssessmentRepositoryTest.java:[17,2] cannot find symbol
+[ERROR]   symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RiskAssessmentRepositoryTest.java:[24,13] cannot find symbol
+[ERROR]   symbol:   class TestEntityManager
+[ERROR]   location: class com.cyberassure.cyberassureproject.repository.RiskAssessmentRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RoleRepositoryTest.java:[6,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RoleRepositoryTest.java:[7,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RoleRepositoryTest.java:[15,2] cannot find symbol
+[ERROR]   symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/RoleRepositoryTest.java:[22,13] cannot find symbol
+[ERROR]   symbol:   class TestEntityManager
+[ERROR]   location: class com.cyberassure.cyberassureproject.repository.RoleRepositoryTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/UserRepositoryTest.java:[8,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/UserRepositoryTest.java:[9,59] package org.springframework.boot.test.autoconfigure.orm.jpa does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/UserRepositoryTest.java:[17,2] cannot find symbol
+[ERROR]   symbol: class DataJpaTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/repository/UserRepositoryTest.java:[24,13] cannot find symbol
+[ERROR]   symbol:   class TestEntityManager
+[ERROR]   location: class com.cyberassure.cyberassureproject.repository.UserRepositoryTest
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

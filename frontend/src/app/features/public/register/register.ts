@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-register',
-    imports: [CommonModule, RouterModule, ReactiveFormsModule],
+    imports: [RouterModule, ReactiveFormsModule],
     templateUrl: './register.html',
     styleUrl: './register.css'
 })
@@ -61,11 +61,11 @@ export class Register implements OnInit {
             phoneNumber: ['', [Validators.required, Validators.pattern('^[+0-9\\s-]{10,15}$')]],
             companyName: ['', [Validators.required]],
             registrationNumber: ['', [Validators.required]],
-            companyAddress: [''],
+            companyAddress: ['', [Validators.required]],
             companyWebsite: [''],
-            annualRevenue: [''],
-            industry: [''],
-            companySize: [''],
+            annualRevenue: ['', [Validators.required]],
+            industry: ['', [Validators.required]],
+            companySize: ['', [Validators.required]],
             password: ['', [Validators.required, Validators.minLength(8)]],
             confirmPassword: ['', [Validators.required]],
             agreeTerms: [false, Validators.requiredTrue],

@@ -1,5 +1,5 @@
 import { Component, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { ClaimsService } from '../services/claims.service';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -8,7 +8,7 @@ import { filter, startWith, switchMap, catchError, of } from 'rxjs';
 @Component({
   selector: 'app-claims-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './claims-dashboard.html'
 })
 export class ClaimsDashboard {

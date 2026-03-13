@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { AdminApiService } from '../../../core/services/admin-api-service';
 
 @Component({
   selector: 'admin-assessments',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './assessments.html'
 })
 export class Assessments implements OnInit {

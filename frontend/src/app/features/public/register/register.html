@@ -69,16 +69,20 @@
           </div>
 
           <!-- SUCCESS MESSAGE -->
-          <div *ngIf="successMsg" class="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-start gap-3 text-emerald-400 text-sm">
-              <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              <span>{{ successMsg }} Redirecting...</span>
-          </div>
+          @if (successMsg) {
+              <div class="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-start gap-3 text-emerald-400 text-sm">
+                  <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  <span>{{ successMsg }} Redirecting...</span>
+              </div>
+          }
 
           <!-- ERROR MESSAGE -->
-          <div *ngIf="errorMsg" class="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3 text-red-400 text-sm">
-              <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-              <span>{{ errorMsg }}</span>
-          </div>
+          @if (errorMsg) {
+              <div class="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3 text-red-400 text-sm">
+                  <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  <span>{{ errorMsg }}</span>
+              </div>
+          }
 
           <form [formGroup]="registerForm" (submit)="onRegister(); $event.preventDefault();" class="space-y-8">
 
@@ -90,42 +94,53 @@
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <!-- FULL NAME -->
-                      <div class="space-y-2">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Full Name <span class="text-red-500">*</span></label>
-                          <input type="text" placeholder="Rajesh Kumar" formControlName="fullName"
-                              [class.border-red-500]="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched)"
-                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
-                          <div *ngIf="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched)" class="text-red-400 text-xs mt-1">
-                              Full Name is required.
-                          </div>
-                      </div>
+                       <div class="space-y-2">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Full Name <span class="text-red-500">*</span></label>
+                           <input type="text" placeholder="Rajesh Kumar" formControlName="fullName"
+                               [class.border-red-500]="registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                           @if (registerForm.get('fullName')?.invalid && (registerForm.get('fullName')?.dirty || registerForm.get('fullName')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   Full Name is required.
+                               </div>
+                           }
+                       </div>
 
-                      <!-- EMAIL -->
-                      <div class="space-y-2">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Work Email <span class="text-red-500">*</span></label>
-                          <input type="email" placeholder="you@company.com" formControlName="email"
-                              [class.border-red-500]="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
-                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
-                          <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)" class="text-red-400 text-xs mt-1">
-                              <span *ngIf="registerForm.get('email')?.hasError('required')">Work Email is required.</span>
-                              <span *ngIf="registerForm.get('email')?.hasError('email')">Please enter a valid email address.</span>
-                          </div>
-                      </div>
+                       <div class="space-y-2">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Work Email <span class="text-red-500">*</span></label>
+                           <input type="email" placeholder="you@company.com" formControlName="email"
+                               [class.border-red-500]="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                           @if (registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   @if (registerForm.get('email')?.hasError('required')) {
+                                       <span>Work Email is required.</span>
+                                   }
+                                   @if (registerForm.get('email')?.hasError('email')) {
+                                       <span>Please enter a valid email address.</span>
+                                   }
+                               </div>
+                           }
+                       </div>
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <!-- PHONE -->
-                      <div class="space-y-2">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Phone Number <span class="text-red-500">*</span></label>
-                          <input type="tel" placeholder="+91 98765 43210" formControlName="phoneNumber"
-                              [class.border-red-500]="registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)"
-                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
-                          <div *ngIf="registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)" class="text-red-400 text-xs mt-1">
-                              <span *ngIf="registerForm.get('phoneNumber')?.hasError('required')">Phone Number is required.</span>
-                              <span *ngIf="registerForm.get('phoneNumber')?.hasError('pattern')">Please enter a valid phone number.</span>
-                          </div>
-                      </div>
+                       <div class="space-y-2">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Phone Number <span class="text-red-500">*</span></label>
+                           <input type="tel" placeholder="+91 98765 43210" formControlName="phoneNumber"
+                               [class.border-red-500]="registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                           @if (registerForm.get('phoneNumber')?.invalid && (registerForm.get('phoneNumber')?.dirty || registerForm.get('phoneNumber')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   @if (registerForm.get('phoneNumber')?.hasError('required')) {
+                                       <span>Phone Number is required.</span>
+                                   }
+                                   @if (registerForm.get('phoneNumber')?.hasError('pattern')) {
+                                       <span>Please enter a valid phone number.</span>
+                                   }
+                               </div>
+                           }
+                       </div>
                   </div>
               </div>
 
@@ -138,36 +153,43 @@
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <!-- COMPANY NAME -->
-                      <div class="space-y-2">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Name <span class="text-red-500">*</span></label>
-                          <input type="text" placeholder="Acme Tech Pvt. Ltd." formControlName="companyName"
-                              [class.border-red-500]="registerForm.get('companyName')?.invalid && (registerForm.get('companyName')?.dirty || registerForm.get('companyName')?.touched)"
-                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
-                          <div *ngIf="registerForm.get('companyName')?.invalid && (registerForm.get('companyName')?.dirty || registerForm.get('companyName')?.touched)" class="text-red-400 text-xs mt-1">
-                              Company Name is required.
-                          </div>
-                      </div>
-                      
-                      <!-- REGISTRATION NUMBER -->
-                      <div class="space-y-2">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Registration Number <span class="text-red-500">*</span></label>
-                          <input type="text" placeholder="CIN / GSTIN" formControlName="registrationNumber"
-                              [class.border-red-500]="registerForm.get('registrationNumber')?.invalid && (registerForm.get('registrationNumber')?.dirty || registerForm.get('registrationNumber')?.touched)"
-                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
-                          <div *ngIf="registerForm.get('registrationNumber')?.invalid && (registerForm.get('registrationNumber')?.dirty || registerForm.get('registrationNumber')?.touched)" class="text-red-400 text-xs mt-1">
-                              Registration Number is required.
-                          </div>
-                      </div>
+                       <div class="space-y-2">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Name <span class="text-red-500">*</span></label>
+                           <input type="text" placeholder="Acme Tech Pvt. Ltd." formControlName="companyName"
+                               [class.border-red-500]="registerForm.get('companyName')?.invalid && (registerForm.get('companyName')?.dirty || registerForm.get('companyName')?.touched)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                           @if (registerForm.get('companyName')?.invalid && (registerForm.get('companyName')?.dirty || registerForm.get('companyName')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   Company Name is required.
+                               </div>
+                           }
+                       </div>
+                       
+                       <div class="space-y-2">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Registration Number <span class="text-red-500">*</span></label>
+                           <input type="text" placeholder="CIN / GSTIN" formControlName="registrationNumber"
+                               [class.border-red-500]="registerForm.get('registrationNumber')?.invalid && (registerForm.get('registrationNumber')?.dirty || registerForm.get('registrationNumber')?.touched)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                           @if (registerForm.get('registrationNumber')?.invalid && (registerForm.get('registrationNumber')?.dirty || registerForm.get('registrationNumber')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   Registration Number is required.
+                               </div>
+                           }
+                       </div>
                   </div>
 
                   <div class="grid grid-cols-1 gap-6">
-                      <!-- COMPANY ADDRESS -->
-                      <div class="space-y-2">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Address</label>
-                          <input type="text" placeholder="Headquarters Address" formControlName="companyAddress"
-                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
-                      </div>
+                       <div class="space-y-2">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Address <span class="text-red-500">*</span></label>
+                           <input type="text" placeholder="Headquarters Address" formControlName="companyAddress"
+                               [class.border-red-500]="registerForm.get('companyAddress')?.invalid && (registerForm.get('companyAddress')?.dirty || registerForm.get('companyAddress')?.touched)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                           @if (registerForm.get('companyAddress')?.invalid && (registerForm.get('companyAddress')?.dirty || registerForm.get('companyAddress')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   Company Address is required.
+                               </div>
+                           }
+                       </div>
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -178,37 +200,58 @@
                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
                       </div>
                       
-                      <!-- REVENUE -->
-                      <div class="space-y-2">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Annual Revenue</label>
-                          <select formControlName="annualRevenue"
-                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm appearance-none">
-                              <option value="">Select revenue range</option>
-                              <option *ngFor="let r of annualRevenues" [value]="r">{{ r }}</option>
-                          </select>
-                      </div>
+                       <div class="space-y-2">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Annual Revenue <span class="text-red-500">*</span></label>
+                           <select formControlName="annualRevenue"
+                               [class.border-red-500]="registerForm.get('annualRevenue')?.invalid && (registerForm.get('annualRevenue')?.dirty || registerForm.get('annualRevenue')?.touched)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm appearance-none">
+                               <option value="">Select revenue range</option>
+                               @for (r of annualRevenues; track r) {
+                                   <option [value]="r">{{ r }}</option>
+                               }
+                           </select>
+                           @if (registerForm.get('annualRevenue')?.invalid && (registerForm.get('annualRevenue')?.dirty || registerForm.get('annualRevenue')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   Annual Revenue is required.
+                               </div>
+                           }
+                       </div>
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <!-- INDUSTRY -->
-                      <div class="space-y-2">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Industry</label>
-                          <select formControlName="industry"
-                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm appearance-none">
-                              <option value="">Select industry</option>
-                              <option *ngFor="let i of industries" [value]="i">{{ i }}</option>
-                          </select>
-                      </div>
+                       <div class="space-y-2">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Industry <span class="text-red-500">*</span></label>
+                           <select formControlName="industry"
+                               [class.border-red-500]="registerForm.get('industry')?.invalid && (registerForm.get('industry')?.dirty || registerForm.get('industry')?.touched)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm appearance-none">
+                               <option value="">Select industry</option>
+                               @for (i of industries; track i) {
+                                   <option [value]="i">{{ i }}</option>
+                               }
+                           </select>
+                           @if (registerForm.get('industry')?.invalid && (registerForm.get('industry')?.dirty || registerForm.get('industry')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   Industry is required.
+                               </div>
+                           }
+                       </div>
                       
-                      <!-- SIZE -->
-                      <div class="space-y-2">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Size</label>
-                          <select formControlName="companySize"
-                              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm appearance-none">
-                              <option value="">Select size</option>
-                              <option *ngFor="let s of companySizes" [value]="s">{{ s }}</option>
-                          </select>
-                      </div>
+                       <div class="space-y-2">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Company Size <span class="text-red-500">*</span></label>
+                           <select formControlName="companySize"
+                               [class.border-red-500]="registerForm.get('companySize')?.invalid && (registerForm.get('companySize')?.dirty || registerForm.get('companySize')?.touched)"
+                               class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm appearance-none">
+                               <option value="">Select size</option>
+                               @for (s of companySizes; track s) {
+                                   <option [value]="s">{{ s }}</option>
+                               }
+                           </select>
+                           @if (registerForm.get('companySize')?.invalid && (registerForm.get('companySize')?.dirty || registerForm.get('companySize')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   Company Size is required.
+                               </div>
+                           }
+                       </div>
                   </div>
               </div>
 
@@ -221,50 +264,70 @@
                   </div>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <!-- PASSWORD -->
-                      <div class="space-y-2 relative">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Password <span class="text-red-500">*</span></label>
-                          <div class="relative">
-                            <input [type]="showPassword ? 'text' : 'password'" placeholder="Create a strong password" formControlName="password"
-                                [class.border-red-500]="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
-                                class="w-full pl-4 pr-10 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
-                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300" (click)="togglePassword()">
-                                <svg *ngIf="!showPassword" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                <svg *ngIf="showPassword" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
-                            </button>
-                          </div>
-                          <!-- Password Errors -->
-                          <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="text-red-400 text-xs mt-1">
-                              <span *ngIf="registerForm.get('password')?.hasError('required')">Password is required.</span>
-                              <span *ngIf="registerForm.get('password')?.hasError('minlength')">Password must be at least 8 characters.</span>
-                          </div>
-                          
-                          <!-- Strength meter -->
-                          <div class="flex items-center gap-2 mt-2" *ngIf="registerForm.get('password')?.value">
-                              <div class="flex-1 flex gap-1 h-1.5 rounded-full overflow-hidden bg-slate-800">
-                                  <div *ngFor="let b of [1,2,3,4]" class="flex-1 transition-all duration-300" [style.background]="passwordStrength >= b ? strengthColor : 'transparent'"></div>
-                              </div>
-                              <span class="text-[10px] font-bold uppercase" [style.color]="strengthColor">{{ strengthLabel }}</span>
-                          </div>
-                      </div>
+                       <div class="space-y-2 relative">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Password <span class="text-red-500">*</span></label>
+                           <div class="relative">
+                             <input [type]="showPassword ? 'text' : 'password'" placeholder="Create a strong password" formControlName="password"
+                                 [class.border-red-500]="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
+                                 class="w-full pl-4 pr-10 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                             <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300" (click)="togglePassword()">
+                                 @if (!showPassword) {
+                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                 } @else {
+                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                                 }
+                             </button>
+                           </div>
+                           <!-- Password Errors -->
+                           @if (registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   @if (registerForm.get('password')?.hasError('required')) {
+                                       <span>Password is required.</span>
+                                   }
+                                   @if (registerForm.get('password')?.hasError('minlength')) {
+                                       <span>Password must be at least 8 characters.</span>
+                                   }
+                               </div>
+                           }
+                           
+                           <!-- Strength meter -->
+                           @if (registerForm.get('password')?.value) {
+                               <div class="flex items-center gap-2 mt-2">
+                                   <div class="flex-1 flex gap-1 h-1.5 rounded-full overflow-hidden bg-slate-800">
+                                       @for (b of [1,2,3,4]; track b) {
+                                           <div class="flex-1 transition-all duration-300" [style.background]="passwordStrength >= b ? strengthColor : 'transparent'"></div>
+                                       }
+                                   </div>
+                                   <span class="text-[10px] font-bold uppercase" [style.color]="strengthColor">{{ strengthLabel }}</span>
+                               </div>
+                           }
+                       </div>
 
-                      <!-- CONFIRM PASSWORD -->
-                      <div class="space-y-2 relative">
-                          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Confirm <span class="text-red-500">*</span></label>
-                          <div class="relative">
-                            <input [type]="showConfirm ? 'text' : 'password'" placeholder="Repeat password" formControlName="confirmPassword"
-                                [class.border-red-500]="(registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch')) && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)"
-                                class="w-full pl-4 pr-10 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
-                            <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300" (click)="toggleConfirm()">
-                                <svg *ngIf="!showConfirm" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                <svg *ngIf="showConfirm" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
-                            </button>
-                          </div>
-                          <div *ngIf="(registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch')) && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)" class="text-red-400 text-xs mt-1">
-                              <span *ngIf="registerForm.get('confirmPassword')?.hasError('required') && !registerForm.hasError('passwordMismatch')">Please confirm your password.</span>
-                              <span *ngIf="registerForm.hasError('passwordMismatch')">Passwords do not match.</span>
-                          </div>
-                      </div>
+                       <div class="space-y-2 relative">
+                           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Confirm <span class="text-red-500">*</span></label>
+                           <div class="relative">
+                             <input [type]="showConfirm ? 'text' : 'password'" placeholder="Repeat password" formControlName="confirmPassword"
+                                 [class.border-red-500]="(registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch')) && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)"
+                                 class="w-full pl-4 pr-10 py-3 bg-slate-950 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm" />
+                             <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300" (click)="toggleConfirm()">
+                                 @if (!showConfirm) {
+                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                 } @else {
+                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                                 }
+                             </button>
+                           </div>
+                           @if ((registerForm.get('confirmPassword')?.invalid || registerForm.hasError('passwordMismatch')) && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)) {
+                               <div class="text-red-400 text-xs mt-1">
+                                   @if (registerForm.get('confirmPassword')?.hasError('required') && !registerForm.hasError('passwordMismatch')) {
+                                       <span>Please confirm your password.</span>
+                                   }
+                                   @if (registerForm.hasError('passwordMismatch')) {
+                                       <span>Passwords do not match.</span>
+                                   }
+                               </div>
+                           }
+                       </div>
                   </div>
               </div>
 
@@ -293,23 +356,35 @@
                           </label>
                       </div>
                   </div>
-                  <div *ngIf="registerForm.get('agreeData')?.invalid && (registerForm.get('agreeData')?.dirty || registerForm.get('agreeData')?.touched)" class="text-red-400 text-xs pl-8">
-                      You must consent to data processing.
-                  </div>
+                  @if (registerForm.get('agreeData')?.invalid && (registerForm.get('agreeData')?.dirty || registerForm.get('agreeData')?.touched)) {
+                      <div class="text-red-400 text-xs pl-8">
+                          You must consent to data processing.
+                      </div>
+                  }
               </div>
 
               <!-- SUBMIT -->
               <button type="submit" [disabled]="loading" 
                   class="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-[0_0_15px_rgba(37,99,235,0.2)] flex justify-center items-center gap-2 mt-8">
-                  <span *ngIf="!loading">Create My Account</span>
-                  <svg *ngIf="!loading" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                  
-                  <!-- Spinner -->
-                  <svg *ngIf="loading" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
+                  @if (!loading) {
+                      <span>Create My Account</span>
+                      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                  } @else {
+                      <!-- Spinner -->
+                      <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                  }
               </button>
+              
+              <!-- BOTTOM WARNING (ON FAILURE) -->
+              @if (errorMsg) {
+                  <div class="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex items-center gap-2 text-red-500 text-xs font-bold uppercase tracking-wider">
+                      <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                      <span>Warning: Registration Failed! {{ errorMsg }}</span>
+                  </div>
+              }
 
               <div class="text-center text-sm text-slate-400 mt-6 border-t border-slate-800 pt-6">
                   Already have an account? 

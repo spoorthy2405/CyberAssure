@@ -1,0 +1,139 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< com.cyberassure:CyberAssureProject >-----------------
+[INFO] Building CyberAssureProject 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ CyberAssureProject ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ CyberAssureProject ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ CyberAssureProject ---
+[INFO] skip non existing resourceDirectory D:\CyberAssureProject\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ CyberAssureProject ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 20 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[11,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[12,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[13,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[22,2] cannot find symbol
+  symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[23,2] cannot find symbol
+  symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[13,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[14,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[15,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[32,2] cannot find symbol
+  symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[33,2] cannot find symbol
+  symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[9,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[10,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[11,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[25,2] cannot find symbol
+  symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[26,2] cannot find symbol
+  symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[11,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[12,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[13,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[27,2] cannot find symbol
+  symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[28,2] cannot find symbol
+  symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[9,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[10,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[11,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[23,2] cannot find symbol
+  symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[24,2] cannot find symbol
+  symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[32,6] cannot find symbol
+  symbol:   class MockBean
+  location: class com.cyberassure.cyberassureproject.controller.AuthControllerTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[38,6] cannot find symbol
+  symbol:   class MockBean
+  location: class com.cyberassure.cyberassureproject.controller.ClaimControllerTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[32,6] cannot find symbol
+  symbol:   class MockBean
+  location: class com.cyberassure.cyberassureproject.controller.CyberPolicyControllerTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[33,6] cannot find symbol
+  symbol:   class MockBean
+  location: class com.cyberassure.cyberassureproject.controller.PolicySubscriptionControllerTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[30,6] cannot find symbol
+  symbol:   class MockBean
+  location: class com.cyberassure.cyberassureproject.controller.RiskAssessmentControllerTest
+[INFO] 30 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  13.590 s
+[INFO] Finished at: 2026-03-12T23:07:53+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:testCompile (default-testCompile) on project CyberAssureProject: Compilation failure: Compilation failure: 
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[11,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[12,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[13,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[22,2] cannot find symbol
+[ERROR]   symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[23,2] cannot find symbol
+[ERROR]   symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[13,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[14,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[15,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[32,2] cannot find symbol
+[ERROR]   symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[33,2] cannot find symbol
+[ERROR]   symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[9,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[10,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[11,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[25,2] cannot find symbol
+[ERROR]   symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[26,2] cannot find symbol
+[ERROR]   symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[11,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[12,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[13,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[27,2] cannot find symbol
+[ERROR]   symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[28,2] cannot find symbol
+[ERROR]   symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[9,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[10,63] package org.springframework.boot.test.autoconfigure.web.servlet does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[11,50] package org.springframework.boot.test.mock.mockito does not exist
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[23,2] cannot find symbol
+[ERROR]   symbol: class WebMvcTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[24,2] cannot find symbol
+[ERROR]   symbol: class AutoConfigureMockMvc
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/AuthControllerTest.java:[32,6] cannot find symbol
+[ERROR]   symbol:   class MockBean
+[ERROR]   location: class com.cyberassure.cyberassureproject.controller.AuthControllerTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/ClaimControllerTest.java:[38,6] cannot find symbol
+[ERROR]   symbol:   class MockBean
+[ERROR]   location: class com.cyberassure.cyberassureproject.controller.ClaimControllerTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/CyberPolicyControllerTest.java:[32,6] cannot find symbol
+[ERROR]   symbol:   class MockBean
+[ERROR]   location: class com.cyberassure.cyberassureproject.controller.CyberPolicyControllerTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/PolicySubscriptionControllerTest.java:[33,6] cannot find symbol
+[ERROR]   symbol:   class MockBean
+[ERROR]   location: class com.cyberassure.cyberassureproject.controller.PolicySubscriptionControllerTest
+[ERROR] /D:/CyberAssureProject/src/test/java/com/cyberassure/cyberassureproject/controller/RiskAssessmentControllerTest.java:[30,6] cannot find symbol
+[ERROR]   symbol:   class MockBean
+[ERROR]   location: class com.cyberassure.cyberassureproject.controller.RiskAssessmentControllerTest
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

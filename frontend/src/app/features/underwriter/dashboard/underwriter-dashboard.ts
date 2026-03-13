@@ -1,6 +1,6 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of } from 'rxjs';
@@ -9,7 +9,7 @@ import { UnderwriterService } from '../services/underwriter.service';
 @Component({
   selector: 'app-underwriter-dashboard',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule],
   templateUrl: './underwriter-dashboard.html'
 })
 export class UnderwriterDashboard {

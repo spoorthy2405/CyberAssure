@@ -15,7 +15,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class CustomerDashboard {
   private service = inject(CustomerService);
-  private router  = inject(Router);
+  private router = inject(Router);
 
   // Trigger data fetch on navigation to ensure freshness
   private refresh$ = this.router.events.pipe(
@@ -23,9 +23,11 @@ export class CustomerDashboard {
     startWith(null)
   );
 
+  //Triggers the stream immediately when component loads.
   loading = signal(true);
-  
+
   // Dashboard Stats Signal
+  //Whenever refresh happens → fetch stats.
   stats = toSignal(
     this.refresh$.pipe(
       tap(() => this.loading.set(true)),
@@ -138,12 +140,12 @@ export class CustomerDashboard {
     this.claimData.set({ incidentId: null, claimAmount: null });
     this.showClaimModal.set(true);
     this.service.getMyIncidents().subscribe(incidents => {
-        this.myIncidents.set(incidents);
+      this.myIncidents.set(incidents);
     });
   }
 
-  closeClaimModal() { 
-    this.showClaimModal.set(false); 
+  closeClaimModal() {
+    this.showClaimModal.set(false);
   }
 
   submitClaim() {
@@ -159,7 +161,7 @@ export class CustomerDashboard {
         this.showClaimModal.set(false);
         // Force refresh by navigating to same route or handling internally (handled by service normally, but here we can just reload the router)
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['/customer/dashboard']);
+          this.router.navigate(['/customer/dashboard']);
         });
       },
       error: (err) => {

@@ -72,11 +72,13 @@
       </div>
       <div class="grid md:grid-cols-3 gap-8">
         <!-- Reusing features from existing component -->
-        <div *ngFor="let f of features" class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-blue-500/50 transition-colors group">
-          <div class="w-14 h-14 bg-slate-800 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-white/5">{{ f.icon }}</div>
-          <h3 class="text-xl font-semibold mb-3 text-white">{{ f.title }}</h3>
-          <p class="text-slate-400 leading-relaxed">{{ f.desc }}</p>
-        </div>
+        @for (f of features; track f.title) {
+          <div class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-blue-500/50 transition-colors group">
+            <div class="w-14 h-14 bg-slate-800 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-white/5">{{ f.icon }}</div>
+            <h3 class="text-xl font-semibold mb-3 text-white">{{ f.title }}</h3>
+            <p class="text-slate-400 leading-relaxed">{{ f.desc }}</p>
+          </div>
+        }
       </div>
     </div>
   </section>
@@ -91,13 +93,15 @@
       <div class="order-1 lg:order-2">
         <h2 class="text-4xl font-bold mb-8">How It Works</h2>
         <div class="space-y-8">
-          <div *ngFor="let s of steps; let i = index" class="flex gap-6">
-            <div class="shrink-0 w-12 h-12 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-mono font-bold">{{ s.num }}</div>
-            <div>
-              <h4 class="text-xl font-semibold mb-2">{{ s.title }}</h4>
-              <p class="text-slate-400">{{ s.desc }}</p>
+          @for (s of steps; track s.title; let i = $index) {
+            <div class="flex gap-6">
+              <div class="shrink-0 w-12 h-12 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-mono font-bold">{{ s.num }}</div>
+              <div>
+                <h4 class="text-xl font-semibold mb-2">{{ s.title }}</h4>
+                <p class="text-slate-400">{{ s.desc }}</p>
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
     </div>
@@ -112,14 +116,15 @@
       </div>
       <div class="grid lg:grid-cols-12 gap-12 items-start">
         <div class="lg:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col gap-2">
-          <button *ngFor="let ind of industries" 
-                  (click)="setIndustry(ind.id)"
-                  [class.bg-blue-600]="activeIndustry === ind.id"
-                  [class.text-white]="activeIndustry === ind.id"
-                  [class.text-slate-400]="activeIndustry !== ind.id"
-                  class="text-left px-6 py-4 rounded-xl font-medium transition-all hover:bg-slate-800">
-            {{ ind.label }}
-          </button>
+          @for (ind of industries; track ind.id) {
+            <button (click)="setIndustry(ind.id)"
+                    [class.bg-blue-600]="activeIndustry === ind.id"
+                    [class.text-white]="activeIndustry === ind.id"
+                    [class.text-slate-400]="activeIndustry !== ind.id"
+                    class="text-left px-6 py-4 rounded-xl font-medium transition-all hover:bg-slate-800">
+              {{ ind.label }}
+            </button>
+          }
         </div>
         <div class="lg:col-span-9 bg-slate-900 border border-slate-800 rounded-3xl p-10 relative overflow-hidden">
           <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-3xl rounded-full"></div>
@@ -136,9 +141,11 @@
                    Top Cyber Risks
                  </h4>
                  <ul class="space-y-3">
-                   <li *ngFor="let r of currentIndustry.risks" class="text-slate-300 flex items-start gap-3">
-                     <span class="text-red-500 mt-1">›</span> {{ r }}
-                   </li>
+                   @for (r of currentIndustry.risks; track r) {
+                     <li class="text-slate-300 flex items-start gap-3">
+                       <span class="text-red-500 mt-1">›</span> {{ r }}
+                     </li>
+                   }
                  </ul>
                </div>
 
@@ -148,9 +155,11 @@
                    Compliance Covered
                  </h4>
                  <div class="flex flex-wrap gap-2">
-                   <span *ngFor="let c of currentIndustry.compliance" class="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-xs font-medium text-slate-300">
-                     {{ c }}
-                   </span>
+                   @for (c of currentIndustry.compliance; track c) {
+                     <span class="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-xs font-medium text-slate-300">
+                       {{ c }}
+                     </span>
+                   }
                  </div>
                </div>
 
@@ -183,32 +192,40 @@
         <p class="text-slate-400">Enterprise plans rigorously modeled around precise business risks.</p>
       </div>
       <div class="grid lg:grid-cols-3 gap-8">
-        <div *ngFor="let plan of plans" [class.border-blue-500]="plan.highlight" [class.shadow-blue-500/20]="plan.highlight" class="bg-slate-950 border border-slate-800 rounded-3xl p-8 relative flex flex-col shadow-xl transition-all hover:-translate-y-1">
-          <div *ngIf="plan.highlight" class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue-600 text-xs font-bold uppercase tracking-wider rounded-full shadow-lg">Most Popular</div>
-          <div class="mb-8">
-            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">{{ plan.tag }}</span>
-            <h3 class="text-2xl font-bold mb-4">{{ plan.name }}</h3>
-            <div class="flex items-baseline gap-2">
-              <span class="text-4xl font-extrabold">{{ plan.coverage }}</span>
-              <span class="text-slate-500 text-sm">coverage</span>
+        @for (plan of plans; track plan.name) {
+          <div [class.border-blue-500]="plan.highlight" [class.shadow-blue-500/20]="plan.highlight" class="bg-slate-950 border border-slate-800 rounded-3xl p-8 relative flex flex-col shadow-xl transition-all hover:-translate-y-1">
+            @if (plan.highlight) {
+              <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue-600 text-xs font-bold uppercase tracking-wider rounded-full shadow-lg">Most Popular</div>
+            }
+            <div class="mb-8">
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">{{ plan.tag }}</span>
+              <h3 class="text-2xl font-bold mb-4">{{ plan.name }}</h3>
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-extrabold">{{ plan.coverage }}</span>
+                <span class="text-slate-500 text-sm">coverage</span>
+              </div>
             </div>
+            <div class="flex-1 space-y-6">
+              <ul class="space-y-4">
+                @for (i of plan.included; track i) {
+                  <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <span class="text-slate-300 text-sm">{{ i }}</span>
+                  </li>
+                }
+                @for (e of plan.excluded; track e) {
+                  <li class="flex items-start gap-3 opacity-50">
+                    <svg class="w-5 h-5 text-slate-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <span class="text-slate-400 text-sm line-through">{{ e }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+            <a [routerLink]="plan.ctaRoute" [ngClass]="plan.highlight ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'" class="mt-8 block w-full py-4 text-center rounded-xl font-semibold transition-colors">
+              {{ plan.cta }}
+            </a>
           </div>
-          <div class="flex-1 space-y-6">
-            <ul class="space-y-4">
-              <li *ngFor="let i of plan.included" class="flex items-start gap-3">
-                <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                <span class="text-slate-300 text-sm">{{ i }}</span>
-              </li>
-              <li *ngFor="let e of plan.excluded" class="flex items-start gap-3 opacity-50">
-                <svg class="w-5 h-5 text-slate-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                <span class="text-slate-400 text-sm line-through">{{ e }}</span>
-              </li>
-            </ul>
-          </div>
-          <a [routerLink]="plan.ctaRoute" [ngClass]="plan.highlight ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'" class="mt-8 block w-full py-4 text-center rounded-xl font-semibold transition-colors">
-            {{ plan.cta }}
-          </a>
-        </div>
+        }
       </div>
     </div>
   </section>

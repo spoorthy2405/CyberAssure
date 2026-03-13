@@ -1,269 +1,291 @@
 <div class="p-6 min-h-screen bg-slate-900 text-white">
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-white">My Claims</h1>
-            <p class="text-sm text-slate-400">Track all claims under your policies</p>
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-white">My Claims</h1>
+      <p class="text-sm text-slate-400">Track all claims under your policies</p>
+    </div>
+    <button (click)="openModal()"
+      class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition">+
+    File a Claim</button>
+  </div>
+
+  <!-- Success Message -->
+  @if (successMsg) {
+    <div
+      class="bg-emerald-900/30 border border-emerald-500/30 text-emerald-400 text-sm p-4 rounded-xl mb-6 flex justify-between items-center shadow-lg">
+      <span class="font-semibold">{{ successMsg }}</span>
+      <button (click)="successMsg = ''" class="hover:text-emerald-200 transition text-lg px-2 flex-shrink-0">✕</button>
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (loading) {
+    <div class="flex justify-center py-16">
+      <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  }
+
+  <!-- Empty -->
+  @if (!loading && claims.length === 0) {
+    <div
+      class="text-center py-16 bg-slate-800/50 rounded-2xl border border-slate-700">
+      <p class="text-4xl mb-3 text-slate-600 font-serif font-black italic">NA</p>
+      <h3 class="text-lg font-semibold text-white mb-2">No claims yet</h3>
+      <p class="text-slate-400 mb-5">Report an incident first, then file a claim here.</p>
+      <button (click)="openModal()"
+        class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-lg transition">+ File a
+      Claim</button>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!loading && claims.length > 0) {
+    <div
+      class="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-5 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-xs text-slate-500 uppercase border-b border-slate-700">
+            <th class="text-left pb-3 pr-4">Claim #</th>
+            <th class="text-left pb-3 pr-4">Incident Type</th>
+            <th class="text-left pb-3 pr-4">Amount</th>
+            <th class="text-left pb-3 pr-4">Status</th>
+            <th class="text-left pb-3 pr-4">Filed</th>
+            <th class="text-left pb-3 pr-4">Reviewed By</th>
+            <th class="text-left pb-3">Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of claims; track c) {
+            <tr class="border-b border-slate-700/50 hover:bg-slate-700/20">
+              <td class="py-3 pr-4 font-mono text-blue-400">#{{ c.id }}</td>
+              <td class="py-3 pr-4 text-white">{{ c.incident?.incidentType || '—' }}</td>
+              <td class="py-3 pr-4 text-emerald-400 font-semibold">₹{{ c.claimAmount | number }}</td>
+              <td class="py-3 pr-4">
+                <span [ngClass]="getStatusClass(c.status)"
+                class="border text-xs font-semibold px-2 py-1 rounded-full">{{ c.status | uppercase }}</span>
+              </td>
+              <td class="py-3 pr-4 text-slate-400">{{ c.filedAt | date:'mediumDate' }}</td>
+              <td class="py-3 pr-4 text-slate-400">{{ c.reviewedBy?.fullName || '—' }}</td>
+              <td class="py-3">
+                @if (c.status === 'APPROVED') {
+                  <span class="text-emerald-400 block mb-1">Approved</span>
+                }
+                @if (c.status === 'SETTLED') {
+                  <div>
+                    <span class="text-emerald-400 font-semibold block mb-1 text-xs">Settled: ₹{{ c.settlementAmount | number }}</span>
+                    <button (click)="viewSettlement(c)" class="text-[10px] bg-emerald-900/40 text-emerald-300 hover:bg-emerald-800 transition px-2 py-1 rounded border border-emerald-500/30 whitespace-nowrap">
+                      View Receipt
+                    </button>
+                  </div>
+                }
+                @if (c.status === 'REJECTED') {
+                  <span class="text-red-400 text-xs">{{ c.rejectionReason || 'Rejected' }}</span>
+                }
+                @if (c.status === 'PENDING' || c.status === 'UNDER_INVESTIGATION') {
+                  <span class="text-amber-400 text-xs">Under Review</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- File a Claim Modal -->
+  @if (showModal) {
+    <div class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md">
+        <div class="flex items-center justify-between p-5 border-b border-slate-700">
+          <h3 class="font-bold text-lg text-white">File a New Claim</h3>
+          <button (click)="closeModal()" class="text-slate-400 hover:text-white text-xl">✕</button>
         </div>
-        <button (click)="openModal()"
-            class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition">+
-            File a Claim</button>
-    </div>
-
-    <!-- Success Message -->
-    <div *ngIf="successMsg"
-         class="bg-emerald-900/30 border border-emerald-500/30 text-emerald-400 text-sm p-4 rounded-xl mb-6 flex justify-between items-center shadow-lg">
-        <span class="font-semibold">{{ successMsg }}</span>
-        <button (click)="successMsg = ''" class="hover:text-emerald-200 transition text-lg px-2 flex-shrink-0">✕</button>
-    </div>
-
-    <!-- Loading -->
-    <div *ngIf="loading" class="flex justify-center py-16">
-        <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>
-
-    <!-- Empty -->
-    <div *ngIf="!loading && claims.length === 0"
-        class="text-center py-16 bg-slate-800/50 rounded-2xl border border-slate-700">
-        <p class="text-4xl mb-3 text-slate-600 font-serif font-black italic">NA</p>
-        <h3 class="text-lg font-semibold text-white mb-2">No claims yet</h3>
-        <p class="text-slate-400 mb-5">Report an incident first, then file a claim here.</p>
-        <button (click)="openModal()"
-            class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-lg transition">+ File a
-            Claim</button>
-    </div>
-
-    <!-- Table -->
-    <div *ngIf="!loading && claims.length > 0"
-        class="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-5 overflow-x-auto">
-        <table class="w-full text-sm">
-            <thead>
-                <tr class="text-xs text-slate-500 uppercase border-b border-slate-700">
-                    <th class="text-left pb-3 pr-4">Claim #</th>
-                    <th class="text-left pb-3 pr-4">Incident Type</th>
-                    <th class="text-left pb-3 pr-4">Amount</th>
-                    <th class="text-left pb-3 pr-4">Status</th>
-                    <th class="text-left pb-3 pr-4">Filed</th>
-                    <th class="text-left pb-3 pr-4">Reviewed By</th>
-                    <th class="text-left pb-3">Result</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let c of claims" class="border-b border-slate-700/50 hover:bg-slate-700/20">
-                    <td class="py-3 pr-4 font-mono text-blue-400">#{{ c.id }}</td>
-                    <td class="py-3 pr-4 text-white">{{ c.incident?.incidentType || '—' }}</td>
-                    <td class="py-3 pr-4 text-emerald-400 font-semibold">₹{{ c.claimAmount | number }}</td>
-                    <td class="py-3 pr-4">
-                        <span [ngClass]="getStatusClass(c.status)"
-                            class="border text-xs font-semibold px-2 py-1 rounded-full">{{ c.status | uppercase }}</span>
-                    </td>
-                    <td class="py-3 pr-4 text-slate-400">{{ c.filedAt | date:'mediumDate' }}</td>
-                    <td class="py-3 pr-4 text-slate-400">{{ c.reviewedBy?.fullName || '—' }}</td>
-                    <td class="py-3">
-                        <span *ngIf="c.status === 'APPROVED'" class="text-emerald-400 block mb-1">Approved</span>
-                        
-                        <div *ngIf="c.status === 'SETTLED'">
-                            <span class="text-emerald-400 font-semibold block mb-1 text-xs">Settled: ₹{{ c.settlementAmount | number }}</span>
-                            <button (click)="viewSettlement(c)" class="text-[10px] bg-emerald-900/40 text-emerald-300 hover:bg-emerald-800 transition px-2 py-1 rounded border border-emerald-500/30 whitespace-nowrap">
-                                View Receipt
-                            </button>
-                        </div>
-
-                        <span *ngIf="c.status === 'REJECTED'" class="text-red-400 text-xs">{{ c.rejectionReason || 'Rejected' }}</span>
-                        
-                        <span *ngIf="c.status === 'PENDING' || c.status === 'UNDER_INVESTIGATION'" class="text-amber-400 text-xs">Under Review</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- File a Claim Modal -->
-    <div *ngIf="showModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md">
-            <div class="flex items-center justify-between p-5 border-b border-slate-700">
-                <h3 class="font-bold text-lg text-white">File a New Claim</h3>
-                <button (click)="closeModal()" class="text-slate-400 hover:text-white text-xl">✕</button>
+        <div class="p-5 space-y-4">
+          @if (errorMsg) {
+            <div
+              class="bg-red-900/30 border border-red-500/30 text-red-400 text-sm p-3 rounded-lg">{{ errorMsg }}
             </div>
-            <div class="p-5 space-y-4">
-                <div *ngIf="errorMsg"
-                    class="bg-red-900/30 border border-red-500/30 text-red-400 text-sm p-3 rounded-lg">{{ errorMsg }}
+          }
+          <div>
+            <label class="block text-sm text-slate-300 mb-1.5">Linked Incident <span
+            class="text-red-400">*</span></label>
+            @if (incidentsLoading) {
+              <div class="text-slate-400 text-sm">Loading incidents…</div>
+            }
+            @if (!incidentsLoading) {
+              <select [(ngModel)]="claimData.incidentId"
+                class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                <option [ngValue]="null" disabled>Select a reported incident…</option>
+                @for (inc of myIncidents; track inc) {
+                  <option [value]="inc.id">
+                    {{ inc.incidentType }} — ₹{{ inc.estimatedLossAmount | number }} ({{ inc.reportedAt |
+                    date:'shortDate' }})
+                  </option>
+                }
+              </select>
+            }
+            @if (!incidentsLoading && myIncidents.length === 0) {
+              <p class="text-amber-400 text-xs mt-1">
+                No incidents. <a routerLink="/customer/incidents" class="underline">Report one first</a>.
+              </p>
+            }
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm text-slate-300 mb-1.5">Claim Amount (₹) <span
+              class="text-red-400">*</span></label>
+              <input type="number" [(ngModel)]="claimData.claimAmount" placeholder="e.g. 500000" min="1"
+                class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+              </div>
+              <div>
+                <label class="block text-sm text-slate-300 mb-1.5">Police Report Filed?</label>
+                <select [(ngModel)]="claimData.policeReportFiled" class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                  <option [ngValue]="false">No</option>
+                  <option [ngValue]="true">Yes</option>
+                </select>
+              </div>
+            </div>
+            @if (claimData.policeReportFiled) {
+              <div>
+                <label class="block text-sm text-slate-300 mb-1.5">Police Report Number (FIR/Case No.)</label>
+                <input type="text" [(ngModel)]="claimData.policeReportNumber" placeholder="e.g. CYB-2026-901"
+                  class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
                 </div>
-
+              }
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm text-slate-300 mb-1.5">Linked Incident <span
-                            class="text-red-400">*</span></label>
-                    <div *ngIf="incidentsLoading" class="text-slate-400 text-sm">Loading incidents…</div>
-                    <select *ngIf="!incidentsLoading" [(ngModel)]="claimData.incidentId"
-                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
-                        <option [ngValue]="null" disabled>Select a reported incident…</option>
-                        <option *ngFor="let inc of myIncidents" [value]="inc.id">
-                            {{ inc.incidentType }} — ₹{{ inc.estimatedLossAmount | number }} ({{ inc.reportedAt |
-                            date:'shortDate' }})
-                        </option>
-                    </select>
-                    <p *ngIf="!incidentsLoading && myIncidents.length === 0" class="text-amber-400 text-xs mt-1">
-                        No incidents. <a routerLink="/customer/incidents" class="underline">Report one first</a>.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm text-slate-300 mb-1.5">Claim Amount (₹) <span
-                                class="text-red-400">*</span></label>
-                        <input type="number" [(ngModel)]="claimData.claimAmount" placeholder="e.g. 500000" min="1"
-                            class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                  <label class="block text-sm text-slate-300 mb-1.5">Bank Account Number <span class="text-red-400">*</span></label>
+                  <input type="text" [(ngModel)]="claimData.bankAccountNumber" placeholder="For settlement payout"
+                    class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                  </div>
+                  <div>
+                    <label class="block text-sm text-slate-300 mb-1.5">Bank IFSC Code <span class="text-red-400">*</span></label>
+                    <input type="text" [(ngModel)]="claimData.bankIfscCode" placeholder="e.g. HDFC0001234"
+                      class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
                     </div>
-                    <div>
-                        <label class="block text-sm text-slate-300 mb-1.5">Police Report Filed?</label>
-                        <select [(ngModel)]="claimData.policeReportFiled" class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
-                            <option [ngValue]="false">No</option>
-                            <option [ngValue]="true">Yes</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div *ngIf="claimData.policeReportFiled">
-                    <label class="block text-sm text-slate-300 mb-1.5">Police Report Number (FIR/Case No.)</label>
-                    <input type="text" [(ngModel)]="claimData.policeReportNumber" placeholder="e.g. CYB-2026-901"
-                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                         <label class="block text-sm text-slate-300 mb-1.5">Bank Account Number <span class="text-red-400">*</span></label>
-                         <input type="text" [(ngModel)]="claimData.bankAccountNumber" placeholder="For settlement payout"
-                             class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
-                    </div>
-                    <div>
-                         <label class="block text-sm text-slate-300 mb-1.5">Bank IFSC Code <span class="text-red-400">*</span></label>
-                         <input type="text" [(ngModel)]="claimData.bankIfscCode" placeholder="e.g. HDFC0001234"
-                             class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
-                    </div>
-                </div>
-
-                <div>
+                  </div>
+                  <div>
                     <label class="block text-sm text-slate-300 mb-1.5">Additional Claim Request Details <span class="text-red-400">*</span></label>
                     <textarea [(ngModel)]="claimData.claimDescription" rows="3" placeholder="Explain the rationale for the requested claim amount..."
-                        class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 resize-none"></textarea>
+                    class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 resize-none"></textarea>
+                  </div>
                 </div>
-            </div>
-            <div class="flex gap-3 p-5 border-t border-slate-700">
-                <button (click)="closeModal()"
-                    class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 rounded-lg transition text-sm">Cancel</button>
-                <button (click)="submitClaim()" [disabled]="submitting || myIncidents.length === 0"
+                <div class="flex gap-3 p-5 border-t border-slate-700">
+                  <button (click)="closeModal()"
+                  class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2.5 rounded-lg transition text-sm">Cancel</button>
+                  <button (click)="submitClaim()" [disabled]="submitting || myIncidents.length === 0"
                     class="flex-1 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold py-2.5 rounded-lg transition text-sm">
                     {{ submitting ? 'Submitting…' : 'Submit Claim' }}
-                </button>
+                  </button>
+                </div>
+              </div>
             </div>
-        </div>
-    </div>
+          }
 
-    <!-- Settlement Receipt Modal -->
-    <div *ngIf="selectedSettlement" class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white print:p-0 print:absolute print:inset-0">
-        <div class="bg-white text-slate-900 rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] print:shadow-none print:max-h-none print:w-full print:rounded-none">
-            
-            <!-- Modal Header (Hidden in Print) -->
-            <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 print:hidden sticky top-0">
-                <h2 class="font-bold text-slate-800">Claim Settlement Receipt</h2>
-                <div class="flex gap-2">
+          <!-- Settlement Receipt Modal -->
+          @if (selectedSettlement) {
+            <div class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 print:bg-white print:p-0 print:absolute print:inset-0">
+              <div class="bg-white text-slate-900 rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] print:shadow-none print:max-h-none print:w-full print:rounded-none">
+                <!-- Modal Header (Hidden in Print) -->
+                <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50 print:hidden sticky top-0">
+                  <h2 class="font-bold text-slate-800">Claim Settlement Receipt</h2>
+                  <div class="flex gap-2">
                     <button (click)="printSettlement()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-sm font-semibold transition">Print / Save PDF</button>
                     <button (click)="closeSettlement()" class="text-slate-400 hover:text-slate-600 transition text-xl px-2">&times;</button>
+                  </div>
                 </div>
-            </div>
-
-            <!-- Receipt Content -->
-            <div class="p-8 overflow-y-auto print:overflow-visible">
-                
-                <div class="flex justify-between items-start mb-8 border-b border-slate-200 pb-6">
+                <!-- Receipt Content -->
+                <div class="p-8 overflow-y-auto print:overflow-visible">
+                  <div class="flex justify-between items-start mb-8 border-b border-slate-200 pb-6">
                     <div>
-                        <h1 class="text-3xl font-black text-blue-700 mb-1">CyberAssure</h1>
-                        <p class="text-sm text-slate-500 font-medium">Official Claim Settlement Certificate</p>
+                      <h1 class="text-3xl font-black text-blue-700 mb-1">CyberAssure</h1>
+                      <p class="text-sm text-slate-500 font-medium">Official Claim Settlement Certificate</p>
                     </div>
                     <div class="text-right">
-                        <p class="text-sm text-slate-500 uppercase tracking-wider mb-1">Settlement Date</p>
-                        <p class="font-bold border-2 border-emerald-500 text-emerald-600 px-3 py-1 rounded inline-block bg-emerald-50">
-                            {{ selectedSettlement.reviewedAt | date:'mediumDate' }}
-                        </p>
+                      <p class="text-sm text-slate-500 uppercase tracking-wider mb-1">Settlement Date</p>
+                      <p class="font-bold border-2 border-emerald-500 text-emerald-600 px-3 py-1 rounded inline-block bg-emerald-50">
+                        {{ selectedSettlement.reviewedAt | date:'mediumDate' }}
+                      </p>
                     </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-8 mb-8">
+                  </div>
+                  <div class="grid grid-cols-2 gap-8 mb-8">
                     <!-- Customer Details -->
                     <div>
-                        <h3 class="text-xs uppercase tracking-wider text-slate-400 mb-2 border-b border-slate-100 pb-1">Policyholder Details</h3>
-                        <p class="font-bold text-slate-800">{{ selectedSettlement.customer?.fullName }}</p>
-                        <p class="text-sm text-slate-600">{{ selectedSettlement.customer?.companyName || 'Business Entity' }}</p>
-                        <p class="text-sm text-slate-600">{{ selectedSettlement.customer?.email }}</p>
+                      <h3 class="text-xs uppercase tracking-wider text-slate-400 mb-2 border-b border-slate-100 pb-1">Policyholder Details</h3>
+                      <p class="font-bold text-slate-800">{{ selectedSettlement.customer?.fullName }}</p>
+                      <p class="text-sm text-slate-600">{{ selectedSettlement.customer?.companyName || 'Business Entity' }}</p>
+                      <p class="text-sm text-slate-600">{{ selectedSettlement.customer?.email }}</p>
                     </div>
                     <!-- Claim Details -->
                     <div>
-                        <h3 class="text-xs uppercase tracking-wider text-slate-400 mb-2 border-b border-slate-100 pb-1">Claim Reference</h3>
-                        <div class="grid grid-cols-2 gap-2 text-sm">
-                            <span class="text-slate-500">Claim ID:</span>
-                            <span class="font-bold">#{{ selectedSettlement.id }}</span>
-                            <span class="text-slate-500">Filed On:</span>
-                            <span class="font-bold">{{ selectedSettlement.filedAt | date:'mediumDate' }}</span>
-                            <span class="text-slate-500">Policy Ref:</span>
-                            <span class="font-bold">{{ selectedSettlement.incident?.subscription?.policy?.policyName }}</span>
-                        </div>
+                      <h3 class="text-xs uppercase tracking-wider text-slate-400 mb-2 border-b border-slate-100 pb-1">Claim Reference</h3>
+                      <div class="grid grid-cols-2 gap-2 text-sm">
+                        <span class="text-slate-500">Claim ID:</span>
+                        <span class="font-bold">#{{ selectedSettlement.id }}</span>
+                        <span class="text-slate-500">Filed On:</span>
+                        <span class="font-bold">{{ selectedSettlement.filedAt | date:'mediumDate' }}</span>
+                        <span class="text-slate-500">Policy Ref:</span>
+                        <span class="font-bold">{{ selectedSettlement.incident?.subscription?.policy?.policyName }}</span>
+                      </div>
                     </div>
-                </div>
-
-                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
+                  </div>
+                  <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
                     <h3 class="text-xs uppercase tracking-wider text-slate-400 mb-3 border-b border-slate-200 pb-2">Incident & Evidence Summary</h3>
                     <p class="text-sm text-slate-700 mb-2"><span class="font-semibold">Type:</span> {{ selectedSettlement.incident?.incidentType }}</p>
                     <p class="text-sm text-slate-700 mb-3"><span class="font-semibold">Description:</span> {{ selectedSettlement.incident?.description }}</p>
-                    <p *ngIf="selectedSettlement.policeReportFiled" class="text-sm text-slate-700 mb-2">
+                    @if (selectedSettlement.policeReportFiled) {
+                      <p class="text-sm text-slate-700 mb-2">
                         <span class="font-semibold text-blue-700">Police Report (FIR):</span> {{ selectedSettlement.policeReportNumber || 'Filed (Number not provided)' }}
-                    </p>
-                    <p *ngIf="selectedSettlement.incident?.documentPaths?.length" class="text-sm text-slate-700">
+                      </p>
+                    }
+                    @if (selectedSettlement.incident?.documentPaths?.length) {
+                      <p class="text-sm text-slate-700">
                         <span class="font-semibold text-blue-700">Digital Evidence:</span> {{ selectedSettlement.incident?.documentPaths?.length }} Document(s) Attached
-                    </p>
-                </div>
-
-                <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100 mb-6">
+                      </p>
+                    }
+                  </div>
+                  <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100 mb-6">
                     <h3 class="text-xs uppercase tracking-wider text-blue-500 mb-3 border-b border-blue-100 pb-2">Financial Breakdown & Limits</h3>
                     <div class="flex justify-between items-center text-sm text-slate-700 mb-2">
-                        <span>Original Claim Amount:</span>
-                        <span class="font-bold">₹{{ selectedSettlement.claimAmount | number }}</span>
+                      <span>Original Claim Amount:</span>
+                      <span class="font-bold">₹{{ selectedSettlement.claimAmount | number }}</span>
                     </div>
                     <div class="flex justify-between items-center text-sm text-slate-700 mb-2">
-                        <span>Policy Deductible:</span>
-                        <span class="font-bold text-amber-600">- ₹{{ selectedSettlement.incident?.subscription?.deductible || 0 | number }}</span>
+                      <span>Policy Deductible:</span>
+                      <span class="font-bold text-amber-600">- ₹{{ selectedSettlement.incident?.subscription?.deductible || 0 | number }}</span>
                     </div>
                     <div class="flex justify-between items-center text-sm text-slate-700 mb-2 pt-2 border-t border-blue-100/50">
-                        <span>Total Coverage Limit:</span>
-                        <span class="font-semibold">₹{{ (selectedSettlement.incident?.subscription?.policyLimit || selectedSettlement.incident?.subscription?.policy?.coverageLimit) | number }}</span>
+                      <span>Total Coverage Limit:</span>
+                      <span class="font-semibold">₹{{ (selectedSettlement.incident?.subscription?.policyLimit || selectedSettlement.incident?.subscription?.policy?.coverageLimit) | number }}</span>
                     </div>
-                    <div *ngIf="selectedSettlement.bankAccountNumber" class="text-xs text-slate-500 mt-4 pt-4 border-t border-blue-100 flex items-center justify-between">
+                    @if (selectedSettlement.bankAccountNumber) {
+                      <div class="text-xs text-slate-500 mt-4 pt-4 border-t border-blue-100 flex items-center justify-between">
                         <span>Target Bank Account:</span>
                         <span class="font-mono bg-white px-2 py-1 border border-slate-200 rounded">xxxx-xxxx-{{ selectedSettlement.bankAccountNumber.toString().slice(-4) || 'XXXX' }} (IFSC: {{ selectedSettlement.bankIfscCode }})</span>
-                    </div>
-                </div>
-
-                <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-200 mb-8 flex justify-between items-center">
+                      </div>
+                    }
+                  </div>
+                  <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-200 mb-8 flex justify-between items-center">
                     <div>
-                        <h3 class="text-emerald-800 font-bold mb-1">Final Settlement Approved</h3>
-                        <p class="text-emerald-600 text-sm">This amount has been released for payout.</p>
+                      <h3 class="text-emerald-800 font-bold mb-1">Final Settlement Approved</h3>
+                      <p class="text-emerald-600 text-sm">This amount has been released for payout.</p>
                     </div>
                     <div class="text-3xl font-black text-emerald-600">
-                        ₹{{ selectedSettlement.settlementAmount | number }}
+                      ₹{{ selectedSettlement.settlementAmount | number }}
                     </div>
-                </div>
-
-                <div class="mb-8">
+                  </div>
+                  <div class="mb-8">
                     <h3 class="text-xs uppercase tracking-wider text-slate-400 mb-2 border-b border-slate-100 pb-1">Investigation Notes & Remarks</h3>
                     <p class="text-sm text-slate-700 italic bg-slate-50 p-4 rounded-lg border border-slate-100">
-                        "{{ selectedSettlement.investigationNotes || 'Claim processed and settled in full accordance with policy terms.' }}"
+                      "{{ selectedSettlement.investigationNotes || 'Claim processed and settled in full accordance with policy terms.' }}"
                     </p>
-                </div>
-
-                <div class="pt-6 border-t border-slate-200 text-center">
+                  </div>
+                  <div class="pt-6 border-t border-slate-200 text-center">
                     <p class="text-xs text-slate-400 mb-1">Approved By: <span class="font-semibold text-slate-500">Claims Officer {{ selectedSettlement.reviewedBy?.fullName }}</span></p>
                     <p class="text-xs text-slate-400">This is a system-generated document and does not require a physical signature.</p>
+                  </div>
                 </div>
-
+              </div>
             </div>
+          }
         </div>
-    </div>
-</div>

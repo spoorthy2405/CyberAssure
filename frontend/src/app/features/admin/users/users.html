@@ -1,29 +1,29 @@
 <div class="bg-slate-800 rounded-xl p-6">
 
-    <h2 class="text-lg font-semibold mb-4">
-        User Management
-    </h2>
+  <h2 class="text-lg font-semibold mb-4">
+    User Management
+  </h2>
 
-    <!-- Filters -->
+  <!-- Filters -->
 
-    <div class="flex gap-4 mb-6">
+  <div class="flex gap-4 mb-6">
 
-        <input type="text" placeholder="Search by name or email"
-            class="bg-slate-900 border border-slate-700 rounded px-4 py-2 w-64" />
+    <input type="text" placeholder="Search by name or email"
+      class="bg-slate-900 border border-slate-700 rounded px-4 py-2 w-64" />
 
-        <select class="bg-slate-900 border border-slate-700 rounded px-3 py-2">
-            <option>All Industries</option>
-            <option>IT</option>
-            <option>Finance</option>
-            <option>Healthcare</option>
-        </select>
+      <select class="bg-slate-900 border border-slate-700 rounded px-3 py-2">
+        <option>All Industries</option>
+        <option>IT</option>
+        <option>Finance</option>
+        <option>Healthcare</option>
+      </select>
 
-        <select class="bg-slate-900 border border-slate-700 rounded px-3 py-2">
-            <option>All Risk Levels</option>
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
-        </select>
+      <select class="bg-slate-900 border border-slate-700 rounded px-3 py-2">
+        <option>All Risk Levels</option>
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+      </select>
 
     </div>
 
@@ -31,44 +31,38 @@
 
     <table class="w-full text-sm">
 
-        <thead class="text-slate-400 border-b border-slate-700">
-            <tr>
+      <thead class="text-slate-400 border-b border-slate-700">
+        <tr>
 
-                <th class="text-left py-3">Company Name</th>
-                <th>Email</th>
-                <th>Industry</th>
-                <th>Joined Date</th>
-                <th>Risk Score</th>
-                <th>Policy Status</th>
-                <th>Account Status</th>
-                <th>Actions</th>
+          <th class="text-left py-3">Company Name</th>
+          <th>Email</th>
+          <th>Industry</th>
+          <th>Joined Date</th>
+          <th>Risk Score</th>
+          <th>Policy Status</th>
+          <th>Account Status</th>
+          <th>Actions</th>
 
-            </tr>
-        </thead>
+        </tr>
+      </thead>
 
-        <tbody>
-            <tr *ngFor="let u of users">
+      <tbody>
+        @for (u of users; track u) {
+          <tr>
+            <td>{{u.companyName}}</td>
+            <td>{{u.email}}</td>
+            <td>{{u.createdAt}}</td>
+            <td>{{u.accountStatus}}</td>
+            <td>
+              <button class="px-3 py-1 bg-blue-600 rounded text-xs">
+                Profile
+              </button>
+            </td>
+          </tr>
+        }
 
-                <td>{{u.companyName}}</td>
-
-                <td>{{u.email}}</td>
-
-                <td>{{u.createdAt}}</td>
-
-                <td>{{u.accountStatus}}</td>
-
-                <td>
-
-                    <button class="px-3 py-1 bg-blue-600 rounded text-xs">
-                        Profile
-                    </button>
-
-                </td>
-
-            </tr>
-
-        </tbody>
+      </tbody>
 
     </table>
 
-</div>
+  </div>

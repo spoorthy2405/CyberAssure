@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminApiService } from '../../../core/services/admin-api-service';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'admin-users',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './users.html'
 })
 export class Users implements OnInit {

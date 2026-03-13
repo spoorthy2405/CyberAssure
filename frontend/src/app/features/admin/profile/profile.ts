@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-admin-profile',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     template: `
     <div class="space-y-6 max-w-4xl mx-auto">
       <div class="flex items-center justify-between pb-4 border-b border-slate-700/50">

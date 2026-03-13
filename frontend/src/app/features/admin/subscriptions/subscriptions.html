@@ -1,176 +1,190 @@
 <div class="px-6 py-8 h-full overflow-y-auto">
 
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <div>
-            <h1 class="text-3xl font-bold text-white tracking-tight">Policy Applications</h1>
-            <p class="text-slate-400 mt-1 text-sm">Review customer submissions and assign underwriters for evaluation.
-            </p>
-        </div>
-
-        <!-- Status filter -->
-        <div class="flex gap-2 bg-slate-800 rounded-xl p-1 border border-slate-700">
-            <button *ngFor="let s of ['ALL','PENDING','APPROVED','REJECTED']" (click)="filterStatus.set(s)"
-                [class.bg-blue-600]="filterStatus() === s" [class.text-white]="filterStatus() === s"
-                [class.text-slate-400]="filterStatus() !== s"
-                class="px-4 py-1.5 rounded-lg text-sm font-medium transition-all">
-                {{s}}
-            </button>
-        </div>
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-white tracking-tight">Policy Applications</h1>
+      <p class="text-slate-400 mt-1 text-sm">Review customer submissions and assign underwriters for evaluation.
+      </p>
     </div>
 
-    <!-- Success Toast -->
-    <div *ngIf="successMessage()"
-        class="mb-4 flex items-center gap-3 bg-emerald-500/20 border border-emerald-500/40 rounded-xl px-5 py-3 text-emerald-300 text-sm font-medium">
-        {{successMessage()}}
+    <!-- Status filter -->
+    <div class="flex gap-2 bg-slate-800 rounded-xl p-1 border border-slate-700">
+      @for (s of ['ALL','PENDING','APPROVED','REJECTED']; track s) {
+        <button (click)="filterStatus.set(s)"
+          [class.bg-blue-600]="filterStatus() === s" [class.text-white]="filterStatus() === s"
+          [class.text-slate-400]="filterStatus() !== s"
+          class="px-4 py-1.5 rounded-lg text-sm font-medium transition-all">
+          {{s}}
+        </button>
+      }
     </div>
+  </div>
 
-    <!-- Loading -->
-    <div *ngIf="loading()" class="flex justify-center items-center h-48">
-        <div class="w-8 h-8 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"></div>
+  <!-- Success Toast -->
+  @if (successMessage()) {
+    <div
+      class="mb-4 flex items-center gap-3 bg-emerald-500/20 border border-emerald-500/40 rounded-xl px-5 py-3 text-emerald-300 text-sm font-medium">
+      {{successMessage()}}
     </div>
+  }
 
-    <!-- Empty state -->
-    <div *ngIf="!loading() && filtered().length === 0"
-        class="flex flex-col items-center justify-center h-48 border border-dashed border-slate-600 rounded-2xl bg-slate-800/30">
-        <div class="w-10 h-10 rounded border border-slate-600 flex items-center justify-center text-slate-500 text-xs mb-3">0</div>
-        <h3 class="text-lg font-semibold text-white">No Applications Found</h3>
-        <p class="text-slate-400 text-sm mt-1">No policy applications match the selected filter.</p>
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="flex justify-center items-center h-48">
+      <div class="w-8 h-8 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"></div>
     </div>
+  }
 
-    <!-- Table -->
-    <div *ngIf="!loading() && filtered().length > 0" class="overflow-hidden rounded-2xl border border-slate-700">
-        <table class="w-full text-sm">
-            <thead class="bg-slate-800/80">
-                <tr>
-                    <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">ID
-                    </th>
-                    <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">
-                        Customer</th>
-                    <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">Policy
-                    </th>
-                    <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">Status
-                    </th>
-                    <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">
-                        Underwriter</th>
-                    <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">Action
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-700/60">
-                <tr *ngFor="let sub of filtered()" class="bg-slate-800/30 hover:bg-slate-800/70 transition-colors">
-
-                    <td class="px-6 py-4 text-slate-400 font-mono">CA-{{sub.id}}</td>
-
-                    <td class="px-6 py-4">
-                        <div class="font-medium text-white">{{sub.customer?.fullName || '—'}}</div>
-                        <div class="text-xs text-slate-400">{{sub.customer?.companyName || '—'}}</div>
-                    </td>
-
-                    <td class="px-6 py-4">
-                        <div class="font-medium text-white">{{sub.policy?.policyName || '—'}}</div>
-                        <div class="text-xs text-slate-400">{{sub.policy?.sector || '—'}}</div>
-                    </td>
-
-                    <td class="px-6 py-4">
-                        <span class="px-3 py-1 rounded-full text-xs font-semibold border"
-                            [ngClass]="statusClass(sub.status)">
-                            {{sub.status}}
-                        </span>
-                    </td>
-
-                    <td class="px-6 py-4">
-                        <span *ngIf="sub.assignedUnderwriter" class="text-white font-medium">
-                            {{sub.assignedUnderwriter.fullName}}
-                        </span>
-                        <span *ngIf="!sub.assignedUnderwriter" class="text-slate-500 italic text-xs">Not Assigned</span>
-                    </td>
-
-                    <td class="px-6 py-4">
-                        <button *ngIf="sub.status === 'PENDING'" (click)="openAssign(sub)"
-                            [class.bg-blue-600]="!sub.assignedUnderwriter"
-                            [class.bg-slate-700]="sub.assignedUnderwriter"
-                            class="px-4 py-1.5 rounded-lg text-white text-xs font-medium transition-colors hover:opacity-80">
-                            {{sub.assignedUnderwriter ? 'Reassign' : 'Assign'}}
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  <!-- Empty state -->
+  @if (!loading() && filtered().length === 0) {
+    <div
+      class="flex flex-col items-center justify-center h-48 border border-dashed border-slate-600 rounded-2xl bg-slate-800/30">
+      <div class="w-10 h-10 rounded border border-slate-600 flex items-center justify-center text-slate-500 text-xs mb-3">0</div>
+      <h3 class="text-lg font-semibold text-white">No Applications Found</h3>
+      <p class="text-slate-400 text-sm mt-1">No policy applications match the selected filter.</p>
     </div>
+  }
 
-    <!-- Stats bar -->
-    <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-center">
-            <div class="text-2xl font-bold text-white">{{subscriptions().length}}</div>
-            <div class="text-xs text-slate-400 mt-1">Total Applications</div>
-        </div>
-        <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 text-center">
-            <div class="text-2xl font-bold text-yellow-300">{{getCount('PENDING')}}</div>
-            <div class="text-xs text-slate-400 mt-1">Pending</div>
-        </div>
-        <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-center">
-            <div class="text-2xl font-bold text-emerald-300">{{getCount('APPROVED')}}</div>
-            <div class="text-xs text-slate-400 mt-1">Approved</div>
-        </div>
-        <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-center">
-            <div class="text-2xl font-bold text-red-300">{{getCount('REJECTED')}}</div>
-            <div class="text-xs text-slate-400 mt-1">Rejected</div>
-        </div>
+  <!-- Table -->
+  @if (!loading() && filtered().length > 0) {
+    <div class="overflow-hidden rounded-2xl border border-slate-700">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-800/80">
+          <tr>
+            <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">ID
+            </th>
+            <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">
+            Customer</th>
+            <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">Policy
+            </th>
+            <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">Status
+            </th>
+            <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">
+            Underwriter</th>
+            <th class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider px-6 py-4">Action
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-700/60">
+          @for (sub of filtered(); track sub) {
+            <tr class="bg-slate-800/30 hover:bg-slate-800/70 transition-colors">
+              <td class="px-6 py-4 text-slate-400 font-mono">CA-{{sub.id}}</td>
+              <td class="px-6 py-4">
+                <div class="font-medium text-white">{{sub.customer?.fullName || '—'}}</div>
+                <div class="text-xs text-slate-400">{{sub.customer?.companyName || '—'}}</div>
+              </td>
+              <td class="px-6 py-4">
+                <div class="font-medium text-white">{{sub.policy?.policyName || '—'}}</div>
+                <div class="text-xs text-slate-400">{{sub.policy?.sector || '—'}}</div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold border"
+                  [ngClass]="statusClass(sub.status)">
+                  {{sub.status}}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                @if (sub.assignedUnderwriter) {
+                  <span class="text-white font-medium">
+                    {{sub.assignedUnderwriter.fullName}}
+                  </span>
+                }
+                @if (!sub.assignedUnderwriter) {
+                  <span class="text-slate-500 italic text-xs">Not Assigned</span>
+                }
+              </td>
+              <td class="px-6 py-4">
+                @if (sub.status === 'PENDING') {
+                  <button (click)="openAssign(sub)"
+                    [class.bg-blue-600]="!sub.assignedUnderwriter"
+                    [class.bg-slate-700]="sub.assignedUnderwriter"
+                    class="px-4 py-1.5 rounded-lg text-white text-xs font-medium transition-colors hover:opacity-80">
+                    {{sub.assignedUnderwriter ? 'Reassign' : 'Assign'}}
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
+  }
+
+  <!-- Stats bar -->
+  <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-4 text-center">
+      <div class="text-2xl font-bold text-white">{{subscriptions().length}}</div>
+      <div class="text-xs text-slate-400 mt-1">Total Applications</div>
+    </div>
+    <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 text-center">
+      <div class="text-2xl font-bold text-yellow-300">{{getCount('PENDING')}}</div>
+      <div class="text-xs text-slate-400 mt-1">Pending</div>
+    </div>
+    <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-center">
+      <div class="text-2xl font-bold text-emerald-300">{{getCount('APPROVED')}}</div>
+      <div class="text-xs text-slate-400 mt-1">Approved</div>
+    </div>
+    <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-center">
+      <div class="text-2xl font-bold text-red-300">{{getCount('REJECTED')}}</div>
+      <div class="text-xs text-slate-400 mt-1">Rejected</div>
+    </div>
+  </div>
 
 </div>
 
 <!-- Assign Underwriter Modal -->
-<div *ngIf="showAssignModal()"
+@if (showAssignModal()) {
+  <div
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
     <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md shadow-2xl">
-
-        <div class="p-6 border-b border-slate-700">
-            <h2 class="text-xl font-bold text-white">Assign Underwriter</h2>
-            <p class="text-sm text-slate-400 mt-1">
-                Application <span class="font-mono text-blue-400">CA-{{selectedSub()?.id}}</span>
-                — {{selectedSub()?.customer?.fullName}}
+      <div class="p-6 border-b border-slate-700">
+        <h2 class="text-xl font-bold text-white">Assign Underwriter</h2>
+        <p class="text-sm text-slate-400 mt-1">
+          Application <span class="font-mono text-blue-400">CA-{{selectedSub()?.id}}</span>
+          — {{selectedSub()?.customer?.fullName}}
+        </p>
+      </div>
+      <div class="p-6 space-y-4">
+        <!-- Policy info -->
+        <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700">
+          <div class="text-xs text-slate-400 mb-2 uppercase tracking-wider">Policy Details</div>
+          <div class="font-semibold text-white">{{selectedSub()?.policy?.policyName}}</div>
+          <div class="text-sm text-slate-400">{{selectedSub()?.policy?.sector}}</div>
+        </div>
+        <!-- Underwriter selector -->
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Select Underwriter</label>
+          <select [ngModel]="selectedUnderwriterId()" (ngModelChange)="selectedUnderwriterId.set($event)"
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-all">
+            <option [ngValue]="null" disabled>— Choose an underwriter —</option>
+            @for (uw of underwriters(); track uw) {
+              <option [ngValue]="uw.userId">
+                {{uw.fullName}} ({{uw.email}})
+              </option>
+            }
+          </select>
+          @if (underwriters().length === 0) {
+            <p class="text-sm text-amber-400 mt-2">
+              No underwriters found.
             </p>
+          }
         </div>
-
-        <div class="p-6 space-y-4">
-
-            <!-- Policy info -->
-            <div class="bg-slate-900/60 rounded-xl p-4 border border-slate-700">
-                <div class="text-xs text-slate-400 mb-2 uppercase tracking-wider">Policy Details</div>
-                <div class="font-semibold text-white">{{selectedSub()?.policy?.policyName}}</div>
-                <div class="text-sm text-slate-400">{{selectedSub()?.policy?.sector}}</div>
-            </div>
-
-            <!-- Underwriter selector -->
-            <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Select Underwriter</label>
-                <select [ngModel]="selectedUnderwriterId()" (ngModelChange)="selectedUnderwriterId.set($event)"
-                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-all">
-                    <option [ngValue]="null" disabled>— Choose an underwriter —</option>
-                    <option *ngFor="let uw of underwriters()" [ngValue]="uw.userId">
-                        {{uw.fullName}} ({{uw.email}})
-                    </option>
-                </select>
-                <p *ngIf="underwriters().length === 0" class="text-sm text-amber-400 mt-2">
-                    No underwriters found.
-                </p>
-            </div>
-        </div>
-
-        <div class="p-6 border-t border-slate-700 flex justify-end gap-3">
-            <button (click)="closeModal()" [disabled]="assigning()"
-                class="px-5 py-2 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors text-sm font-medium disabled:opacity-50">
-                Cancel
-            </button>
-            <button (click)="confirmAssign()" [disabled]="!selectedUnderwriterId() || assigning()"
-                class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm transition-colors disabled:opacity-50 flex items-center gap-2">
-                <span *ngIf="assigning()"
-                    class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                {{assigning() ? 'Assigning...' : 'Assign Underwriter'}}
-            </button>
-        </div>
-
+      </div>
+      <div class="p-6 border-t border-slate-700 flex justify-end gap-3">
+        <button (click)="closeModal()" [disabled]="assigning()"
+          class="px-5 py-2 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors text-sm font-medium disabled:opacity-50">
+          Cancel
+        </button>
+        <button (click)="confirmAssign()" [disabled]="!selectedUnderwriterId() || assigning()"
+          class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm transition-colors disabled:opacity-50 flex items-center gap-2">
+          @if (assigning()) {
+            <span
+            class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+          }
+          {{assigning() ? 'Assigning...' : 'Assign Underwriter'}}
+        </button>
+      </div>
     </div>
-</div>
+  </div>
+}

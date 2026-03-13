@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-settings',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './settings.html'
 })
 export class Settings implements OnInit {
