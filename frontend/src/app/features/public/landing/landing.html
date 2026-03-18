@@ -1,0 +1,290 @@
+<div class="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-blue-500/30">
+  
+  <!-- NAVBAR -->
+  <nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a routerLink="/" class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center gap-2">
+        <svg class="w-8 h-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        CyberAssure
+      </a>
+      <div class="hidden md:flex gap-8">
+        <a href="#what" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">What is it</a>
+        <a href="#why" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Why Us</a>
+        <a href="#how" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">How it Works</a>
+        <a href="#who" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Industries</a>
+        <a href="#policies" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Policies</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <a routerLink="/login" class="px-5 py-2.5 text-sm font-medium text-slate-300 hover:text-white transition-colors border border-slate-700 rounded-lg hover:border-slate-500">Login</a>
+        <a routerLink="/register" class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors rounded-lg shadow-[0_0_15px_rgba(37,99,235,0.3)]">Get Quote</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-slate-950 -z-10"></div>
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold uppercase tracking-wider mb-6">
+          <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span> Corporate Cyber Protection
+        </div>
+        <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight mb-8 leading-tight">
+          Secure your <br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Digital Legacy.</span>
+        </h1>
+        <p class="text-lg text-slate-400 mb-10 leading-relaxed max-w-xl">
+          CyberAssure provides enterprise-grade cyber insurance policies, meticulously tailored for Indian businesses. Protect against ransomware, data breaches, and business interruptions.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a routerLink="/register" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-all shadow-lg shadow-blue-500/25 flex items-center gap-2">
+            Assess Your Risk
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+          <a href="#how" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white rounded-xl font-semibold transition-all flex items-center gap-2">
+            See How
+          </a>
+        </div>
+      </div>
+      <div class="relative group">
+        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+        <img src="/images/hero_business_cyber_1773145171490.png" alt="Corporate Executive" class="relative rounded-2xl border border-slate-800 shadow-2xl object-cover w-full h-[500px]" />
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS CYBERASSURE -->
+  <section id="what" class="py-24 bg-slate-900 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-3xl lg:text-5xl font-bold mb-6">What is CyberAssure?</h2>
+      <p class="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed">
+        We are a specialized cyber insurance provider dedicated to closing the security gap for modern businesses. Our platform uses deep risk analytics to provide instant, tailored insurance coverage that scales with your IT infrastructure. Don't wait for a breach to discover your vulnerabilities.
+      </p>
+    </div>
+  </section>
+
+  <!-- WHY CYBERASSURE -->
+  <section id="why" class="py-32">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-16 text-center">
+        <h2 class="text-4xl font-bold mb-4">Why CyberAssure</h2>
+        <p class="text-slate-400">Industry-leading protection backed by sophisticated analytics.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Reusing features from existing component -->
+        @for (f of features; track f.title) {
+          <div class="p-8 rounded-2xl bg-slate-900 border border-slate-800 hover:border-blue-500/50 transition-colors group">
+            <div class="w-14 h-14 bg-slate-800 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform shadow-inner shadow-white/5">{{ f.icon }}</div>
+            <h3 class="text-xl font-semibold mb-3 text-white">{{ f.title }}</h3>
+            <p class="text-slate-400 leading-relaxed">{{ f.desc }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="py-32 bg-slate-900 overflow-hidden relative">
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+      <div class="relative order-2 lg:order-1">
+        <img src="/images/how_it_works_cyber_1773145187572.png" alt="How it works" class="rounded-2xl border border-slate-800 shadow-2xl relative z-10 w-full" />
+        <div class="absolute inset-0 bg-blue-500/10 blur-3xl -z-10 rounded-full"></div>
+      </div>
+      <div class="order-1 lg:order-2">
+        <h2 class="text-4xl font-bold mb-8">How It Works</h2>
+        <div class="space-y-8">
+          @for (s of steps; track s.title; let i = $index) {
+            <div class="flex gap-6">
+              <div class="shrink-0 w-12 h-12 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-mono font-bold">{{ s.num }}</div>
+              <div>
+                <h4 class="text-xl font-semibold mb-2">{{ s.title }}</h4>
+                <p class="text-slate-400">{{ s.desc }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO IT'S FOR -->
+  <section id="who" class="py-32">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-16 text-center">
+        <h2 class="text-4xl font-bold mb-4">Who It's For</h2>
+        <p class="text-slate-400">Tailored policies for every major industry sector.</p>
+      </div>
+      <div class="grid lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col gap-2">
+          @for (ind of industries; track ind.id) {
+            <button (click)="setIndustry(ind.id)"
+                    [class.bg-blue-600]="activeIndustry === ind.id"
+                    [class.text-white]="activeIndustry === ind.id"
+                    [class.text-slate-400]="activeIndustry !== ind.id"
+                    class="text-left px-6 py-4 rounded-xl font-medium transition-all hover:bg-slate-800">
+              {{ ind.label }}
+            </button>
+          }
+        </div>
+        <div class="lg:col-span-9 bg-slate-900 border border-slate-800 rounded-3xl p-10 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-3xl rounded-full"></div>
+          <div class="relative z-10 flex flex-col md:flex-row gap-8">
+             <div class="flex-1 space-y-8">
+               <div class="flex items-center gap-4 border-b border-slate-800 pb-6">
+                 <span class="text-4xl">{{ currentIndustry.icon }}</span>
+                 <h3 class="text-3xl font-bold">{{ currentIndustry.title }}</h3>
+               </div>
+               
+               <div>
+                 <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                   <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                   Top Cyber Risks
+                 </h4>
+                 <ul class="space-y-3">
+                   @for (r of currentIndustry.risks; track r) {
+                     <li class="text-slate-300 flex items-start gap-3">
+                       <span class="text-red-500 mt-1">›</span> {{ r }}
+                     </li>
+                   }
+                 </ul>
+               </div>
+
+               <div>
+                 <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                   <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                   Compliance Covered
+                 </h4>
+                 <div class="flex flex-wrap gap-2">
+                   @for (c of currentIndustry.compliance; track c) {
+                     <span class="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-xs font-medium text-slate-300">
+                       {{ c }}
+                     </span>
+                   }
+                 </div>
+               </div>
+
+               <div>
+                 <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                   <svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                   Recommended Plan
+                 </h4>
+                 <span class="px-4 py-2 bg-green-500/10 border border-green-500/20 text-green-400 rounded-lg font-semibold shadow-inner inline-block">
+                   {{ currentIndustry.plan }}
+                 </span>
+               </div>
+             </div>
+             
+             <!-- Image instead of visual rings -->
+             <div class="hidden md:flex flex-1 items-center justify-center">
+                <img src="/images/who_its_for_cyber_1773145204681.png" alt="Who it is for" class="rounded-xl border border-slate-700 shadow-xl w-full object-cover aspect-square"/>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POLICIES -->
+  <section id="policies" class="py-32 bg-slate-900 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-16 text-center">
+        <h2 class="text-4xl font-bold mb-4">Protection Policies</h2>
+        <p class="text-slate-400">Enterprise plans rigorously modeled around precise business risks.</p>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-8">
+        @for (plan of plans; track plan.name) {
+          <div [class.border-blue-500]="plan.highlight" [class.shadow-blue-500/20]="plan.highlight" class="bg-slate-950 border border-slate-800 rounded-3xl p-8 relative flex flex-col shadow-xl transition-all hover:-translate-y-1">
+            @if (plan.highlight) {
+              <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-blue-600 text-xs font-bold uppercase tracking-wider rounded-full shadow-lg">Most Popular</div>
+            }
+            <div class="mb-8">
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">{{ plan.tag }}</span>
+              <h3 class="text-2xl font-bold mb-4">{{ plan.name }}</h3>
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl font-extrabold">{{ plan.coverage }}</span>
+                <span class="text-slate-500 text-sm">coverage</span>
+              </div>
+            </div>
+            <div class="flex-1 space-y-6">
+              <ul class="space-y-4">
+                @for (i of plan.included; track i) {
+                  <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <span class="text-slate-300 text-sm">{{ i }}</span>
+                  </li>
+                }
+                @for (e of plan.excluded; track e) {
+                  <li class="flex items-start gap-3 opacity-50">
+                    <svg class="w-5 h-5 text-slate-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <span class="text-slate-400 text-sm line-through">{{ e }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+            <a [routerLink]="plan.ctaRoute" [ngClass]="plan.highlight ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'" class="mt-8 block w-full py-4 text-center rounded-xl font-semibold transition-colors">
+              {{ plan.cta }}
+            </a>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-32 relative overflow-hidden">
+    <div class="absolute inset-0 bg-blue-600/10 blur-[100px] -z-10"></div>
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-4xl lg:text-6xl font-bold mb-6 tracking-tight">Don't wait for a breach to get protected.</h2>
+      <p class="text-xl text-slate-400 mb-10">Start your premium cyber risk assessment today. Secure, comprehensive, and perfectly tailored for modern business.</p>
+      <a routerLink="/register" class="inline-flex items-center gap-2 px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold text-lg transition-all shadow-xl shadow-blue-500/25">
+        Start Free Risk Assessment
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-950 border-t border-slate-900 pt-20 pb-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+        <div class="col-span-2 md:col-span-1">
+          <a routerLink="/" class="text-xl font-bold mb-4 flex items-center gap-2">
+            <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            CyberAssure
+          </a>
+          <p class="text-slate-500 text-sm">Enterprise Cyber Risk Intelligence for Modern Businesses.</p>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4 text-white">Platform</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Risk Assessment</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Policies</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Claims Portal</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4 text-white">Company</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="#" class="hover:text-blue-400 transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Careers</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4 text-white">Legal</h4>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+        <p>© 2026 CyberAssure Technologies. All rights reserved.</p>
+        <div class="flex gap-4">
+          <span class="px-3 py-1 bg-slate-900 rounded border border-slate-800">IRDAI Registered</span>
+          <span class="px-3 py-1 bg-slate-900 rounded border border-slate-800">CERT-In Aligned</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>

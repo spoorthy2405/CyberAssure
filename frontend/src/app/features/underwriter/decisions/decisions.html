@@ -1,0 +1,84 @@
+<div class="max-w-7xl mx-auto px-6 py-8">
+
+  <!-- PAGE TITLE -->
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-semibold text-white">
+      Underwriter Decisions
+    </h2>
+  </div>
+
+  <!-- LOADING -->
+  @if (loading()) {
+    <div class="text-gray-400 text-sm mb-4">
+      Loading decisions...
+    </div>
+  }
+
+  <!-- TABLE CONTAINER -->
+  <div class="bg-slate-800 rounded-lg shadow border border-slate-700 overflow-hidden">
+
+    <table class="w-full text-sm text-left">
+
+      <!-- TABLE HEADER -->
+      <thead class="bg-slate-700 text-gray-300 uppercase text-xs tracking-wider">
+        <tr>
+
+          <th class="px-6 py-4">Customer</th>
+          <th class="px-6 py-4">Policy</th>
+          <th class="px-6 py-4 text-center">Risk Level</th>
+          <th class="px-6 py-4 text-center">Premium</th>
+          <th class="px-6 py-4 text-center">Status</th>
+
+        </tr>
+      </thead>
+
+      <!-- TABLE BODY -->
+      <tbody class="divide-y divide-slate-700">
+
+        @for (d of decisions(); track d) {
+          <tr class="hover:bg-slate-750 transition">
+            <td class="px-6 py-4 font-medium text-white">
+              {{ d.customer?.fullName }}
+            </td>
+            <td class="px-6 py-4 text-gray-300">
+              {{ d.policy?.policyName }}
+            </td>
+            <td class="px-6 py-4 text-center">
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full" [ngClass]="{
+                                'bg-yellow-500/20 text-yellow-400': d.riskAssessment?.riskLevel === 'MEDIUM',
+                                'bg-red-500/20 text-red-400': d.riskAssessment?.riskLevel === 'HIGH',
+                                'bg-green-500/20 text-green-400': d.riskAssessment?.riskLevel === 'LOW'
+                              }">
+                {{ d.riskAssessment?.riskLevel }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-center font-semibold text-white">
+              ₹ {{ d.calculatedPremium }}
+            </td>
+            <td class="px-6 py-4 text-center">
+                        <span class="px-3 py-1 text-xs font-bold rounded-full" [ngClass]="{
+                                'bg-green-500/20 text-green-400': d.status === 'APPROVED',
+                                'bg-red-500/20 text-red-400': d.status === 'REJECTED'
+                              }">
+                {{ d.status }}
+              </span>
+            </td>
+          </tr>
+        }
+
+        <!-- EMPTY STATE -->
+        @if (!loading() && decisions().length === 0) {
+          <tr>
+            <td colspan="5" class="text-center py-8 text-gray-400">
+              No decisions available
+            </td>
+          </tr>
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

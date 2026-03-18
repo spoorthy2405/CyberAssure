@@ -1,0 +1,79 @@
+<div class="space-y-6">
+
+  <h1 class="text-3xl font-bold text-white">
+    Claims Management
+  </h1>
+
+  <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+
+    <table class="w-full text-left text-sm">
+
+      <thead>
+        <tr class="text-slate-400 border-b border-slate-700">
+          <th class="pb-3">Claim ID</th>
+          <th class="pb-3">Customer</th>
+          <th class="pb-3">Amount</th>
+          <th class="pb-3">Status</th>
+          <th class="pb-3">Filed On</th>
+          <th class="pb-3">Assigned Officer</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-slate-700">
+
+        @for (claim of claimsList(); track claim) {
+          <tr>
+            <td class="py-3 text-white">
+              {{claim.id}}
+            </td>
+            <td class="py-3 text-white">
+              {{claim.customer?.fullName}}
+            </td>
+            <td class="py-3 text-red-400">
+              ₹{{claim.amount || claim.claimAmount}}
+            </td>
+            <td class="py-3">
+                        <span class="px-2 py-1 text-xs font-medium" [ngClass]="{
+'text-green-400': claim.status === 'APPROVED' || claim.status === 'SETTLED',
+'text-yellow-400': claim.status === 'PENDING' || claim.status === 'UNDER_INVESTIGATION',
+'text-red-400': claim.status === 'REJECTED'
+}">
+                {{claim.status | uppercase}}
+              </span>
+            </td>
+            <td class="py-3 text-slate-400 text-xs">
+              {{claim.filedAt | date:'mediumDate'}}
+            </td>
+            <td class="py-3">
+              @if (claim.assignedOfficer) {
+                <div class="text-white text-xs whitespace-nowrap">
+                  {{claim.assignedOfficer.fullName}}
+                </div>
+              }
+              @if (!claim.assignedOfficer && (claim.status === 'PENDING' || claim.status === 'UNDER_INVESTIGATION')) {
+                <div class="flex gap-2 items-center">
+                  <select [(ngModel)]="claim.selectedOfficerId" class="bg-slate-900 border border-slate-700 text-white text-xs rounded px-2 py-1 max-w-[120px]">
+                    <option [value]="undefined" disabled selected>Select Officer</option>
+                    @for (off of officers(); track off) {
+                      <option [value]="off.userId">{{off.fullName}}</option>
+                    }
+                  </select>
+                  <button (click)="assignOfficer(claim)" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-2 py-1 rounded transition">Assign</button>
+                </div>
+              }
+              @if (!claim.assignedOfficer && (claim.status !== 'PENDING' && claim.status !== 'UNDER_INVESTIGATION')) {
+                <div class="text-slate-500 text-xs italic">
+                  Unassigned
+                </div>
+              }
+            </td>
+          </tr>
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

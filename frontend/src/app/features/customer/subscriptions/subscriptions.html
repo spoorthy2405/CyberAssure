@@ -1,0 +1,208 @@
+<div class="p-6 min-h-screen bg-slate-900 text-white">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-white">My Policy Subscriptions</h1>
+      <p class="text-sm text-slate-400">Manage your cyber insurance policies</p>
+    </div>
+    <button routerLink="/customer/policies"
+      class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition">+
+    Apply for New Policy</button>
+  </div>
+
+  <!-- Loading -->
+  @if (loading) {
+    <div class="flex justify-center py-16">
+      <div class="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  }
+
+  <!-- Empty state -->
+  @if (!loading && subscriptions.length === 0) {
+    <div
+      class="text-center py-16 bg-slate-800/50 rounded-2xl border border-slate-700">
+      <p class="text-4xl mb-3">📋</p>
+      <h3 class="text-lg font-semibold text-white mb-2">No subscriptions yet</h3>
+      <p class="text-slate-400 mb-5">Browse policies and apply for one that suits your business.</p>
+      <button routerLink="/customer/policies"
+        class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-lg transition">Browse
+      Policies →</button>
+    </div>
+  }
+
+  <!-- Subscription Cards -->
+  @if (!loading && subscriptions.length > 0) {
+    <div class="space-y-4">
+      @for (s of subscriptions; track s) {
+        <div class="bg-slate-800/80 border border-slate-700/50 rounded-2xl p-5">
+          <!-- Card Header -->
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-white">{{ s.policy?.policyName }}</h3>
+              <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">{{ s.policy?.sector
+              }}</span>
+            </div>
+                <span [ngClass]="{
+          'bg-emerald-900/50 text-emerald-400 border-emerald-500/30': s.status === 'APPROVED' || s.status === 'ACTIVE',
+          'bg-blue-900/50 text-blue-400 border-blue-500/30': s.status === 'PENDING_PAYMENT',
+          'bg-amber-900/50 text-amber-400 border-amber-500/30': s.status === 'PENDING',
+          'bg-red-900/50 text-red-400 border-red-500/30': s.status === 'REJECTED'
+        }" class="border text-xs font-bold px-3 py-1 rounded-full">{{ s.status | uppercase }}</span>
+          </div>
+          <!-- Meta Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+            <div>
+              <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Coverage</p>
+              <p class="font-semibold text-white">{{ coverageFmt(s.policy?.coverageLimit) }}</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Premium</p>
+              <p class="font-semibold text-white">₹{{ s.calculatedPremium || s.policy?.basePremium | number }}/mo
+              </p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Duration</p>
+              <p class="font-semibold text-white">{{ s.policy?.durationMonths }} months</p>
+            </div>
+            <div>
+              <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Risk Score</p>
+              <p class="font-semibold text-white">
+                @if (s.riskAssessment?.riskScore !== null && s.riskAssessment?.riskScore !== undefined) {
+                  {{s.riskAssessment?.riskScore}}
+                }
+                @if (s.riskAssessment?.riskScore === null || s.riskAssessment?.riskScore === undefined) {
+                  <span class="text-slate-400 text-xs italic font-normal">Pending Eval.</span>
+                }
+              </p>
+            </div>
+            @if (s.startDate) {
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Start Date</p>
+                <p class="font-semibold text-white">{{ s.startDate | date:'mediumDate' }}</p>
+              </div>
+            }
+            @if (s.endDate) {
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">End Date</p>
+                <p class="font-semibold text-white">{{ s.endDate | date:'mediumDate' }}</p>
+              </div>
+            }
+            @if (s.approvedBy) {
+              <div>
+                <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Underwriter</p>
+                <p class="font-semibold text-white">{{ s.approvedBy?.fullName }}</p>
+              </div>
+            }
+          </div>
+          <!-- Info banners -->
+          @if (s.status === 'PENDING') {
+            <div
+              class="bg-amber-900/20 border border-amber-500/30 rounded-lg p-3 text-sm text-amber-300 mb-3">
+              ⏳ Under review by an underwriter. Usually takes 24–48 hours.
+            </div>
+          }
+          @if (s.status === 'REJECTED') {
+            <div
+              class="bg-red-900/20 border border-red-500/30 rounded-lg p-3 text-sm text-red-300 mb-3">
+              ❌ Rejected: {{ s.rejectionReason || 'No reason provided.' }}
+            </div>
+          }
+          @if (s.status === 'PENDING_PAYMENT') {
+            <div
+              class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-3 text-sm text-blue-300 mb-3">
+              🔹 An Underwriter has finalized your plan. Please review and pay to activate your policy.
+            </div>
+          }
+          <!-- Actions -->
+          @if (s.status === 'PENDING_PAYMENT') {
+            <div class="flex gap-3 mt-2">
+              <button (click)="viewPlan(s)"
+                class="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm px-4 py-2 rounded-lg transition">📄
+              Review Plan & Pay</button>
+            </div>
+          }
+          <!-- Action layout ends -->
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Review Plan & Pay Modal -->
+  @if (selectedPlan) {
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+        <div class="p-5 border-b border-slate-700 flex justify-between items-center bg-slate-800/80 sticky top-0">
+          <h2 class="text-xl font-bold text-white">Review Final Policy Plan</h2>
+          <button (click)="closePlan()" class="text-slate-400 hover:text-white transition cursor-pointer text-xl">&times;</button>
+        </div>
+        <div class="p-6 overflow-y-auto custom-scrollbar flex-1">
+          <p class="text-slate-300 text-sm mb-6">Our Underwriter has assessed your risk profile and finalized the following customized cyber insurance plan for your business.</p>
+          <div class="bg-slate-900/50 border border-slate-700/50 rounded-xl p-5 mb-5">
+            <h3 class="text-white font-semibold mb-4 text-lg border-b border-slate-700 pb-2">Plan Details</h3>
+            <div class="grid grid-cols-2 gap-y-4 gap-x-6 text-sm">
+              <div>
+                <span class="text-slate-400 block mb-1">Policy Name</span>
+                <span class="text-white font-medium">{{ selectedPlan.policy?.policyName }}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block mb-1">Tenure</span>
+                <span class="text-white font-medium">{{ selectedPlan.tenureMonths }} Months</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block mb-1">Total Coverage Limit</span>
+                <span class="text-emerald-400 font-bold">{{ coverageFmt(selectedPlan.coverageAmount) }}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block mb-1">Monthly Premium</span>
+                <span class="text-amber-400 font-bold text-lg">₹{{ selectedPlan.calculatedPremium | number }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="bg-slate-900/50 border border-slate-700/50 rounded-xl p-5 mb-5">
+            <h3 class="text-white font-semibold mb-4 text-lg border-b border-slate-700 pb-2">Advanced Terms</h3>
+            <div class="grid grid-cols-2 gap-y-4 gap-x-6 text-sm mb-4">
+              <div>
+                <span class="text-slate-400 block mb-1">Deductible (Your share per claim)</span>
+                <span class="text-white font-medium">{{ selectedPlan.deductible ? '₹' + (selectedPlan.deductible | number) : 'Standard' }}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block mb-1">Per-Incident Limit</span>
+                <span class="text-white font-medium">{{ selectedPlan.policyLimit ? '₹' + (selectedPlan.policyLimit | number) : 'Same as coverage' }}</span>
+              </div>
+            </div>
+            @if (selectedPlan.exclusions) {
+              <div>
+                <span class="text-slate-400 block mb-1 text-sm">Specific Exclusions</span>
+                <p class="text-white text-sm bg-slate-800 p-3 rounded-lg">{{ selectedPlan.exclusions }}</p>
+              </div>
+            }
+            @if (selectedPlan.underwriterNotes) {
+              <div class="mt-4">
+                <span class="text-slate-400 block mb-1 text-sm">Underwriter Notes</span>
+                <p class="text-slate-300 text-sm italic">{{ selectedPlan.underwriterNotes }}</p>
+              </div>
+            }
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="p-5 border-t border-slate-700 bg-slate-800/80 flex justify-between items-center shrink-0">
+          <span class="text-sm text-slate-400">By paying, you accept the above terms.</span>
+          <div class="space-x-3 flex">
+            <button (click)="closePlan()" class="px-5 py-2.5 rounded-lg font-semibold text-slate-300 hover:text-white transition">Cancel</button>
+            <button (click)="payPlan()" [disabled]="paying"
+              class="bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 disabled:text-blue-300 text-white font-semibold px-6 py-2.5 rounded-lg transition flex items-center justify-center min-w-[120px]">
+              @if (!paying) {
+                <span>Pay & Activate</span>
+              }
+              @if (paying) {
+                <span class="flex items-center gap-2">
+                  <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Processing...
+                </span>
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

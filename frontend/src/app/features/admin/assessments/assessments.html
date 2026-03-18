@@ -1,0 +1,92 @@
+<div class="p-6">
+
+  <h1 class="text-2xl font-bold mb-6">Risk Assessments</h1>
+
+  <div class="bg-slate-800 rounded-xl p-6">
+
+    <!-- Filters -->
+    <div class="flex gap-4 mb-6">
+
+      <input type="text" placeholder="Search company..."
+        class="bg-slate-900 border border-slate-700 rounded px-4 py-2 text-sm w-60" />
+
+        <select class="bg-slate-900 border border-slate-700 rounded px-4 py-2 text-sm">
+          <option>All Risk Levels</option>
+          <option>LOW</option>
+          <option>MEDIUM</option>
+          <option>HIGH</option>
+        </select>
+
+      </div>
+
+      <!-- Table -->
+      <table class="w-full text-sm text-left">
+
+        <thead class="text-slate-400 border-b border-slate-700">
+          <tr>
+
+            <th class="py-3">Assessment ID</th>
+            <th class="py-3">Company</th>
+            <th class="py-3">Customer Email</th>
+            <th class="py-3">Risk Score</th>
+            <th class="py-3">Risk Level</th>
+            <th class="py-3">Employees</th>
+            <th class="py-3">Actions</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (r of risks; track r) {
+            <tr class="border-b border-slate-700 hover:bg-slate-700/40 transition">
+              <td class="py-3 font-medium">
+                #{{ r.id }}
+              </td>
+              <td class="py-3 font-semibold">
+                {{ r.customer?.fullName }}
+              </td>
+              <td class="py-3 text-slate-300">
+                {{ r.customer?.email }}
+              </td>
+              <td class="py-3 text-blue-400 font-bold">
+                {{ r.riskScore }}
+              </td>
+              <td class="py-3">
+                @if (r.riskLevel === 'LOW') {
+                  <span class="px-3 py-1 rounded-full text-xs bg-green-700">
+                    LOW
+                  </span>
+                }
+                @if (r.riskLevel === 'MEDIUM') {
+                  <span class="px-3 py-1 rounded-full text-xs bg-yellow-600">
+                    MEDIUM
+                  </span>
+                }
+                @if (r.riskLevel === 'HIGH') {
+                  <span class="px-3 py-1 rounded-full text-xs bg-red-700">
+                    HIGH
+                  </span>
+                }
+              </td>
+              <td class="py-3">
+                {{ r.employeeCount }}
+              </td>
+              <td class="flex gap-2 py-3">
+                <button class="px-3 py-1 bg-blue-600 rounded text-xs hover:bg-blue-500">
+                  View
+                </button>
+                <button class="px-3 py-1 border border-slate-500 rounded text-xs">
+                  Details
+                </button>
+              </td>
+            </tr>
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>

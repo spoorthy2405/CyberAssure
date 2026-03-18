@@ -1,0 +1,87 @@
+<div class="flex h-screen bg-slate-950 text-white overflow-hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="w-60 flex-shrink-0 bg-[#0B1220] border-r border-slate-800/70 flex flex-col">
+
+    <!-- Logo -->
+    <div class="px-5 py-5 border-b border-slate-800/70">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-xs font-bold tracking-tight">CA</div>
+        <div>
+          <div class="font-semibold text-white text-sm tracking-tight">CyberAssure</div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-widest">Underwriter Portal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 px-3 py-5 space-y-0.5 overflow-y-auto">
+
+      <p class="text-[10px] font-semibold text-slate-600 uppercase tracking-widest px-3 mb-2">Workspace</p>
+
+      <a routerLink="/underwriter/queue" routerLinkActive="bg-slate-800 text-white border-l-2 border-blue-500"
+        class="flex items-center justify-between gap-3 px-3 py-2.5 rounded text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors text-sm border-l-2 border-transparent">
+        <span>Review Queue</span>
+        @if (pending() > 0) {
+          <span
+            class="bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded min-w-[18px] text-center tabular-nums">
+            {{pending()}}
+          </span>
+        }
+      </a>
+
+      <a routerLink="/underwriter/decisions" routerLinkActive="bg-slate-800 text-white border-l-2 border-blue-500"
+        class="flex items-center gap-3 px-3 py-2.5 rounded text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors text-sm border-l-2 border-transparent">
+        My Decisions
+      </a>
+
+      <p class="text-[10px] font-semibold text-slate-600 uppercase tracking-widest px-3 mt-5 mb-2">Statistics</p>
+
+      <!-- Mini stats -->
+      <div class="mx-1 bg-slate-800/40 rounded border border-slate-700/50 p-3 space-y-2 text-xs">
+        <div class="flex justify-between items-center">
+          <span class="text-slate-500">Total Assigned</span>
+          <span class="font-semibold text-white tabular-nums">{{total()}}</span>
+        </div>
+        <div class="h-px bg-slate-700/40"></div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Pending</span>
+          <span class="font-semibold text-amber-400 tabular-nums">{{pending()}}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Approved</span>
+          <span class="font-semibold text-emerald-400 tabular-nums">{{approved()}}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Rejected</span>
+          <span class="font-semibold text-red-400 tabular-nums">{{rejected()}}</span>
+        </div>
+      </div>
+
+    </nav>
+
+    <!-- User info + Sign Out -->
+    <div class="px-4 py-4 border-t border-slate-800/70">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center text-xs font-bold flex-shrink-0 uppercase">
+          {{userInitial()}}
+        </div>
+        <div class="overflow-hidden">
+          <div class="text-sm font-medium text-white truncate">{{userName()}}</div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">Sr. Underwriter</div>
+        </div>
+      </div>
+      <button (click)="signOut()"
+        class="w-full flex items-center justify-center px-3 py-2 rounded border border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-white transition text-xs font-medium tracking-wide">
+        Sign Out
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 overflow-y-auto bg-slate-950">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

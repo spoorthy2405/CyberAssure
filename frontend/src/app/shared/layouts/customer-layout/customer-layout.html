@@ -1,0 +1,19 @@
+<div class="flex h-screen bg-slate-900 text-white">
+
+    <!-- CUSTOMER SIDEBAR -->
+    <app-customer-sidebar></app-customer-sidebar>
+
+    <!-- MAIN SECTION -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+
+        <!-- Optional Header (reusing admin header if applicable, or removing) -->
+        <app-header></app-header>
+
+        <!-- ROUTER CONTENT -->
+        <main class="flex-1 p-6 overflow-y-auto bg-slate-900 custom-scrollbar">
+            <router-outlet></router-outlet>
+        </main>
+
+    </div>
+
+</div>

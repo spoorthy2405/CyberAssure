@@ -1,0 +1,112 @@
+﻿
+> frontend@0.0.0 build
+> ng build
+
+[33mΓ¥»[39m Building...
+[32mΓ£ö[39m Building...
+Application bundle generation failed. [19.806 seconds] - 2026-03-11T09:33:17.579Z
+
+node.exe : [1m[33m[33mΓû▓ 
+[43;33m[[43;30mWARNING[43;33m][0m [1mNG8102: 
+NG8102: The left side of this nullish coalescing 
+operation does not include 'null' or 'undefined' in 
+its type, therefore the '??' operator can be safely 
+removed. Find more at https://v21.angular.dev/extended-
+diagnostics/NG8102[0m [1m[35m[plugin 
+angular-compiler][0m
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Users\spoor\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([1m[33m 
+   [33mΓ...r-compiler][0m:String) [], RemoteExcepti  
+  on
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+    src/app/features/customer/dashboard/customer-dashbo
+ard.html:6:86:
+[37m      6 Γöé ...t text-white">Welcome back, {{ 
+[32mstats()?.customerName?.split(' ')[0][37m
+        Γò╡                                   
+[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Warning occurs in the template of component 
+CustomerDashboard.
+
+    src/app/features/customer/dashboard/customer-dashbo
+ard.ts:14:15:
+[37m      14 Γöé   templateUrl: 
+[32m'./customer-dashboard.html'[37m
+         Γò╡                
+[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m 
+[1mTS2532: Object is possibly 'undefined'.[0m 
+[1m[35m[plugin angular-compiler][0m
+
+    src/app/features/customer/dashboard/customer-dashbo
+ard.html:6:86:
+[37m      6 Γöé ...t text-white">Welcome back, {{ 
+[32mstats()?.customerName?.split(' ')[0][37m
+        Γò╡                                   
+[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component 
+CustomerDashboard.
+
+    src/app/features/customer/dashboard/customer-dashbo
+ard.ts:14:15:
+[37m      14 Γöé   templateUrl: 
+[32m'./customer-dashboard.html'[37m
+         Γò╡                
+[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2532: 
+Object is possibly 'undefined'.[0m [1m[35m[plugin 
+angular-compiler][0m
+
+    src/app/features/customer/dashboard/customer-dashbo
+ard.html:143:71:
+[37m      143 Γöé ...ewal !== null && 
+[32mstats()?.daysToRenewal <= 60[37m && 
+stats()?.days...
+          Γò╡                     
+[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component 
+CustomerDashboard.
+
+    src/app/features/customer/dashboard/customer-dashbo
+ard.ts:14:15:
+[37m      14 Γöé   templateUrl: 
+[32m'./customer-dashboard.html'[37m
+         Γò╡                
+[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2532: 
+Object is possibly 'undefined'.[0m [1m[35m[plugin 
+angular-compiler][0m
+
+    src/app/features/customer/dashboard/customer-dashbo
+ard.html:143:103:
+[37m      143 Γöé ...ll && stats()?.daysToRenewal <= 
+60 && [32mstats()?.daysToRenewal > 0[37m"
+          Γò╡                                          
+[32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+  Error occurs in the template of component 
+CustomerDashboard.
+
+    src/app/features/customer/dashboard/customer-dashbo
+ard.ts:14:15:
+[37m      14 Γöé   templateUrl: 
+[32m'./customer-dashboard.html'[37m
+         Γò╡                
+[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m

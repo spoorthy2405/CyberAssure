@@ -1,0 +1,46 @@
+<h2 class="text-2xl font-bold mb-6 text-white">
+    Cyber Risk Assessment
+</h2>
+
+<form (ngSubmit)="submit()" class="bg-slate-800 p-6 rounded space-y-4 text-white">
+
+    <label class="block">
+        Firewall Enabled
+        <input type="checkbox" [(ngModel)]="data.firewallEnabled" name="firewall">
+    </label>
+
+    <label class="block">
+        Encryption Enabled
+        <input type="checkbox" [(ngModel)]="data.encryptionEnabled" name="encryption">
+    </label>
+
+    <label class="block">
+        Backup Available
+        <input type="checkbox" [(ngModel)]="data.backupAvailable" name="backup">
+    </label>
+
+    <label class="block">
+        MFA Enabled
+        <input type="checkbox" [(ngModel)]="data.mfaEnabled" name="mfa">
+    </label>
+
+    <label class="block">
+        Previous Incident Count
+        <input type="number" [(ngModel)]="data.previousIncidentCount" name="incidents" class="text-black p-1">
+    </label>
+
+    <label class="block">
+        Employee Count
+        <input type="number" [(ngModel)]="data.employeeCount" name="employees" class="text-black p-1">
+    </label>
+
+    <label class="block">
+        Annual Revenue
+        <input type="number" [(ngModel)]="data.annualRevenue" name="revenue" class="text-black p-1">
+    </label>
+
+    <button class="bg-blue-600 px-6 py-2 rounded">
+        Submit Assessment
+    </button>
+
+</form>
